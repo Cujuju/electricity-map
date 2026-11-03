@@ -22,4 +22,4 @@ U.S. Energy Information Administration, [Electricity Sales to Ultimate Customers
 
 # Fonts
 
-DM Sans, IBM Plex Mono, and Instrument Serif are requested from Google Fonts. Their open-source font licenses are available through [Google Fonts](https://fonts.google.com/). System sans, mono, and Georgia fallbacks allow the interface to work without the font network requests.
+DM Sans, IBM Plex Mono, Instrument Serif, Bebas Neue, Space Grotesk, Syne, DotGothic16, and Fraunces are requested from Google Fonts. Their open-source font licenses are available through [Google Fonts](https://fonts.google.com/). System sans, mono, and Georgia fallbacks allow the interface to work without the font network requests.

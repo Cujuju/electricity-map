@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Three experimental lenses on U.S. electricity prices, built with SolidJS and Node.js.",
+  "description": "An electricity observatory and ten experimental dashboard designs, built with SolidJS and Node.js.",
   "engines": {
     "node": ">=22.12"
   },

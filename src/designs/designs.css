@@ -1,0 +1,4267 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DotGothic16&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.design-switcher {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 25px;
+  background: #f1f0eb;
+  color: #292b2a;
+  border-bottom: 1px solid #cbcfc8;
+  font-family: 'DM Sans', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  color-scheme: light;
+}
+.design-lab-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 10px var(--mono);
+  letter-spacing: 1px;
+  color: #333b32;
+  padding: 8px 0;
+}
+.design-lab-button b {
+  font-size: 8px;
+  background: #273c30;
+  color: #f5ffdf;
+  padding: 3px 5px;
+  border-radius: 3px;
+  letter-spacing: 0;
+}
+.design-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
+  border-left: 1px solid #ccd2c7;
+}
+.design-current > span {
+  font: 9px var(--mono);
+  color: #76816f;
+}
+.design-current select {
+  border: 0;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #273c30;
+  width: 202px;
+  cursor: pointer;
+}
+.design-step {
+  display: flex;
+  gap: 3px;
+}
+.design-step button {
+  width: 25px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d0d5c9;
+  border-radius: 3px;
+  color: #34452f;
+}
+.design-step button:hover {
+  background: #dce5d0;
+}
+.design-lab-note {
+  font: 8px var(--mono);
+  letter-spacing: 1px;
+  color: #7b8274;
+  margin-left: 12px;
+}
+.design-browse {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 500;
+  color: #2e442c;
+  white-space: nowrap;
+}
+.design-gallery {
+  background: #f1f0e8;
+  color: #242b24;
+  border: 1px solid #b4baa9;
+  width: min(1120px, calc(100% - 32px));
+  max-width: none;
+  max-height: 89vh;
+  padding: 31px;
+  border-radius: 10px;
+  color-scheme: light;
+  box-shadow: 0 40px 140px #0008;
+}
+.design-gallery::backdrop {
+  background: #101a16c9;
+  backdrop-filter: blur(9px);
+}
+.gallery-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 0 25px;
+}
+.gallery-heading > div > span {
+  font: 8px var(--mono);
+  letter-spacing: 1.4px;
+  color: #69745e;
+}
+.gallery-heading h2 {
+  font:
+    43px/0.98 'Instrument Serif',
+    Georgia,
+    serif;
+  letter-spacing: -1px;
+  margin: 18px 0 0;
+}
+.gallery-heading h2 em {
+  color: #64843e;
+}
+.gallery-close {
+  align-self: flex-start;
+  color: #4c5d43;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.design-card {
+  text-align: left;
+  background: #e7e7dd;
+  border: 1px solid #c0c8b6;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 0;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  color: #253322;
+}
+.design-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 14px #23372219;
+}
+.design-card[aria-pressed='true'] {
+  outline: 2px solid #60893b;
+  outline-offset: 3px;
+}
+.design-card-art {
+  background: var(--card-bg);
+  color: var(--card-accent);
+  height: 148px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.design-card-art > svg {
+  width: 100%;
+  height: 100px;
+}
+.preview-word {
+  position: absolute;
+  top: 13px;
+  left: 14px;
+  font:
+    40px/1 'Bebas Neue',
+    sans-serif;
+  color: var(--card-ink);
+  letter-spacing: -1px;
+}
+.preview-petals > svg {
+  transform: rotate(-30deg);
+}
+.preview-signal > svg {
+  transform: scaleY(0.65);
+}
+.preview-signal .preview-word {
+  font-family: var(--mono);
+  font-size: 31px;
+}
+.preview-calendar .preview-word {
+  font-family: var(--serif);
+  font-size: 49px;
+}
+.preview-lollipops .preview-word {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+}
+.preview-city {
+  background-image:
+    linear-gradient(#c74acc22 1px, transparent 1px),
+    linear-gradient(90deg, #c74acc22 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.preview-circuit {
+  background-image:
+    linear-gradient(#a9d9fa22 1px, transparent 1px),
+    linear-gradient(90deg, #a9d9fa22 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.design-card-caption {
+  padding: 13px 11px;
+}
+.design-card-caption > span {
+  font: 8px var(--mono);
+  color: #7d886f;
+}
+.design-card-caption strong {
+  display: block;
+  font-size: 11px;
+  margin-top: 6px;
+}
+.design-card-caption small {
+  display: block;
+  font: 6px/1.5 var(--mono);
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+  color: #6e7a62;
+}
+.original-design {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid #ccd2bf;
+  width: 100%;
+  margin-top: 25px;
+  padding: 22px 0 0;
+  font-size: 11px;
+  color: #485d38;
+}
+html[data-dashboard='original'] .sidebar {
+  top: 52px;
+  height: calc(100vh - 52px);
+}
+html[data-dashboard='original'] .app-shell {
+  min-height: calc(100vh - 52px);
+}
+
+.design-dashboard {
+  --paper: #f2eedc;
+  --ink: #273d29;
+  --accent: #b9d342;
+  --muted-ink: #66715b;
+  --line-color: #273d2935;
+  --surface: #f7f4e6;
+  --heading: 'Fraunces', Georgia, serif;
+  --body: 'DM Sans', sans-serif;
+  --radius-exp: 0px;
+  --secondary-signal: #9fbdab;
+  color: var(--ink);
+  background: var(--paper);
+  min-height: calc(100vh - 52px);
+  font-family: var(--body);
+  color-scheme: light;
+  overflow: hidden;
+}
+.design-dashboard button,
+.design-dashboard select,
+.design-dashboard a {
+  color: inherit;
+}
+.design-dashboard button:focus-visible,
+.design-dashboard select:focus-visible,
+.design-dashboard a:focus-visible,
+.design-dashboard input:focus-visible,
+.design-dashboard [tabindex]:focus-visible,
+.design-dashboard summary:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+.design-dashboard input {
+  accent-color: var(--accent);
+}
+.experiment-main {
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 0 52px;
+}
+.experiment-masthead {
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line-color);
+}
+.experiment-brand {
+  font: 600 22px/1 var(--heading);
+  letter-spacing: -0.8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.experiment-brand-icon {
+  display: none;
+}
+.experiment-edition {
+  font: 8px var(--mono);
+  letter-spacing: 1.6px;
+  color: var(--muted-ink);
+  margin-left: auto;
+}
+.experiment-masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: 25px;
+}
+.experiment-masthead-actions button,
+.experiment-masthead-actions a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 8px var(--mono);
+  letter-spacing: 1px;
+}
+.experiment-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  padding: 37px 0 30px;
+}
+.experiment-kicker {
+  font: 8px var(--mono);
+  letter-spacing: 1.8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted-ink);
+}
+.experiment-kicker > span {
+  width: 5px;
+  height: 5px;
+  display: block;
+  background: var(--ink);
+  border-radius: 50%;
+}
+.experiment-hero h1 {
+  font: 500 clamp(55px, 5.8vw, 88px)/0.96 var(--heading);
+  white-space: pre-line;
+  letter-spacing: -3px;
+  margin: 21px 0 20px;
+  max-width: 850px;
+}
+.experiment-hero-copy > p {
+  font-size: 12px;
+  max-width: 410px;
+  line-height: 1.8;
+  margin: 0;
+  color: var(--muted-ink);
+}
+.experiment-hero-emblem {
+  width: 190px;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border: 1px solid var(--line-color);
+  border-radius: 50%;
+  position: relative;
+}
+.experiment-hero-emblem::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed var(--line-color);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.experiment-hero-emblem > span {
+  font: italic 95px/1 var(--heading);
+  letter-spacing: -9px;
+  margin-left: -9px;
+}
+.experiment-hero-emblem > small {
+  font: 7px var(--mono);
+  letter-spacing: 1px;
+}
+.experiment-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  border-top: 1px solid var(--line-color);
+  border-bottom: 1px solid var(--line-color);
+  padding: 15px 0;
+  margin-bottom: 24px;
+}
+.experiment-filter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.experiment-filter > label {
+  font: 7px var(--mono);
+  letter-spacing: 1px;
+  color: var(--muted-ink);
+}
+.experiment-filter > select {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line-color);
+  padding: 6px 23px 6px 0;
+  font-size: 11px;
+  cursor: pointer;
+  max-width: 170px;
+}
+.experiment-filter > select option {
+  color: #232d29;
+  background: #f1f1e8;
+}
+.experiment-snapshot {
+  font: 7px var(--mono);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  color: var(--muted-ink);
+}
+.experiment-snapshot > span {
+  width: 4px;
+  height: 4px;
+  background: var(--ink);
+  border-radius: 50%;
+}
+.experiment-export {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font: 8px var(--mono);
+  letter-spacing: 1px;
+  padding: 7px 0 7px 10px;
+}
+.experiment-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 25px;
+}
+.experiment-metric {
+  padding: 20px 22px 18px;
+  border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  min-width: 0;
+}
+.experiment-metric > span {
+  font: 7px var(--mono);
+  letter-spacing: 1.5px;
+  color: var(--muted-ink);
+}
+.experiment-metric > p {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 15px 0 13px;
+}
+.experiment-metric strong {
+  font: 500 44px/1 var(--heading);
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+}
+.experiment-metric small {
+  font: 9px var(--mono);
+  white-space: nowrap;
+}
+.experiment-metric > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 9px var(--mono);
+}
+.experiment-metric > div > span {
+  color: var(--muted-ink);
+  font: 8px var(--body);
+  margin-left: auto;
+}
+.experiment-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-areas: 'chart specimen' 'chart ranking';
+  gap: 20px;
+  align-items: stretch;
+}
+.experiment-chart-panel {
+  grid-area: chart;
+  border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+.experiment-chart-heading {
+  padding: 25px 26px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.experiment-section-label {
+  font: 7px var(--mono);
+  letter-spacing: 1.4px;
+  color: var(--muted-ink);
+}
+.experiment-chart-heading h2 {
+  font: 500 24px/1.15 var(--heading);
+  letter-spacing: -0.6px;
+  margin: 9px 0 8px;
+}
+.experiment-chart-heading p {
+  font-size: 10px;
+  color: var(--muted-ink);
+  margin: 0;
+  line-height: 1.6;
+}
+.experiment-chart-stamp {
+  font: 9px var(--mono);
+  white-space: nowrap;
+  border: 1px solid var(--line-color);
+  padding: 10px 11px;
+  text-align: center;
+  align-self: flex-start;
+}
+.experiment-chart-stamp small {
+  display: block;
+  font: 7px var(--body);
+  color: var(--muted-ink);
+  margin-top: 6px;
+}
+.design-chart {
+  width: 100%;
+  display: block;
+  flex: 1;
+  min-height: 360px;
+  margin: 10px 0;
+  color: var(--ink);
+  overflow: visible;
+}
+.design-state-mark,
+.design-quarter-mark {
+  cursor: pointer;
+}
+.design-state-mark .data-mark {
+  transition:
+    filter 0.15s,
+    stroke-width 0.15s;
+}
+.design-state-mark:hover .data-mark,
+.design-quarter-mark:hover .data-mark {
+  filter: brightness(1.1);
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+.design-state-mark.is-picked .data-mark {
+  stroke: var(--ink);
+  stroke-width: 2.8;
+}
+.chart-state-label,
+.chart-axis {
+  font: 9px var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-micro {
+  font: 7px var(--mono);
+  fill: var(--ink);
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+.chart-center-number {
+  font: 500 39px var(--heading);
+  fill: var(--ink);
+  letter-spacing: -2px;
+  pointer-events: none;
+}
+.chart-editorial {
+  font: italic 23px var(--heading);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-big-annotation {
+  font: 600 20px var(--heading);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-bar-label {
+  font: 8px var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-city-label {
+  font:
+    9px 'DotGothic16',
+    var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-city-message {
+  font:
+    16px 'DotGothic16',
+    var(--mono);
+  fill: var(--accent);
+  pointer-events: none;
+}
+.chart-circuit-state {
+  font: 500 11px var(--mono);
+  fill: #102c47;
+  pointer-events: none;
+}
+.chart-circuit-value {
+  font: 10px var(--mono);
+  fill: #102c47;
+  pointer-events: none;
+}
+.chart-lollipop-state {
+  font: 700 14px var(--body);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-lollipop-value {
+  font: 500 12px var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-ridge-label {
+  font: 12px var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.chart-calendar-year {
+  font: 600 13px var(--heading);
+  fill: var(--ink);
+}
+.chart-calendar-value {
+  font: 10px var(--mono);
+  fill: #211f1a;
+  pointer-events: none;
+}
+.experiment-chart-caption {
+  padding: 0 25px 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 27px;
+  margin-top: auto;
+}
+.experiment-color-key {
+  width: 145px;
+  flex-shrink: 0;
+}
+.experiment-color-key > span {
+  font: 6px var(--mono);
+  letter-spacing: 1px;
+  color: var(--muted-ink);
+}
+.experiment-color-key > div {
+  height: 5px;
+  margin-top: 8px;
+  border: 1px solid var(--line-color);
+}
+.experiment-color-key > p {
+  display: flex;
+  justify-content: space-between;
+  font: 7px var(--mono);
+  margin: 5px 0 0;
+  color: var(--muted-ink);
+}
+.experiment-chart-caption > p {
+  max-width: 380px;
+  text-align: right;
+  color: var(--muted-ink);
+  font-size: 9px;
+  line-height: 1.7;
+  margin: 0;
+}
+.experiment-specimen {
+  grid-area: specimen;
+  border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  padding: 22px 21px;
+  background: var(--surface);
+  min-width: 0;
+}
+.experiment-specimen-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.experiment-state-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.experiment-state-name > span {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: 1px solid var(--line-color);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font: italic 20px var(--heading);
+}
+.experiment-state-name h2 {
+  font: 500 19px/1.1 var(--heading);
+  margin: 0 0 5px;
+  letter-spacing: -0.5px;
+}
+.experiment-state-name p {
+  font: 8px var(--mono);
+  color: var(--muted-ink);
+  margin: 0;
+}
+.experiment-state-price {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 22px 0 9px;
+}
+.experiment-state-price strong {
+  font: 500 48px/1 var(--heading);
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.experiment-state-price > span {
+  font: 9px var(--mono);
+  white-space: nowrap;
+}
+.experiment-comparison {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted-ink);
+  margin: 0;
+}
+.experiment-state-facts {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0;
+}
+.experiment-state-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 9px;
+  color: var(--muted-ink);
+}
+.experiment-state-facts strong {
+  font: 9px var(--mono);
+  color: var(--ink);
+}
+.experiment-state-note {
+  border-top: 1px solid var(--line-color);
+  padding-top: 17px;
+}
+.experiment-state-note > p {
+  font: italic 17px/1.5 var(--heading);
+  margin: 11px 0;
+  color: var(--ink);
+}
+.experiment-mini-history {
+  height: 57px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  overflow: hidden;
+}
+.experiment-mini-history > span {
+  flex: 1;
+  min-width: 1px;
+  opacity: 0.65;
+}
+.experiment-mini-history > span.current {
+  opacity: 1;
+  outline: 1px solid var(--ink);
+}
+.experiment-mini-years {
+  display: flex;
+  justify-content: space-between;
+  font: 7px var(--mono);
+  color: var(--muted-ink);
+  margin-top: 7px;
+}
+.experiment-rankings {
+  grid-area: ranking;
+  border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  padding: 20px 21px;
+  min-width: 0;
+}
+.experiment-ranking-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.experiment-rankings h2 {
+  font: 500 20px var(--heading);
+  margin: 9px 0 12px;
+  letter-spacing: -0.5px;
+}
+.experiment-ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line-color);
+}
+.experiment-ranking-row > span:first-child {
+  font: 7px var(--mono);
+  color: var(--muted-ink);
+  width: 13px;
+}
+.experiment-ranking-row > b {
+  font: 9px var(--mono);
+  width: 20px;
+}
+.experiment-ranking-meter {
+  height: 3px;
+  background: var(--line-color);
+  flex: 1;
+}
+.experiment-ranking-meter > i {
+  height: 100%;
+  display: block;
+}
+.experiment-ranking-row > strong {
+  font: 10px var(--mono);
+  min-width: 40px;
+  text-align: right;
+}
+.experiment-ranking-row small {
+  font-size: 7px;
+  margin-left: 3px;
+}
+.experiment-ranking-row[aria-pressed='true'] {
+  font-weight: 700;
+}
+.experiment-rankings > p {
+  font-size: 8px;
+  line-height: 1.8;
+  color: var(--muted-ink);
+  margin: 13px 0 0;
+}
+.experiment-timeline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 22px;
+  border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  margin-top: 22px;
+}
+.experiment-play {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper) !important;
+  flex-shrink: 0;
+}
+.experiment-timeline-label {
+  min-width: 104px;
+}
+.experiment-timeline-label > span {
+  font: 6px var(--mono);
+  letter-spacing: 1px;
+  color: var(--muted-ink);
+}
+.experiment-timeline-label > strong {
+  display: block;
+  font: 12px var(--mono);
+  margin-top: 5px;
+}
+.experiment-timeline-track {
+  flex: 1;
+  margin: 8px 10px 0;
+}
+.experiment-timeline-track > input {
+  display: block;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    var(--ink) var(--progress),
+    var(--line-color) var(--progress)
+  );
+  cursor: pointer;
+  margin: 0;
+}
+.experiment-timeline-track > input::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.experiment-timeline-track > input::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.experiment-timeline-track > div {
+  display: flex;
+  justify-content: space-between;
+  font: 7px var(--mono);
+  color: var(--muted-ink);
+  margin-top: 11px;
+}
+.experiment-timeline-step {
+  display: flex;
+  gap: 4px;
+}
+.experiment-timeline-step > button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+}
+.experiment-data-notes {
+  border-bottom: 1px solid var(--line-color);
+  margin-top: 12px;
+}
+.experiment-data-notes > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 18px 0;
+  font: 9px var(--body);
+  list-style: none;
+  color: var(--muted-ink);
+}
+.experiment-data-notes > summary::-webkit-details-marker {
+  display: none;
+}
+.experiment-data-notes > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 25px;
+  padding-bottom: 20px;
+}
+.experiment-data-notes p {
+  font-size: 10px;
+  line-height: 1.8;
+  margin: 0;
+  color: var(--muted-ink);
+}
+.experiment-footer {
+  padding: 23px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--muted-ink);
+  font: 7px var(--mono);
+  letter-spacing: 0.6px;
+}
+.experiment-footer > span,
+.experiment-footer > a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.experiment-footer > p {
+  margin: 0;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.experiment-notice {
+  font-size: 12px;
+  padding: 12px;
+  border: 1px solid var(--line-color);
+}
+.experiment-loading {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.experiment-loading h1 {
+  font: 48px var(--heading);
+}
+.experiment-loading p {
+  font-size: 13px;
+  max-width: 400px;
+  line-height: 1.8;
+}
+.experiment-loading button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+}
+
+/* 01 — Botanical editorial */
+.skin-solar .experiment-brand {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+}
+.skin-solar .experiment-hero h1 {
+  font-style: italic;
+}
+.skin-solar .experiment-hero-emblem {
+  background: #c7d957;
+  border: 0;
+  transform: rotate(-12deg);
+  box-shadow:
+    0 0 0 10px #c7d95720,
+    0 0 0 21px #c7d9570c;
+}
+.skin-solar .experiment-hero-emblem::before {
+  border-color: #273d2940;
+}
+.skin-solar .metric-national {
+  background: #273d29;
+  color: #edf2d9;
+}
+.skin-solar .metric-national > span,
+.skin-solar .metric-national > div > span {
+  color: #b5c6a3;
+}
+.skin-solar .experiment-specimen {
+  background: #e6e9cb;
+}
+.skin-solar .experiment-state-name > span {
+  background: #c7d957;
+}
+.skin-solar .experiment-rankings {
+  background: #e7e0ce;
+}
+.skin-solar .experiment-chart-panel {
+  border-radius: 45% 45% 0 0 / 7% 7% 0 0;
+}
+.skin-solar .experiment-chart-heading {
+  padding-top: 33px;
+}
+.skin-solar .experiment-timeline {
+  background: #e6e8ce;
+}
+.skin-solar .chart-editorial {
+  font-size: 29px;
+}
+/* 02 — Radical Swiss */
+.skin-brutalist {
+  --paper: #e9e9e2;
+  --ink: #151515;
+  --accent: #d7ff00;
+  --muted-ink: #5d6258;
+  --line-color: #151515;
+  --surface: #e9e9e2;
+  --heading: 'Bebas Neue', Impact, sans-serif;
+}
+.skin-brutalist .experiment-main {
+  padding: 0 38px;
+}
+.skin-brutalist .experiment-masthead {
+  border-bottom: 3px solid;
+}
+.skin-brutalist .experiment-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  letter-spacing: -1px;
+}
+.skin-brutalist .experiment-hero {
+  border-bottom: 0;
+}
+.skin-brutalist .experiment-hero h1 {
+  font-size: clamp(85px, 10.5vw, 152px);
+  line-height: 0.8;
+  letter-spacing: -3px;
+  margin: 25px 0 22px;
+}
+.skin-brutalist .experiment-hero-emblem {
+  border: 3px solid;
+  border-radius: 0;
+  background: var(--accent);
+  width: 230px;
+  height: 225px;
+  transform: rotate(4deg);
+}
+.skin-brutalist .experiment-hero-emblem::before {
+  display: none;
+}
+.skin-brutalist .experiment-hero-emblem > span {
+  font: 180px/0.8 var(--heading);
+  font-style: normal;
+  margin: 0;
+  letter-spacing: -2px;
+}
+.skin-brutalist .experiment-hero-copy > p {
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 475px;
+}
+.skin-brutalist .experiment-toolbar {
+  border-top: 3px solid;
+  border-bottom: 3px solid;
+}
+.skin-brutalist .experiment-metrics {
+  gap: 0;
+  border: 2px solid;
+  margin-bottom: 22px;
+}
+.skin-brutalist .experiment-metric {
+  border: 0;
+  padding: 18px 25px;
+}
+.skin-brutalist .experiment-metric + .experiment-metric {
+  border-left: 2px solid;
+}
+.skin-brutalist .experiment-metric strong {
+  font-size: 68px;
+  letter-spacing: -1px;
+}
+.skin-brutalist .metric-national {
+  background: var(--accent);
+}
+.skin-brutalist .experiment-metric > div > span {
+  max-width: 140px;
+}
+.skin-brutalist .experiment-content {
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: 'chart chart' 'specimen ranking';
+  gap: 0;
+  border: 2px solid;
+}
+.skin-brutalist .experiment-chart-panel {
+  border: 0;
+  border-bottom: 2px solid;
+}
+.skin-brutalist .experiment-chart-heading h2 {
+  font-size: 32px;
+}
+.skin-brutalist .design-chart {
+  min-height: 400px;
+  max-height: 490px;
+}
+.skin-brutalist .experiment-specimen {
+  border: 0;
+  border-right: 2px solid;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 30px;
+}
+.skin-brutalist .experiment-specimen-top {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.skin-brutalist .experiment-state-name {
+  grid-column: 1;
+}
+.skin-brutalist .experiment-state-price {
+  grid-column: 1;
+  margin: 0;
+}
+.skin-brutalist .experiment-state-price strong {
+  font-size: 74px;
+}
+.skin-brutalist .experiment-comparison {
+  grid-column: 1;
+}
+.skin-brutalist .experiment-state-facts {
+  grid-column: 2;
+  grid-row: 2/4;
+  margin: 5px 0;
+}
+.skin-brutalist .experiment-state-note {
+  grid-column: 2;
+  grid-row: 4/6;
+}
+.skin-brutalist .experiment-rankings {
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  --line-color: #e9e9e23a;
+  --muted-ink: #bfc0b3;
+}
+.skin-brutalist .experiment-ranking-row {
+  padding: 8px 0;
+}
+.skin-brutalist .experiment-timeline {
+  border: 2px solid;
+  background: var(--accent);
+}
+.skin-brutalist .experiment-play {
+  border-radius: 0;
+}
+.skin-brutalist .experiment-section-label {
+  letter-spacing: 1px;
+}
+.skin-brutalist .experiment-state-name h2 {
+  font-size: 28px;
+}
+/* 03 — Neon city */
+.skin-arcade {
+  --paper: #120b2e;
+  --ink: #f1dcff;
+  --accent: #faff00;
+  --muted-ink: #b79ed0;
+  --line-color: #b861f340;
+  --surface: #1b1038;
+  --heading: 'Space Grotesk', sans-serif;
+  --body: 'Space Grotesk', sans-serif;
+  color-scheme: dark;
+  background-image: radial-gradient(ellipse at 70% 15%, #622b8b38, transparent 48%);
+}
+.skin-arcade .experiment-brand {
+  font:
+    18px 'DotGothic16',
+    monospace;
+  color: var(--accent);
+  text-shadow: 3px 3px #d638a588;
+}
+.skin-arcade .experiment-masthead {
+  border-bottom: 1px solid #b960ed70;
+}
+.skin-arcade .experiment-hero h1 {
+  font:
+    700 clamp(55px, 7vw, 102px)/0.91 'Space Grotesk',
+    sans-serif;
+  font-style: italic;
+  letter-spacing: -5px;
+  text-shadow: 5px 5px #a82f9b;
+  transform: skewX(-6deg);
+}
+.skin-arcade .experiment-hero-emblem {
+  border: 1px solid #ff5bcb;
+  border-radius: 14px;
+  transform: rotate(8deg);
+  color: #ff80d6;
+  box-shadow:
+    8px 8px #59125450,
+    inset 0 0 30px #ff47d511;
+}
+.skin-arcade .experiment-hero-emblem::before {
+  border-color: #ff5bcb70;
+  border-radius: 8px;
+}
+.skin-arcade .experiment-hero-emblem > span {
+  font:
+    96px 'DotGothic16',
+    var(--mono);
+  margin: 0;
+  letter-spacing: -8px;
+}
+.skin-arcade .experiment-metrics {
+  gap: 17px;
+}
+.skin-arcade .experiment-metric {
+  background: #24123d;
+  border-bottom: 3px solid #b14fc5;
+}
+.skin-arcade .metric-national {
+  border-bottom-color: var(--accent);
+}
+.skin-arcade .experiment-metric strong {
+  font-family: 'DotGothic16', var(--mono);
+  font-size: 39px;
+  color: #f9f0ff;
+}
+.skin-arcade .experiment-chart-panel {
+  background: radial-gradient(ellipse at 50% 80%, #471b5860, transparent), #160d2d;
+  border: 1px solid #c364e75c;
+  box-shadow: inset 0 0 70px #9c35d309;
+}
+.skin-arcade .experiment-chart-heading h2 {
+  font:
+    20px 'DotGothic16',
+    var(--mono);
+  letter-spacing: 0;
+}
+.skin-arcade .experiment-specimen {
+  background: #2c1742;
+  border: 1px solid #bd68df70;
+  box-shadow: 5px 5px #b94b9d1a;
+}
+.skin-arcade .experiment-state-name > span {
+  border-radius: 0;
+  border-color: #dd7aff;
+  color: var(--accent);
+  font:
+    19px 'DotGothic16',
+    var(--mono);
+}
+.skin-arcade .experiment-state-price strong {
+  font-family: 'DotGothic16', var(--mono);
+  font-size: 43px;
+  color: #faff8e;
+}
+.skin-arcade .experiment-state-note > p {
+  font:
+    12px/1.7 'DotGothic16',
+    var(--mono);
+}
+.skin-arcade .experiment-rankings {
+  background: #1d1135;
+  border-color: #a24fc74d;
+}
+.skin-arcade .experiment-timeline {
+  background: #24143e;
+  border-color: #a954d871;
+  box-shadow: 0 6px #6b2a8c25;
+}
+.skin-arcade .experiment-play {
+  background: var(--accent);
+  color: #241038 !important;
+  border-radius: 4px;
+}
+.skin-arcade .experiment-snapshot > span {
+  background: var(--accent);
+}
+/* 04 — Cyanotype engineering */
+.skin-blueprint {
+  --paper: #123b66;
+  --ink: #d9efff;
+  --accent: #a9f5f1;
+  --muted-ink: #a2c4de;
+  --line-color: #acd9fc45;
+  --surface: #143e6a;
+  --heading: 'Space Grotesk', sans-serif;
+  --body: 'IBM Plex Mono', monospace;
+  color-scheme: dark;
+  background-image:
+    linear-gradient(#acd9fc06 1px, transparent 1px),
+    linear-gradient(90deg, #acd9fc06 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.skin-blueprint .experiment-brand {
+  font: 500 16px var(--mono);
+  letter-spacing: 1px;
+}
+.skin-blueprint .experiment-hero h1 {
+  font-size: clamp(48px, 5.3vw, 77px);
+  font-weight: 500;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+.skin-blueprint .experiment-hero-emblem {
+  border-radius: 0;
+  border-style: dashed;
+  transform: rotate(-7deg);
+  width: 170px;
+  height: 170px;
+}
+.skin-blueprint .experiment-hero-emblem::after {
+  content: 'APPROVED FOR INSPECTION';
+  position: absolute;
+  bottom: 29px;
+  font: 7px var(--mono);
+  letter-spacing: 1px;
+}
+.skin-blueprint .experiment-hero-emblem::before {
+  inset: 8px;
+  border-style: solid;
+  border-radius: 0;
+}
+.skin-blueprint .experiment-hero-emblem > span {
+  font: 75px var(--mono);
+  font-style: normal;
+  letter-spacing: -6px;
+  opacity: 0.7;
+  margin-top: -17px;
+}
+.skin-blueprint .experiment-hero-emblem > small {
+  display: none;
+}
+.skin-blueprint .experiment-hero-copy > p {
+  font-size: 10px;
+  max-width: 455px;
+  line-height: 2;
+}
+.skin-blueprint .experiment-metrics {
+  gap: 0;
+  border: 1px solid var(--line-color);
+}
+.skin-blueprint .experiment-metric {
+  border: 0;
+}
+.skin-blueprint .experiment-metric + .experiment-metric {
+  border-left: 1px solid var(--line-color);
+}
+.skin-blueprint .experiment-metric strong {
+  font: 500 42px var(--mono);
+  letter-spacing: -3px;
+}
+.skin-blueprint .experiment-content {
+  grid-template-columns: 265px minmax(0, 1fr);
+  grid-template-areas: 'specimen chart' 'ranking chart';
+  gap: 18px;
+}
+.skin-blueprint .experiment-chart-panel {
+  background: #153e68;
+}
+.skin-blueprint .experiment-chart-heading h2 {
+  font: 500 18px/1.3 var(--mono);
+}
+.skin-blueprint .experiment-chart-stamp {
+  border-style: dashed;
+}
+.skin-blueprint .experiment-specimen {
+  background: #174672;
+}
+.skin-blueprint .experiment-state-name h2 {
+  font: 500 16px var(--mono);
+}
+.skin-blueprint .experiment-state-price strong {
+  font: 500 43px var(--mono);
+  letter-spacing: -3px;
+}
+.skin-blueprint .experiment-state-name > span {
+  border-radius: 0;
+  font-family: var(--mono);
+  font-style: normal;
+  color: var(--accent);
+}
+.skin-blueprint .experiment-state-note > p {
+  font: 10px/1.9 var(--mono);
+}
+.skin-blueprint .experiment-timeline {
+  background: #153e68;
+}
+.skin-blueprint .experiment-play {
+  border-radius: 0;
+  background: var(--accent);
+  color: #123b66 !important;
+}
+.skin-blueprint .experiment-rankings h2 {
+  font: 500 18px var(--mono);
+}
+/* 05 — Thermal poster */
+.skin-thermal {
+  --paper: #ff5b35;
+  --ink: #3d1415;
+  --accent: #f7ff82;
+  --muted-ink: #6c2925;
+  --line-color: #5a1b2545;
+  --surface: #ffb690;
+  --heading: 'Bebas Neue', Impact, sans-serif;
+}
+.skin-thermal .experiment-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -1px;
+  font-size: 23px;
+}
+.skin-thermal .experiment-hero h1 {
+  font-size: clamp(80px, 9.5vw, 136px);
+  line-height: 0.83;
+  letter-spacing: -1px;
+}
+.skin-thermal .experiment-hero-emblem {
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  transform: rotate(-14deg);
+  background: var(--accent);
+}
+.skin-thermal .experiment-hero-emblem > span {
+  font-style: normal;
+  font-size: 125px;
+  letter-spacing: -3px;
+  margin-left: 0;
+}
+.skin-thermal .experiment-metrics {
+  gap: 0;
+  border: 1px solid var(--ink);
+}
+.skin-thermal .experiment-metric {
+  border: 0;
+}
+.skin-thermal .experiment-metric + .experiment-metric {
+  border-left: 1px solid var(--ink);
+}
+.skin-thermal .metric-national {
+  background: var(--ink);
+  color: #ffc6a3;
+  --muted-ink: #d7a082;
+}
+.skin-thermal .experiment-metric strong {
+  font-size: 63px;
+  letter-spacing: 0;
+}
+.skin-thermal .experiment-content {
+  grid-template-columns: 270px minmax(0, 1fr);
+  grid-template-areas: 'specimen chart' 'ranking chart';
+  gap: 17px;
+}
+.skin-thermal .experiment-chart-panel {
+  background: #ffc99f;
+  border: 1px solid var(--ink);
+  --paper: #ffc99f;
+}
+.skin-thermal .experiment-chart-heading h2 {
+  font-size: 31px;
+  letter-spacing: 0;
+}
+.skin-thermal .chart-thermal {
+  min-height: 420px;
+}
+.skin-thermal .experiment-specimen {
+  background: #ffe7c2;
+  border: 1px solid var(--ink);
+}
+.skin-thermal .experiment-rankings {
+  background: #b12838;
+  color: #fff0d1;
+  --line-color: #ffe7c24d;
+  --muted-ink: #ffcfb8;
+  border-color: #641725;
+}
+.skin-thermal .experiment-rankings h2 {
+  font-size: 25px;
+}
+.skin-thermal .experiment-state-name h2 {
+  font-size: 26px;
+  letter-spacing: 0;
+}
+.skin-thermal .experiment-state-price strong {
+  font-size: 65px;
+  letter-spacing: 0;
+}
+.skin-thermal .experiment-state-note > p {
+  font: 20px/1.2 var(--heading);
+  letter-spacing: 0.4px;
+}
+.skin-thermal .experiment-timeline {
+  background: #ffc99f;
+  border: 1px solid var(--ink);
+}
+.skin-thermal .experiment-play {
+  background: var(--ink);
+}
+/* 06 — Scientific cosmic glass */
+.skin-cosmic {
+  --paper: #101127;
+  --ink: #f1ecff;
+  --accent: #d1abff;
+  --muted-ink: #b0aacb;
+  --line-color: #b2a6e331;
+  --surface: #24223c60;
+  --heading: 'Syne', sans-serif;
+  --radius-exp: 16px;
+  color-scheme: dark;
+  background:
+    radial-gradient(ellipse at 90% 30%, #7136752b, transparent 40%),
+    radial-gradient(ellipse at 15% 50%, #4c54ae32, transparent 40%), #101127;
+}
+.skin-cosmic .experiment-masthead {
+  height: 90px;
+}
+.skin-cosmic .experiment-brand {
+  font:
+    600 15px 'Syne',
+    sans-serif;
+  letter-spacing: 3px;
+}
+.skin-cosmic .experiment-brand-icon {
+  display: grid;
+  place-items: center;
+  border: 1px solid #d1abff60;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  color: #d1abff;
+}
+.skin-cosmic .experiment-brand-icon > svg {
+  width: 15px;
+}
+.skin-cosmic .experiment-hero {
+  padding: 45px 0 36px;
+  position: relative;
+}
+.skin-cosmic .experiment-hero h1 {
+  font-size: clamp(51px, 5.9vw, 87px);
+  font-weight: 500;
+  letter-spacing: -3px;
+  line-height: 1.03;
+}
+.skin-cosmic .experiment-hero-emblem {
+  border-color: #aa8dd951;
+  box-shadow:
+    0 0 80px #c765e91b,
+    inset 0 0 60px #a987e311;
+  transform: rotate(-15deg);
+  background: radial-gradient(circle at 35% 30%, #a174cb66, #261d4266 70%);
+}
+.skin-cosmic .experiment-hero-emblem::before {
+  inset: -16px;
+  border-color: #d1abff4a;
+  transform: scaleY(0.5) rotate(-35deg);
+  border-style: solid;
+}
+.skin-cosmic .experiment-hero-emblem > span {
+  font: 500 85px var(--heading);
+  letter-spacing: -7px;
+  color: #dcc5f7;
+}
+.skin-cosmic .experiment-toolbar {
+  border-color: #ada2da24;
+}
+.skin-cosmic .experiment-metrics {
+  gap: 17px;
+}
+.skin-cosmic .experiment-metric {
+  background: linear-gradient(130deg, #8a72b617, #41446a0b);
+  backdrop-filter: blur(10px);
+}
+.skin-cosmic .experiment-metric strong {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 44px;
+}
+.skin-cosmic .experiment-chart-panel {
+  background: radial-gradient(ellipse at 40% 50%, #55579215, transparent 70%), #16172b77;
+}
+.skin-cosmic .experiment-chart-heading h2 {
+  font-size: 23px;
+}
+.skin-cosmic .experiment-chart-stamp {
+  border-radius: 30px;
+}
+.skin-cosmic .experiment-specimen {
+  background: linear-gradient(145deg, #6d477b2c, #16192c11);
+}
+.skin-cosmic .experiment-state-price strong {
+  font-family: 'Space Grotesk', sans-serif;
+}
+.skin-cosmic .experiment-state-name > span {
+  border-color: #d1abff70;
+  background: #d1abff15;
+  font-family: 'Space Grotesk', sans-serif;
+  font-style: normal;
+}
+.skin-cosmic .experiment-state-name h2 {
+  font-size: 19px;
+}
+.skin-cosmic .experiment-state-note > p {
+  font: 12px/1.8 var(--body);
+}
+.skin-cosmic .experiment-rankings {
+  background: #23213b55;
+}
+.skin-cosmic .experiment-rankings h2 {
+  font-size: 19px;
+}
+.skin-cosmic .experiment-play {
+  background: #d1abff;
+  color: #1b1230 !important;
+}
+.skin-cosmic .experiment-timeline {
+  background: #8f80bd0b;
+}
+.skin-cosmic .experiment-color-key > div {
+  border-radius: 10px;
+}
+/* 07 — Analog instrument */
+.skin-analog {
+  --paper: #d8c9aa;
+  --ink: #352d24;
+  --accent: #bd4b2c;
+  --muted-ink: #76674f;
+  --line-color: #5a493c50;
+  --surface: #dfd4bc;
+  --heading: 'Bebas Neue', Impact, sans-serif;
+  --radius-exp: 8px;
+  background-image: repeating-linear-gradient(0deg, #2a251307 0 1px, transparent 1px 4px);
+}
+.skin-analog .experiment-masthead {
+  height: 83px;
+  border-bottom: 2px solid #5c4b38;
+}
+.skin-analog .experiment-brand {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+.skin-analog .experiment-hero {
+  padding: 35px 0;
+}
+.skin-analog .experiment-hero h1 {
+  font-size: clamp(65px, 8.4vw, 120px);
+  letter-spacing: 0;
+  line-height: 0.86;
+}
+.skin-analog .experiment-hero-emblem {
+  background:
+    repeating-conic-gradient(from 0deg, #9b8b70 0deg 1deg, transparent 1deg 8deg), #c2b495;
+  box-shadow:
+    inset 0 3px 8px #30271822,
+    0 2px 2px #fff6;
+  width: 180px;
+  height: 180px;
+  border-color: #8f7c60;
+  color: #68573e;
+}
+.skin-analog .experiment-hero-emblem::before {
+  background: linear-gradient(135deg, #f1e8d4, #b7a787);
+  border: 1px solid #a49477;
+  box-shadow: 3px 5px 12px #322b2126;
+  inset: 20px;
+}
+.skin-analog .experiment-hero-emblem > svg {
+  position: relative;
+  width: 64px;
+  color: #66513b;
+}
+.skin-analog .experiment-hero-emblem > small {
+  position: relative;
+  z-index: 1;
+  font-size: 6px;
+}
+.skin-analog .experiment-hero-copy > p {
+  font-family: var(--mono);
+  font-size: 10px;
+  max-width: 470px;
+  line-height: 1.9;
+}
+.skin-analog .experiment-toolbar {
+  border-top: 2px solid #5c4b38;
+  border-bottom: 2px solid #5c4b38;
+}
+.skin-analog .experiment-metrics {
+  gap: 18px;
+}
+.skin-analog .experiment-metric {
+  box-shadow:
+    inset 0 2px 4px #5a432818,
+    0 1px 0 #fff6;
+  background: #cbbd9e;
+}
+.skin-analog .experiment-metric strong {
+  font: 500 44px var(--mono);
+  letter-spacing: -3px;
+}
+.skin-analog .experiment-content {
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+.skin-analog .experiment-chart-panel {
+  background: #142e29;
+  color: #b7dcc3;
+  --paper: #142e29;
+  --ink: #b7dcc3;
+  --muted-ink: #92b69f;
+  --line-color: #779d873d;
+  --accent: #ffc872;
+  --secondary-signal: #77cbb4;
+  border: 8px solid #87775b;
+  box-shadow:
+    inset 0 0 40px #0007,
+    0 2px 4px #35241533;
+  border-radius: 15px;
+}
+.skin-analog .experiment-chart-heading {
+  padding: 23px 22px 0;
+}
+.skin-analog .experiment-chart-heading h2 {
+  font: 17px var(--mono);
+  letter-spacing: -0.5px;
+}
+.skin-analog .experiment-chart-stamp {
+  background: #11271f;
+}
+.skin-analog .experiment-specimen {
+  background: #392f26;
+  color: #e6d6b7;
+  --ink: #e6d6b7;
+  --muted-ink: #b5a58b;
+  --line-color: #e6d6b739;
+  border: 3px solid #8a795c;
+  box-shadow: inset 0 0 25px #0002;
+}
+.skin-analog .experiment-state-name > span {
+  font-family: var(--mono);
+  font-style: normal;
+  border-color: #c2995d;
+}
+.skin-analog .experiment-state-name h2 {
+  font-family: var(--mono);
+  font-size: 17px;
+}
+.skin-analog .experiment-state-price strong {
+  font-family: var(--mono);
+  font-size: 42px;
+  letter-spacing: -3px;
+  color: #ffce7e;
+}
+.skin-analog .experiment-state-note > p {
+  font: 10px/1.8 var(--mono);
+}
+.skin-analog .experiment-rankings {
+  background: #cabd9d;
+}
+.skin-analog .experiment-timeline {
+  border: 2px solid #8f7b5b;
+  background: #c4b595;
+  box-shadow: inset 0 2px 4px #3c2e2118;
+}
+.skin-analog .experiment-play {
+  background: #b44d2e;
+  box-shadow: 1px 3px 4px #54402a44;
+  border: 2px solid #8f3c24;
+  color: #f6e1b8 !important;
+}
+.skin-analog .experiment-rankings h2 {
+  font: 23px var(--heading);
+  letter-spacing: 0.7px;
+}
+/* 08 — Candy brutalism */
+.skin-candy {
+  --paper: #d4c2ff;
+  --ink: #2b2048;
+  --accent: #f9ff82;
+  --muted-ink: #695283;
+  --line-color: #2b2048;
+  --surface: #f3d3f4;
+  --heading: 'Fraunces', Georgia, serif;
+  --body: 'Space Grotesk', sans-serif;
+  --radius-exp: 18px;
+  background-image: radial-gradient(#684a7a1a 0.8px, transparent 0.8px);
+  background-size: 17px 17px;
+}
+.skin-candy .experiment-brand {
+  font:
+    italic 700 34px 'Fraunces',
+    serif;
+  letter-spacing: -2px;
+}
+.skin-candy .experiment-masthead {
+  border-bottom: 2px solid;
+}
+.skin-candy .experiment-hero {
+  position: relative;
+  padding: 35px 0 33px;
+}
+.skin-candy .experiment-hero h1 {
+  font-size: clamp(66px, 7.6vw, 110px);
+  line-height: 0.9;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: -5px;
+  text-shadow: 3px 3px #faff8255;
+}
+.skin-candy .experiment-hero-emblem {
+  border: 2px solid;
+  background: #f9ff82;
+  width: 175px;
+  height: 175px;
+  box-shadow: 6px 6px #2b2048;
+  transform: rotate(12deg);
+  border-radius: 35% 50% 35% 50%;
+}
+.skin-candy .experiment-hero-emblem::before {
+  display: none;
+}
+.skin-candy .experiment-hero-emblem > small {
+  font-size: 6px;
+  letter-spacing: 0;
+}
+.skin-candy .experiment-toolbar {
+  border: 2px solid;
+  background: #e7dbff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 4px 4px #2b2048;
+  gap: 22px;
+}
+.skin-candy .experiment-metrics {
+  gap: 20px;
+}
+.skin-candy .experiment-metric {
+  border: 2px solid;
+  box-shadow: 4px 4px #2b2048;
+  background: #b5dcca;
+}
+.skin-candy .metric-national {
+  background: #f9ff82;
+}
+.skin-candy .metric-range {
+  background: #ffb4b4;
+}
+.skin-candy .experiment-metric strong {
+  font-size: 46px;
+  font-style: italic;
+  font-weight: 600;
+}
+.skin-candy .experiment-chart-panel {
+  border: 2px solid;
+  box-shadow: 5px 5px #2b2048;
+  background: #f5dcf5;
+}
+.skin-candy .experiment-chart-heading h2 {
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 600;
+}
+.skin-candy .experiment-chart-stamp {
+  border: 1.5px solid;
+  border-radius: 30px;
+  background: #fff5b6;
+  transform: rotate(5deg);
+}
+.skin-candy .experiment-specimen {
+  border: 2px solid;
+  background: #faffae;
+  box-shadow: 4px 4px #2b2048;
+}
+.skin-candy .experiment-state-name > span {
+  border: 1.5px solid;
+  background: #f7b4c9;
+  font-weight: 600;
+}
+.skin-candy .experiment-state-price strong {
+  font-style: italic;
+  font-weight: 600;
+  font-size: 55px;
+}
+.skin-candy .experiment-state-note > p {
+  font-size: 19px;
+}
+.skin-candy .experiment-rankings {
+  border: 2px solid;
+  box-shadow: 4px 4px #2b2048;
+  background: #accfdc;
+}
+.skin-candy .experiment-timeline {
+  border: 2px solid;
+  background: #e5dcff;
+  box-shadow: 4px 4px #2b2048;
+}
+.skin-candy .experiment-play {
+  background: #f7a5bc;
+  color: #2b2048 !important;
+  border: 2px solid #2b2048;
+}
+.skin-candy .experiment-section-label {
+  letter-spacing: 1px;
+}
+.skin-candy .experiment-rankings h2 {
+  font-style: italic;
+  font-weight: 600;
+}
+.skin-candy .experiment-footer {
+  padding-top: 28px;
+}
+/* 09 — Tidal glass */
+.skin-tidal {
+  --paper: #0b303a;
+  --ink: #e0f5f2;
+  --accent: #99ead6;
+  --muted-ink: #97b9bc;
+  --line-color: #b8eeef30;
+  --surface: #a5e0dc08;
+  --heading: 'DM Sans', sans-serif;
+  --radius-exp: 20px;
+  color-scheme: dark;
+  background:
+    radial-gradient(ellipse at 75% 3%, #a3e9e923, transparent 40%),
+    radial-gradient(ellipse at 5% 70%, #5489a923, transparent 40%), #0b303a;
+}
+.skin-tidal .experiment-masthead {
+  height: 86px;
+}
+.skin-tidal .experiment-brand {
+  font:
+    400 39px 'Instrument Serif',
+    Georgia,
+    serif;
+  font-style: italic;
+  letter-spacing: -2px;
+}
+.skin-tidal .experiment-brand-icon {
+  display: block;
+  color: #a5e5df;
+}
+.skin-tidal .experiment-hero h1 {
+  font-weight: 400;
+  letter-spacing: -4px;
+  font-size: clamp(60px, 6.5vw, 94px);
+  line-height: 0.98;
+}
+.skin-tidal .experiment-hero-emblem {
+  border: 1px solid #cdfaf948;
+  background: linear-gradient(145deg, #d8fffd13, #81babc05);
+  box-shadow:
+    inset 0 3px 13px #ccffff0a,
+    0 15px 50px #03171d44;
+  color: #bbefea;
+  border-radius: 42% 58% 66% 34% / 45% 35% 65% 55%;
+  transform: rotate(9deg);
+  height: 190px;
+  width: 200px;
+}
+.skin-tidal .experiment-hero-emblem::before {
+  border: 1px solid #cdfaf92b;
+  inset: 14px;
+  border-radius: inherit;
+}
+.skin-tidal .experiment-hero-emblem > svg {
+  width: 88px;
+  opacity: 0.8;
+  stroke-width: 0.8;
+}
+.skin-tidal .experiment-toolbar {
+  border: 1px solid #bee8e32b;
+  background: #d2fffa05;
+  padding: 15px 20px;
+  border-radius: 14px;
+}
+.skin-tidal .experiment-metrics {
+  gap: 18px;
+}
+.skin-tidal .experiment-metric {
+  background: linear-gradient(145deg, #d4fff810, #c4fff801);
+  border-color: #bde9e130;
+  box-shadow: inset 0 1px 0 #c5fff419;
+}
+.skin-tidal .experiment-metric strong {
+  font:
+    400 44px 'DM Sans',
+    sans-serif;
+  letter-spacing: -2px;
+}
+.skin-tidal .experiment-chart-panel {
+  background: linear-gradient(140deg, #d2fff70b, #b1ebe803);
+  box-shadow: inset 0 1px 0 #c5fff416;
+}
+.skin-tidal .experiment-chart-heading h2 {
+  font-weight: 400;
+  letter-spacing: -1px;
+  font-size: 26px;
+}
+.skin-tidal .experiment-chart-stamp {
+  border-radius: 14px;
+  background: #d7fffa08;
+}
+.skin-tidal .experiment-specimen {
+  background: linear-gradient(150deg, #d8fff20f, #b8d8e205);
+}
+.skin-tidal .experiment-state-name > span {
+  font:
+    400 16px 'DM Sans',
+    sans-serif;
+  font-style: normal;
+  background: #abf2e40a;
+}
+.skin-tidal .experiment-state-price strong {
+  font-weight: 400;
+  font-size: 47px;
+}
+.skin-tidal .experiment-state-note > p {
+  font:
+    italic 21px/1.4 'Instrument Serif',
+    Georgia,
+    serif;
+}
+.skin-tidal .experiment-rankings {
+  background: #c1f9ef06;
+}
+.skin-tidal .experiment-rankings h2 {
+  font-weight: 400;
+  font-size: 21px;
+}
+.skin-tidal .experiment-timeline {
+  background: #cefff908;
+  border-color: #bde9e130;
+}
+.skin-tidal .experiment-play {
+  background: #a3ead9;
+  color: #153a3b !important;
+}
+.skin-tidal .experiment-color-key > div {
+  border-radius: 10px;
+}
+.skin-tidal .chart-ridge-label {
+  font-size: 11px;
+}
+/* 10 — Financial press */
+.skin-press {
+  --paper: #eee9dd;
+  --ink: #292823;
+  --accent: #bb462c;
+  --muted-ink: #777366;
+  --line-color: #29282355;
+  --surface: #eee9dd;
+  --heading: 'Instrument Serif', Georgia, serif;
+  --body: 'DM Sans', sans-serif;
+}
+.skin-press .experiment-main {
+  padding: 0 46px;
+}
+.skin-press .experiment-masthead {
+  height: 112px;
+  position: relative;
+  justify-content: center;
+  border-bottom: 4px double #292823;
+  padding-bottom: 10px;
+}
+.skin-press .experiment-brand {
+  font:
+    50px 'Instrument Serif',
+    Georgia,
+    serif;
+  letter-spacing: -2px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.skin-press .experiment-edition {
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 115px;
+  font-size: 7px;
+  line-height: 1.7;
+}
+.skin-press .experiment-masthead-actions {
+  margin-left: auto;
+  gap: 15px;
+}
+.skin-press .experiment-hero {
+  padding: 35px 0 30px;
+  align-items: flex-end;
+}
+.skin-press .experiment-hero h1 {
+  font:
+    400 clamp(66px, 7.5vw, 108px)/0.86 'Instrument Serif',
+    Georgia,
+    serif;
+  letter-spacing: -3px;
+  max-width: 900px;
+}
+.skin-press .experiment-hero-copy > p {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  max-width: 520px;
+  line-height: 1.7;
+}
+.skin-press .experiment-hero-emblem {
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  width: 160px;
+  height: 170px;
+  margin-bottom: 5px;
+}
+.skin-press .experiment-hero-emblem::before {
+  display: none;
+}
+.skin-press .experiment-hero-emblem > span {
+  font:
+    italic 92px 'Instrument Serif',
+    serif;
+  margin: 0;
+  letter-spacing: -6px;
+}
+.skin-press .experiment-hero-emblem > small {
+  font-size: 6px;
+  letter-spacing: 0;
+}
+.skin-press .experiment-toolbar {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  padding: 11px 0;
+  margin-bottom: 0;
+}
+.skin-press .experiment-metrics {
+  gap: 0;
+  border-bottom: 3px double #292823;
+  margin-bottom: 24px;
+}
+.skin-press .experiment-metric {
+  border: 0;
+  padding: 23px 22px;
+}
+.skin-press .experiment-metric:first-child {
+  padding-left: 0;
+}
+.skin-press .experiment-metric + .experiment-metric {
+  border-left: 1px solid var(--line-color);
+}
+.skin-press .experiment-metric strong {
+  font:
+    400 51px 'Instrument Serif',
+    serif;
+  letter-spacing: -1px;
+}
+.skin-press .experiment-content {
+  grid-template-columns: minmax(0, 1fr) 265px;
+  gap: 24px;
+}
+.skin-press .experiment-chart-panel {
+  border: 0;
+  border-right: 1px solid var(--line-color);
+  padding-right: 23px;
+}
+.skin-press .experiment-chart-heading {
+  padding: 0 0 0;
+  align-items: flex-start;
+}
+.skin-press .experiment-chart-heading h2 {
+  font-size: 31px;
+  letter-spacing: -0.5px;
+}
+.skin-press .experiment-chart-stamp {
+  border: 0;
+  border-left: 1px solid var(--line-color);
+  font-size: 8px;
+  padding-right: 0;
+}
+.skin-press .experiment-chart-caption {
+  padding: 0 0 19px;
+}
+.skin-press .experiment-chart-caption > p {
+  font-family: Georgia, serif;
+  font-size: 10px;
+}
+.skin-press .experiment-specimen {
+  border: 0;
+  border-top: 3px double var(--ink);
+  padding: 20px 0 0;
+}
+.skin-press .experiment-state-name > span {
+  border: 0;
+  font:
+    italic 38px 'Instrument Serif',
+    serif;
+  width: auto;
+  margin-right: 7px;
+  color: #a9402e;
+}
+.skin-press .experiment-state-name h2 {
+  font-size: 28px;
+}
+.skin-press .experiment-state-price strong {
+  font:
+    400 65px 'Instrument Serif',
+    serif;
+  letter-spacing: -2px;
+}
+.skin-press .experiment-state-note > p {
+  font:
+    16px/1.5 Georgia,
+    serif;
+}
+.skin-press .experiment-rankings {
+  border: 0;
+  border-top: 1px solid var(--ink);
+  padding: 20px 0 0;
+}
+.skin-press .experiment-rankings h2 {
+  font-size: 27px;
+}
+.skin-press .experiment-timeline {
+  border: 0;
+  border-top: 3px double #292823;
+  border-bottom: 1px solid #292823;
+  padding: 20px 0;
+}
+.skin-press .experiment-play {
+  border-radius: 0;
+  background: var(--accent);
+  color: #fff7e6 !important;
+}
+.skin-press .experiment-footer {
+  border-top: 2px solid;
+  margin-top: 6px;
+}
+.skin-press .experiment-state-facts > div {
+  font-family: Georgia, serif;
+  font-size: 10px;
+}
+
+@media (min-width: 1600px) {
+  .experiment-main {
+    padding: 0 65px;
+  }
+  .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 310px;
+  }
+  .design-chart {
+    min-height: 430px;
+  }
+  .experiment-specimen {
+    padding: 26px;
+  }
+  .experiment-rankings {
+    padding: 23px 26px;
+  }
+  .skin-blueprint .experiment-content,
+  .skin-thermal .experiment-content {
+    grid-template-columns: 295px minmax(0, 1fr);
+  }
+}
+@media (max-width: 1180px) {
+  .design-lab-note {
+    display: none;
+  }
+  .experiment-main,
+  .skin-brutalist .experiment-main,
+  .skin-press .experiment-main {
+    padding: 0 32px;
+  }
+  .experiment-toolbar {
+    gap: 17px;
+  }
+  .experiment-filter {
+    gap: 6px;
+  }
+  .experiment-filter > select {
+    max-width: 145px;
+    font-size: 10px;
+  }
+  .experiment-snapshot {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+  }
+  .experiment-hero-emblem {
+    width: 165px;
+    height: 165px;
+  }
+  .experiment-masthead-actions {
+    gap: 15px;
+    margin-left: 10px;
+  }
+  .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 16px;
+  }
+  .experiment-metrics {
+    gap: 16px;
+  }
+  .experiment-metric {
+    padding: 18px;
+  }
+  .experiment-metric strong {
+    font-size: 39px;
+  }
+  .experiment-metric > div > span {
+    font-size: 7px;
+    max-width: 120px;
+    text-align: right;
+  }
+  .experiment-chart-heading {
+    padding: 22px 20px 0;
+  }
+  .experiment-chart-heading h2 {
+    font-size: 21px;
+  }
+  .experiment-chart-heading p {
+    font-size: 9px;
+  }
+  .experiment-chart-stamp {
+    font-size: 8px;
+    padding: 8px;
+  }
+  .experiment-specimen {
+    padding: 20px 17px;
+  }
+  .experiment-rankings {
+    padding: 18px 17px;
+  }
+  .experiment-chart-caption {
+    padding: 0 19px 19px;
+    gap: 17px;
+  }
+  .experiment-color-key {
+    width: 120px;
+  }
+  .experiment-chart-caption > p {
+    font-size: 8px;
+  }
+  .design-chart {
+    min-height: 385px;
+  }
+  .skin-press .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 20px;
+  }
+  .skin-blueprint .experiment-content,
+  .skin-thermal .experiment-content {
+    grid-template-columns: 245px minmax(0, 1fr);
+  }
+  .skin-blueprint .experiment-chart-heading h2 {
+    font-size: 16px;
+  }
+  .skin-brutalist .experiment-hero-emblem {
+    width: 190px;
+    height: 190px;
+  }
+  .skin-brutalist .experiment-hero-emblem > span {
+    font-size: 145px;
+  }
+  .skin-arcade .experiment-metric strong {
+    font-size: 35px;
+  }
+  .skin-candy .experiment-toolbar {
+    gap: 15px;
+  }
+  .skin-candy .experiment-metrics {
+    gap: 15px;
+  }
+  .skin-candy .experiment-metric strong {
+    font-size: 40px;
+  }
+  .skin-candy .experiment-chart-heading h2 {
+    font-size: 23px;
+  }
+  .skin-thermal .experiment-chart-heading h2 {
+    font-size: 25px;
+  }
+  .skin-press .experiment-masthead-actions a {
+    display: none;
+  }
+  .experiment-footer {
+    font-size: 6px;
+    letter-spacing: 0.4px;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .design-card-art {
+    height: 140px;
+  }
+}
+@media (max-width: 940px) {
+  .experiment-main,
+  .skin-brutalist .experiment-main,
+  .skin-press .experiment-main {
+    padding: 0 25px;
+  }
+  .experiment-snapshot {
+    display: none;
+  }
+  .experiment-export {
+    margin-left: auto;
+  }
+  .experiment-hero {
+    gap: 30px;
+    padding: 30px 0;
+  }
+  .experiment-hero h1 {
+    font-size: 67px;
+  }
+  .experiment-hero-emblem {
+    width: 145px;
+    height: 145px;
+  }
+  .experiment-hero-emblem > span {
+    font-size: 75px;
+  }
+  .experiment-masthead {
+    height: 75px;
+  }
+  .experiment-brand {
+    font-size: 19px;
+  }
+  .experiment-edition {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 225px;
+    gap: 13px;
+  }
+  .experiment-metrics {
+    gap: 13px;
+  }
+  .experiment-metric {
+    padding: 16px;
+  }
+  .experiment-metric strong {
+    font-size: 37px;
+  }
+  .experiment-metric > span {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .experiment-metric > div {
+    font-size: 8px;
+  }
+  .experiment-metric > div > span {
+    font-size: 6px;
+    max-width: 100px;
+  }
+  .experiment-state-name h2 {
+    font-size: 17px;
+  }
+  .experiment-state-name p {
+    font-size: 7px;
+  }
+  .experiment-state-name > span {
+    width: 33px;
+    height: 33px;
+    font-size: 17px;
+  }
+  .experiment-state-price strong {
+    font-size: 41px;
+  }
+  .experiment-chart-heading {
+    align-items: flex-start;
+    padding: 20px 17px 0;
+  }
+  .experiment-chart-heading h2 {
+    font-size: 19px;
+  }
+  .experiment-chart-stamp {
+    padding: 6px;
+    font-size: 7px;
+  }
+  .experiment-chart-stamp small {
+    font-size: 6px;
+  }
+  .experiment-chart-heading p {
+    font-size: 8px;
+  }
+  .experiment-color-key {
+    width: 95px;
+  }
+  .experiment-chart-caption {
+    padding-left: 17px;
+    padding-right: 17px;
+    gap: 12px;
+  }
+  .experiment-chart-caption > p {
+    font-size: 7px;
+  }
+  .design-chart {
+    min-height: 390px;
+  }
+  .experiment-specimen {
+    padding: 18px 15px;
+  }
+  .experiment-rankings {
+    padding: 18px 15px;
+  }
+  .experiment-section-label {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .experiment-state-note > p {
+    font-size: 16px;
+  }
+  .experiment-rankings h2 {
+    font-size: 18px;
+  }
+  .experiment-ranking-row {
+    gap: 6px;
+  }
+  .experiment-timeline {
+    padding: 17px 18px;
+    gap: 15px;
+  }
+  .experiment-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .experiment-data-notes > div {
+    gap: 18px;
+  }
+  .experiment-data-notes p {
+    font-size: 9px;
+  }
+  .skin-blueprint .experiment-content,
+  .skin-thermal .experiment-content {
+    grid-template-columns: 225px minmax(0, 1fr);
+  }
+  .skin-blueprint .experiment-hero h1 {
+    font-size: 55px;
+  }
+  .skin-blueprint .experiment-hero-emblem {
+    width: 145px;
+    height: 145px;
+  }
+  .skin-blueprint .experiment-chart-heading h2 {
+    font-size: 14px;
+  }
+  .skin-blueprint .experiment-metric strong {
+    font-size: 34px;
+  }
+  .skin-thermal .experiment-hero h1 {
+    font-size: 94px;
+  }
+  .skin-thermal .experiment-hero-emblem {
+    width: 150px;
+    height: 150px;
+  }
+  .skin-thermal .experiment-metric strong {
+    font-size: 57px;
+  }
+  .skin-thermal .experiment-state-price strong {
+    font-size: 55px;
+  }
+  .skin-thermal .experiment-state-name h2 {
+    font-size: 23px;
+  }
+  .skin-cosmic .experiment-hero h1 {
+    font-size: 59px;
+  }
+  .skin-cosmic .experiment-metric strong {
+    font-size: 38px;
+  }
+  .skin-analog .experiment-metric strong {
+    font-size: 34px;
+  }
+  .skin-analog .experiment-chart-heading h2 {
+    font-size: 14px;
+  }
+  .skin-analog .experiment-state-price strong {
+    font-size: 35px;
+  }
+  .skin-analog .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 235px;
+  }
+  .skin-analog .experiment-hero h1 {
+    font-size: 92px;
+  }
+  .skin-analog .experiment-hero-emblem {
+    width: 145px;
+    height: 145px;
+  }
+  .skin-analog .experiment-hero-emblem > svg {
+    width: 50px;
+  }
+  .skin-candy .experiment-hero h1 {
+    font-size: 80px;
+  }
+  .skin-candy .experiment-hero-emblem {
+    width: 145px;
+    height: 145px;
+  }
+  .skin-candy .experiment-hero-emblem > svg {
+    width: 70px;
+  }
+  .skin-candy .experiment-chart-heading h2 {
+    font-size: 21px;
+  }
+  .skin-candy .experiment-metric strong {
+    font-size: 37px;
+  }
+  .skin-candy .experiment-state-price strong {
+    font-size: 47px;
+  }
+  .skin-tidal .experiment-hero h1 {
+    font-size: 67px;
+  }
+  .skin-tidal .experiment-hero-emblem {
+    width: 155px;
+    height: 145px;
+  }
+  .skin-press .experiment-hero h1 {
+    font-size: 83px;
+  }
+  .skin-press .experiment-content {
+    grid-template-columns: minmax(0, 1fr) 225px;
+  }
+  .skin-press .experiment-chart-heading h2 {
+    font-size: 25px;
+  }
+  .skin-press .experiment-metric strong {
+    font-size: 44px;
+  }
+  .skin-brutalist .experiment-hero h1 {
+    font-size: 105px;
+  }
+  .skin-brutalist .experiment-hero-emblem {
+    width: 165px;
+    height: 165px;
+  }
+  .skin-brutalist .experiment-hero-emblem > span {
+    font-size: 125px;
+  }
+  .skin-brutalist .experiment-metric strong {
+    font-size: 59px;
+  }
+  .skin-brutalist .experiment-content {
+    grid-template-columns: 1fr 1fr;
+  }
+  .skin-brutalist .experiment-specimen {
+    gap: 10px 20px;
+  }
+  .skin-brutalist .experiment-state-price strong {
+    font-size: 64px;
+  }
+  .skin-brutalist .experiment-state-name h2 {
+    font-size: 23px;
+  }
+  .skin-arcade .experiment-hero h1 {
+    font-size: 77px;
+  }
+  .skin-arcade .experiment-metric strong {
+    font-size: 32px;
+  }
+  .skin-arcade .experiment-chart-heading h2 {
+    font-size: 17px;
+  }
+  .skin-arcade .experiment-state-price strong {
+    font-size: 38px;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .design-gallery {
+    padding: 25px;
+  }
+}
+@media (max-width: 700px) {
+  .design-switcher {
+    height: 48px;
+    gap: 9px;
+    padding: 0 15px;
+  }
+  .design-lab-button {
+    gap: 6px;
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+  .design-lab-button > svg {
+    width: 13px;
+  }
+  .design-lab-button > b {
+    font-size: 7px;
+    padding: 2px 3px;
+  }
+  .design-current {
+    padding-left: 10px;
+    gap: 5px;
+    min-width: 0;
+    flex: 1;
+  }
+  .design-current > span {
+    display: none;
+  }
+  .design-current select {
+    font-size: 10px;
+    width: 100%;
+    max-width: 220px;
+    min-width: 0;
+  }
+  .design-step {
+    gap: 3px;
+  }
+  .design-step button {
+    width: 23px;
+    height: 25px;
+  }
+  .design-browse {
+    display: none;
+  }
+  html[data-dashboard='original'] .sidebar {
+    height: auto;
+    top: 0;
+  }
+  .experiment-main,
+  .skin-brutalist .experiment-main,
+  .skin-press .experiment-main {
+    padding: 0 20px;
+  }
+  .experiment-masthead {
+    height: 66px;
+    gap: 12px;
+  }
+  .experiment-brand {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+  .experiment-edition {
+    display: none;
+  }
+  .experiment-masthead-actions {
+    gap: 13px;
+    margin-left: auto;
+  }
+  .experiment-masthead-actions a {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+    gap: 4px;
+  }
+  .experiment-masthead-actions button {
+    font-size: 6px;
+    letter-spacing: 0.5px;
+    gap: 4px;
+  }
+  .experiment-masthead-actions svg {
+    width: 13px;
+  }
+  .experiment-hero {
+    padding: 31px 0 26px;
+    gap: 14px;
+    position: relative;
+  }
+  .experiment-kicker {
+    font-size: 6px;
+    letter-spacing: 1.1px;
+    gap: 6px;
+  }
+  .experiment-kicker > span {
+    width: 4px;
+    height: 4px;
+  }
+  .experiment-hero h1 {
+    font-size: 58px;
+    letter-spacing: -2.5px;
+    line-height: 0.97;
+    margin: 19px 0 15px;
+  }
+  .experiment-hero-copy > p {
+    font-size: 11px;
+    max-width: 280px;
+    line-height: 1.7;
+  }
+  .experiment-hero-emblem {
+    position: absolute;
+    right: 2px;
+    top: 36px;
+    width: 72px;
+    height: 72px;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .experiment-hero-emblem::before {
+    inset: 5px;
+  }
+  .experiment-hero-emblem > span {
+    font-size: 40px;
+    letter-spacing: -4px;
+    margin: 0;
+  }
+  .experiment-hero-emblem > small {
+    display: none;
+  }
+  .experiment-hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+  .experiment-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 15px;
+    padding: 16px 0;
+    margin-bottom: 18px;
+  }
+  .experiment-filter {
+    display: block;
+    min-width: 0;
+  }
+  .experiment-filter > label {
+    display: block;
+    font-size: 6px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  .experiment-filter > select {
+    width: 100%;
+    max-width: none;
+    padding: 6px 8px 6px 0;
+    font-size: 11px;
+  }
+  .experiment-export {
+    justify-self: end;
+    font-size: 8px;
+    align-self: end;
+    margin-bottom: 6px;
+    padding: 4px 0;
+    gap: 6px;
+  }
+  .experiment-metrics {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .experiment-metric {
+    padding: 12px 10px;
+    min-width: 0;
+  }
+  .experiment-metric > span {
+    font-size: 5px;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    display: block;
+    min-height: 15px;
+  }
+  .experiment-metric > p {
+    gap: 3px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .experiment-metric strong {
+    font-size: 32px;
+    letter-spacing: -1px;
+  }
+  .experiment-metric small {
+    font-size: 6px;
+  }
+  .experiment-metric > div {
+    display: block;
+    font-size: 7px;
+    line-height: 1.6;
+    min-height: 24px;
+  }
+  .experiment-metric > div > span {
+    display: block;
+    font-size: 6px;
+    text-align: left;
+    max-width: none;
+    margin: 0;
+  }
+  .experiment-metric > div > svg {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+  .experiment-content,
+  .skin-blueprint .experiment-content,
+  .skin-thermal .experiment-content,
+  .skin-analog .experiment-content,
+  .skin-press .experiment-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'chart' 'specimen' 'ranking';
+    gap: 17px;
+  }
+  .experiment-chart-heading {
+    padding: 21px 18px 0;
+    gap: 10px;
+  }
+  .experiment-section-label {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .experiment-chart-heading h2 {
+    font-size: 21px;
+    max-width: 220px;
+    margin: 9px 0 7px;
+  }
+  .experiment-chart-heading p {
+    font-size: 9px;
+    line-height: 1.6;
+    max-width: 205px;
+  }
+  .experiment-chart-stamp {
+    padding: 8px 7px;
+    font-size: 7px;
+  }
+  .experiment-chart-stamp small {
+    font-size: 6px;
+  }
+  .design-chart {
+    min-height: 290px;
+    flex: none;
+    margin: 15px 0 7px;
+  }
+  .experiment-chart-caption {
+    padding: 0 18px 20px;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  .experiment-color-key {
+    width: 93px;
+  }
+  .experiment-color-key > span {
+    font-size: 5px;
+    letter-spacing: 0.5px;
+  }
+  .experiment-color-key > div {
+    height: 4px;
+    margin-top: 7px;
+  }
+  .experiment-color-key > p {
+    font-size: 6px;
+  }
+  .experiment-chart-caption > p {
+    font-size: 8px;
+    line-height: 1.7;
+    max-width: 210px;
+  }
+  .experiment-specimen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 0;
+    padding: 21px 19px;
+  }
+  .experiment-specimen-top {
+    grid-column: 1/-1;
+    margin-bottom: 17px;
+  }
+  .experiment-state-name {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 8px;
+  }
+  .experiment-state-name h2 {
+    font-size: 20px;
+  }
+  .experiment-state-name p {
+    font-size: 6px;
+    line-height: 1.6;
+  }
+  .experiment-state-name > span {
+    width: 31px;
+    height: 31px;
+    font-size: 16px;
+  }
+  .experiment-state-price {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 17px 0 8px;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .experiment-state-price strong {
+    font-size: 42px;
+  }
+  .experiment-state-price > span {
+    font-size: 7px;
+  }
+  .experiment-comparison {
+    grid-column: 1;
+    grid-row: 4;
+    font-size: 9px;
+  }
+  .experiment-state-facts {
+    grid-column: 2;
+    grid-row: 2/5;
+    margin: 4px 0;
+    align-self: start;
+    gap: 16px;
+  }
+  .experiment-state-facts > div {
+    font-size: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .experiment-state-facts strong {
+    font-size: 8px;
+  }
+  .experiment-state-note {
+    grid-column: 1/-1;
+    grid-row: 5;
+    margin-top: 21px;
+    padding-top: 17px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px 20px;
+    align-items: center;
+  }
+  .experiment-state-note > .experiment-section-label {
+    grid-column: 1;
+  }
+  .experiment-state-note > p {
+    grid-column: 1;
+    grid-row: 2/4;
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .experiment-mini-history {
+    grid-column: 2;
+    grid-row: 1/3;
+    height: 55px;
+    gap: 2px;
+  }
+  .experiment-mini-years {
+    grid-column: 2;
+    grid-row: 3;
+    margin: 0;
+    font-size: 6px;
+  }
+  .experiment-rankings {
+    padding: 20px;
+  }
+  .experiment-rankings h2 {
+    font-size: 22px;
+    margin: 8px 0 13px;
+  }
+  .experiment-ranking-row {
+    padding: 10px 0;
+    gap: 12px;
+  }
+  .experiment-ranking-row > span:first-child {
+    font-size: 8px;
+    width: 16px;
+  }
+  .experiment-ranking-row > b {
+    font-size: 10px;
+    width: 25px;
+  }
+  .experiment-ranking-row > strong {
+    font-size: 11px;
+    min-width: 52px;
+  }
+  .experiment-ranking-row small {
+    font-size: 8px;
+  }
+  .experiment-rankings > p {
+    font-size: 8px;
+    line-height: 1.8;
+    margin-top: 14px;
+  }
+  .experiment-timeline {
+    padding: 17px 15px;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .experiment-play {
+    width: 35px;
+    height: 35px;
+  }
+  .experiment-play > svg {
+    width: 15px;
+  }
+  .experiment-timeline-label {
+    min-width: 105px;
+  }
+  .experiment-timeline-label > span {
+    font-size: 6px;
+  }
+  .experiment-timeline-label > strong {
+    font-size: 11px;
+    margin-top: 6px;
+  }
+  .experiment-timeline-step {
+    margin-left: auto;
+  }
+  .experiment-timeline-step > button {
+    width: 25px;
+    height: 25px;
+  }
+  .experiment-timeline-track {
+    order: 4;
+    flex-basis: 100%;
+    margin: 8px 0 0;
+  }
+  .experiment-timeline-track > div {
+    font-size: 7px;
+  }
+  .experiment-data-notes {
+    margin-top: 10px;
+  }
+  .experiment-data-notes > summary {
+    font-size: 9px;
+    padding: 17px 0;
+    gap: 12px;
+  }
+  .experiment-data-notes > div {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .experiment-data-notes p {
+    font-size: 10px;
+    line-height: 1.8;
+  }
+  .experiment-footer {
+    padding: 20px 0 24px;
+    font-size: 6px;
+    line-height: 1.7;
+    gap: 15px;
+  }
+  .experiment-footer > p {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .experiment-footer > a {
+    margin-right: auto;
+  }
+  .experiment-masthead-actions a {
+    display: none;
+  }
+  .chart-state-label {
+    font-size: 12px;
+  }
+  .chart-axis {
+    font-size: 12px;
+  }
+  .chart-micro {
+    font-size: 10px;
+  }
+  .chart-circuit-state {
+    font-size: 12px;
+  }
+  .chart-circuit-value {
+    font-size: 11px;
+  }
+  .chart-calendar-value {
+    font-size: 12px;
+  }
+  .chart-calendar-year {
+    font-size: 16px;
+  }
+  .chart-bar-label {
+    font-size: 10px;
+  }
+  .skin-solar .experiment-hero h1 {
+    font-size: 59px;
+  }
+  .skin-solar .experiment-hero-emblem {
+    top: 58px;
+    right: 0;
+    width: 70px;
+    height: 70px;
+    opacity: 0.75;
+  }
+  .skin-solar .experiment-chart-panel {
+    border-radius: 45% 45% 0 0 / 3% 3% 0 0;
+  }
+  .skin-solar .experiment-chart-heading {
+    padding-top: 26px;
+  }
+  .skin-solar .chart-editorial {
+    font-size: 30px;
+  }
+  .skin-brutalist .experiment-brand {
+    font-size: 18px;
+  }
+  .skin-brutalist .experiment-hero h1 {
+    font-size: 87px;
+    letter-spacing: -1px;
+    margin-top: 22px;
+    max-width: 300px;
+  }
+  .skin-brutalist .experiment-hero-emblem {
+    top: 43px;
+    right: 0;
+    width: 70px;
+    height: 70px;
+    opacity: 0.65;
+    border-width: 2px;
+  }
+  .skin-brutalist .experiment-hero-emblem > span {
+    font-size: 53px;
+  }
+  .skin-brutalist .experiment-hero-copy > p {
+    font-size: 11px;
+    max-width: 280px;
+  }
+  .skin-brutalist .experiment-toolbar {
+    border-width: 2px;
+  }
+  .skin-brutalist .experiment-metrics {
+    border-width: 2px;
+  }
+  .skin-brutalist .experiment-metric {
+    padding: 13px 10px;
+  }
+  .skin-brutalist .experiment-metric + .experiment-metric {
+    border-left-width: 1px;
+  }
+  .skin-brutalist .experiment-metric strong {
+    font-size: 43px;
+  }
+  .skin-brutalist .experiment-content {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'chart' 'specimen' 'ranking';
+    gap: 0;
+  }
+  .skin-brutalist .experiment-chart-heading h2 {
+    font-size: 27px;
+  }
+  .skin-brutalist .design-chart {
+    min-height: 260px;
+  }
+  .skin-brutalist .experiment-specimen {
+    border-right: 0;
+    border-bottom: 2px solid;
+    gap: 0 18px;
+    padding: 21px 17px;
+  }
+  .skin-brutalist .experiment-specimen-top {
+    grid-column: 1/-1;
+    margin-bottom: 17px;
+  }
+  .skin-brutalist .experiment-state-name {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .skin-brutalist .experiment-state-price {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 13px 0 6px;
+  }
+  .skin-brutalist .experiment-state-price strong {
+    font-size: 59px;
+  }
+  .skin-brutalist .experiment-comparison {
+    grid-column: 1;
+    grid-row: 4;
+  }
+  .skin-brutalist .experiment-state-facts {
+    grid-column: 2;
+    grid-row: 2/5;
+  }
+  .skin-brutalist .experiment-state-note {
+    grid-column: 1/-1;
+    grid-row: 5;
+  }
+  .skin-brutalist .experiment-rankings {
+    padding: 22px 18px;
+  }
+  .skin-brutalist .experiment-ranking-row {
+    padding: 10px 0;
+  }
+  .skin-brutalist .experiment-metric > div > span {
+    max-width: none;
+  }
+  .skin-brutalist .experiment-state-name h2 {
+    font-size: 25px;
+  }
+  .skin-arcade .experiment-brand {
+    font-size: 16px;
+  }
+  .skin-arcade .experiment-hero h1 {
+    font-size: 63px;
+    letter-spacing: -3px;
+    text-shadow: 3px 3px #a82f9b;
+    margin-left: 4px;
+  }
+  .skin-arcade .experiment-hero-emblem {
+    width: 67px;
+    height: 67px;
+    right: 1px;
+    top: 65px;
+  }
+  .skin-arcade .experiment-hero-emblem > span {
+    font-size: 37px;
+    letter-spacing: -4px;
+  }
+  .skin-arcade .experiment-metric strong {
+    font-size: 28px;
+  }
+  .skin-arcade .experiment-metrics {
+    gap: 8px;
+  }
+  .skin-arcade .experiment-chart-heading h2 {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .skin-arcade .experiment-state-price strong {
+    font-size: 37px;
+  }
+  .skin-arcade .experiment-state-note > p {
+    font-size: 10px;
+  }
+  .skin-blueprint .experiment-brand {
+    font-size: 12px;
+    letter-spacing: 0.2px;
+  }
+  .skin-blueprint .experiment-hero h1 {
+    font-size: 49px;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+  .skin-blueprint .experiment-hero-emblem {
+    width: 72px;
+    height: 72px;
+    top: 45px;
+    right: -2px;
+  }
+  .skin-blueprint .experiment-hero-emblem > span {
+    font-size: 34px;
+    margin: 0;
+  }
+  .skin-blueprint .experiment-hero-emblem::after {
+    display: none;
+  }
+  .skin-blueprint .experiment-hero-copy > p {
+    font-size: 9px;
+    max-width: 270px;
+  }
+  .skin-blueprint .experiment-metric strong {
+    font-size: 28px;
+    letter-spacing: -2px;
+  }
+  .skin-blueprint .experiment-metric {
+    padding: 12px 10px;
+  }
+  .skin-blueprint .experiment-chart-heading h2 {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .skin-blueprint .experiment-state-name h2 {
+    font-size: 16px;
+  }
+  .skin-blueprint .experiment-state-price strong {
+    font-size: 36px;
+  }
+  .skin-blueprint .experiment-state-note > p {
+    font-size: 9px;
+  }
+  .skin-blueprint .experiment-rankings h2 {
+    font-size: 19px;
+  }
+  .skin-thermal .experiment-brand {
+    font-size: 22px;
+  }
+  .skin-thermal .experiment-hero h1 {
+    font-size: 87px;
+    line-height: 0.85;
+    letter-spacing: 0;
+  }
+  .skin-thermal .experiment-hero-emblem {
+    width: 72px;
+    height: 72px;
+    top: 56px;
+    opacity: 0.7;
+  }
+  .skin-thermal .experiment-hero-emblem > span {
+    font-size: 46px;
+  }
+  .skin-thermal .experiment-metric strong {
+    font-size: 44px;
+  }
+  .skin-thermal .experiment-metric {
+    padding: 13px 10px;
+  }
+  .skin-thermal .chart-thermal {
+    min-height: 300px;
+  }
+  .skin-thermal .experiment-chart-heading h2 {
+    font-size: 27px;
+  }
+  .skin-thermal .experiment-state-price strong {
+    font-size: 57px;
+  }
+  .skin-thermal .experiment-state-name h2 {
+    font-size: 25px;
+  }
+  .skin-thermal .experiment-state-note > p {
+    font-size: 19px;
+  }
+  .skin-cosmic .experiment-brand {
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+  .skin-cosmic .experiment-masthead {
+    height: 75px;
+  }
+  .skin-cosmic .experiment-hero {
+    padding: 32px 0 27px;
+  }
+  .skin-cosmic .experiment-hero h1 {
+    font-size: 47px;
+    letter-spacing: -2.8px;
+    line-height: 1.05;
+  }
+  .skin-cosmic .experiment-hero-emblem {
+    width: 68px;
+    height: 68px;
+    right: 0;
+    top: 54px;
+    opacity: 0.45;
+  }
+  .skin-cosmic .experiment-hero-emblem > span {
+    font-size: 34px;
+    letter-spacing: -3px;
+  }
+  .skin-cosmic .experiment-hero-emblem::before {
+    inset: -7px;
+  }
+  .skin-cosmic .experiment-metrics {
+    gap: 8px;
+  }
+  .skin-cosmic .experiment-metric strong {
+    font-size: 30px;
+  }
+  .skin-cosmic .experiment-metric {
+    border-radius: 12px;
+  }
+  .skin-cosmic .experiment-chart-heading h2 {
+    font-size: 20px;
+  }
+  .skin-cosmic .experiment-state-name h2 {
+    font-size: 18px;
+  }
+  .skin-cosmic .experiment-state-note > p {
+    font-size: 11px;
+  }
+  .skin-analog .experiment-brand {
+    font-size: 12px;
+  }
+  .skin-analog .experiment-masthead {
+    height: 68px;
+  }
+  .skin-analog .experiment-hero {
+    padding: 30px 0;
+  }
+  .skin-analog .experiment-hero h1 {
+    font-size: 78px;
+    letter-spacing: 0;
+  }
+  .skin-analog .experiment-hero-emblem {
+    width: 70px;
+    height: 70px;
+    top: 55px;
+    right: 0;
+    opacity: 0.7;
+  }
+  .skin-analog .experiment-hero-emblem::before {
+    inset: 9px;
+  }
+  .skin-analog .experiment-hero-emblem > svg {
+    width: 29px;
+  }
+  .skin-analog .experiment-hero-copy > p {
+    font-size: 9px;
+    max-width: 270px;
+  }
+  .skin-analog .experiment-metrics {
+    gap: 8px;
+  }
+  .skin-analog .experiment-metric strong {
+    font-size: 28px;
+    letter-spacing: -2px;
+  }
+  .skin-analog .experiment-chart-panel {
+    border-width: 6px;
+  }
+  .skin-analog .experiment-chart-heading {
+    padding: 18px 13px 0;
+  }
+  .skin-analog .experiment-chart-heading h2 {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .skin-analog .experiment-chart-heading p {
+    font-size: 8px;
+  }
+  .skin-analog .experiment-chart-caption {
+    padding: 0 13px 16px;
+    gap: 12px;
+  }
+  .skin-analog .experiment-state-name h2 {
+    font-size: 16px;
+  }
+  .skin-analog .experiment-state-price strong {
+    font-size: 36px;
+  }
+  .skin-analog .experiment-state-note > p {
+    font-size: 9px;
+  }
+  .skin-analog .experiment-rankings h2 {
+    font-size: 23px;
+  }
+  .skin-candy .experiment-brand {
+    font-size: 31px;
+  }
+  .skin-candy .experiment-hero h1 {
+    font-size: 68px;
+    letter-spacing: -3px;
+  }
+  .skin-candy .experiment-hero-emblem {
+    height: 70px;
+    width: 70px;
+    top: 66px;
+    right: 0;
+    opacity: 0.65;
+    box-shadow: 3px 3px #2b2048;
+  }
+  .skin-candy .experiment-hero-emblem > svg {
+    width: 34px;
+  }
+  .skin-candy .experiment-toolbar {
+    padding: 15px;
+    gap: 14px 15px;
+  }
+  .skin-candy .experiment-metrics {
+    gap: 10px;
+  }
+  .skin-candy .experiment-metric {
+    border-radius: 12px;
+    box-shadow: 3px 3px #2b2048;
+  }
+  .skin-candy .experiment-metric strong {
+    font-size: 31px;
+  }
+  .skin-candy .experiment-metric > div > span {
+    font-size: 5.5px;
+  }
+  .skin-candy .experiment-chart-heading h2 {
+    font-size: 23px;
+  }
+  .skin-candy .experiment-state-price strong {
+    font-size: 45px;
+  }
+  .skin-candy .experiment-state-note > p {
+    font-size: 18px;
+  }
+  .skin-tidal .experiment-brand {
+    font-size: 35px;
+  }
+  .skin-tidal .experiment-masthead {
+    height: 70px;
+  }
+  .skin-tidal .experiment-hero h1 {
+    font-size: 58px;
+    letter-spacing: -3px;
+  }
+  .skin-tidal .experiment-hero-emblem {
+    width: 71px;
+    height: 68px;
+    right: 0;
+    top: 65px;
+    opacity: 0.6;
+  }
+  .skin-tidal .experiment-hero-emblem > svg {
+    width: 35px;
+  }
+  .skin-tidal .experiment-toolbar {
+    padding: 15px;
+  }
+  .skin-tidal .experiment-metrics {
+    gap: 8px;
+  }
+  .skin-tidal .experiment-metric {
+    border-radius: 13px;
+  }
+  .skin-tidal .experiment-metric strong {
+    font-size: 31px;
+    letter-spacing: -1.5px;
+  }
+  .skin-tidal .experiment-chart-heading h2 {
+    font-size: 23px;
+  }
+  .skin-tidal .experiment-state-price strong {
+    font-size: 41px;
+  }
+  .skin-tidal .experiment-state-note > p {
+    font-size: 20px;
+  }
+  .skin-press .experiment-masthead {
+    height: 92px;
+    justify-content: space-between;
+  }
+  .skin-press .experiment-brand {
+    font-size: 44px;
+    left: 0;
+    transform: none;
+    position: relative;
+  }
+  .skin-press .experiment-masthead-actions {
+    margin-left: 0;
+  }
+  .skin-press .experiment-masthead-actions span {
+    display: none;
+  }
+  .skin-press .experiment-hero {
+    padding: 30px 0 23px;
+  }
+  .skin-press .experiment-hero h1 {
+    font-size: 62px;
+    letter-spacing: -2px;
+    line-height: 0.92;
+  }
+  .skin-press .experiment-hero-emblem {
+    display: none;
+  }
+  .skin-press .experiment-hero-copy > p {
+    font-size: 12px;
+    max-width: 300px;
+  }
+  .skin-press .experiment-toolbar {
+    padding: 13px 0;
+    margin-bottom: 0;
+  }
+  .skin-press .experiment-metric {
+    padding: 15px 11px;
+  }
+  .skin-press .experiment-metric strong {
+    font-size: 38px;
+  }
+  .skin-press .experiment-content {
+    gap: 22px;
+  }
+  .skin-press .experiment-chart-panel {
+    border-right: 0;
+    border-bottom: 1px solid;
+    padding-right: 0;
+  }
+  .skin-press .experiment-chart-heading {
+    padding: 0;
+  }
+  .skin-press .experiment-chart-heading h2 {
+    font-size: 30px;
+  }
+  .skin-press .experiment-chart-caption {
+    padding: 0 0 20px;
+  }
+  .skin-press .experiment-specimen {
+    padding: 21px 0 0;
+  }
+  .skin-press .experiment-state-name > span {
+    font-size: 28px;
+  }
+  .skin-press .experiment-state-name h2 {
+    font-size: 25px;
+  }
+  .skin-press .experiment-state-price strong {
+    font-size: 57px;
+  }
+  .skin-press .experiment-state-note > p {
+    font-size: 13px;
+  }
+  .skin-press .experiment-state-facts > div {
+    font-size: 9px;
+  }
+  .skin-press .experiment-rankings {
+    padding: 20px 0 0;
+  }
+  .skin-press .experiment-rankings h2 {
+    font-size: 28px;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .design-gallery {
+    padding: 23px 18px;
+    max-height: 90vh;
+  }
+  .gallery-heading {
+    padding-bottom: 22px;
+  }
+  .gallery-heading h2 {
+    font-size: 38px;
+  }
+  .gallery-heading > div > span {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .design-card-art {
+    height: 130px;
+  }
+  .design-card-caption {
+    padding: 11px;
+  }
+  .design-card-caption strong {
+    font-size: 11px;
+  }
+  .design-card-caption small {
+    font-size: 5px;
+  }
+  .preview-word {
+    font-size: 35px;
+  }
+  .original-design {
+    font-size: 10px;
+    margin-top: 22px;
+    padding-top: 20px;
+  }
+}
+@media (max-width: 380px) {
+  .design-switcher {
+    padding: 0 11px;
+    gap: 7px;
+  }
+  .design-lab-button {
+    font-size: 7px;
+    gap: 5px;
+  }
+  .design-lab-button > b {
+    display: none;
+  }
+  .design-current {
+    padding-left: 8px;
+  }
+  .design-current select {
+    font-size: 9px;
+  }
+  .experiment-main,
+  .skin-brutalist .experiment-main,
+  .skin-press .experiment-main {
+    padding: 0 15px;
+  }
+  .experiment-hero h1 {
+    font-size: 51px;
+  }
+  .experiment-hero-emblem {
+    right: 0;
+    opacity: 0.35;
+  }
+  .experiment-metric {
+    padding: 11px 8px;
+  }
+  .experiment-metric strong {
+    font-size: 29px;
+  }
+  .experiment-metric > span {
+    font-size: 4.8px;
+    letter-spacing: 0.25px;
+  }
+  .experiment-chart-heading {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .experiment-chart-heading h2 {
+    font-size: 20px;
+  }
+  .experiment-chart-heading p {
+    font-size: 8px;
+  }
+  .experiment-chart-stamp {
+    font-size: 6px;
+    padding: 7px 6px;
+  }
+  .design-chart {
+    min-height: 265px;
+  }
+  .experiment-chart-caption {
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 12px;
+  }
+  .experiment-color-key {
+    width: 85px;
+  }
+  .experiment-chart-caption > p {
+    font-size: 7px;
+  }
+  .experiment-specimen {
+    padding-left: 16px;
+    padding-right: 16px;
+    column-gap: 15px;
+  }
+  .experiment-state-name {
+    gap: 6px;
+  }
+  .experiment-state-name h2 {
+    font-size: 18px;
+  }
+  .experiment-state-name > span {
+    width: 27px;
+    height: 27px;
+    font-size: 14px;
+  }
+  .experiment-state-price strong {
+    font-size: 38px;
+  }
+  .experiment-state-facts {
+    gap: 15px;
+  }
+  .experiment-state-facts > div {
+    font-size: 7px;
+  }
+  .experiment-state-facts strong {
+    font-size: 7px;
+  }
+  .experiment-hero-copy > p {
+    font-size: 10px;
+    max-width: 260px;
+  }
+  .skin-solar .experiment-hero h1 {
+    font-size: 53px;
+  }
+  .skin-brutalist .experiment-hero h1 {
+    font-size: 79px;
+  }
+  .skin-brutalist .experiment-metric strong {
+    font-size: 39px;
+  }
+  .skin-arcade .experiment-hero h1 {
+    font-size: 56px;
+  }
+  .skin-arcade .experiment-metric strong {
+    font-size: 25px;
+  }
+  .skin-blueprint .experiment-hero h1 {
+    font-size: 44px;
+  }
+  .skin-blueprint .experiment-metric strong {
+    font-size: 25px;
+  }
+  .skin-blueprint .experiment-chart-heading h2 {
+    font-size: 14px;
+  }
+  .skin-thermal .experiment-hero h1 {
+    font-size: 79px;
+  }
+  .skin-thermal .experiment-metric strong {
+    font-size: 41px;
+  }
+  .skin-cosmic .experiment-hero h1 {
+    font-size: 42px;
+  }
+  .skin-cosmic .experiment-metric strong {
+    font-size: 27px;
+  }
+  .skin-analog .experiment-hero h1 {
+    font-size: 70px;
+  }
+  .skin-analog .experiment-metric strong {
+    font-size: 25px;
+  }
+  .skin-candy .experiment-hero h1 {
+    font-size: 61px;
+  }
+  .skin-candy .experiment-metric strong {
+    font-size: 28px;
+  }
+  .skin-tidal .experiment-hero h1 {
+    font-size: 51px;
+  }
+  .skin-tidal .experiment-metric strong {
+    font-size: 28px;
+  }
+  .skin-press .experiment-hero h1 {
+    font-size: 57px;
+  }
+  .skin-press .experiment-metric strong {
+    font-size: 35px;
+  }
+  .experiment-timeline {
+    gap: 10px;
+    padding: 15px 13px;
+  }
+  .experiment-timeline-label {
+    min-width: 97px;
+  }
+  .experiment-timeline-label > span {
+    font-size: 5.5px;
+  }
+  .experiment-timeline-step > button {
+    width: 23px;
+  }
+  .experiment-hero-emblem::before {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .design-card,
+  .design-state-mark .data-mark {
+    transition: none;
+  }
+}
+
+/* Refinement layer: legibility floor, label halos, mobile composition.
+   Kept last; `.design-dashboard` prefix outranks equal-specificity skin rules by order. */
+.design-dashboard {
+  /* Smallest uppercase mono label that stays readable at 1x. */
+  --type-micro: 9px;
+  /* Smallest sentence-case note. */
+  --type-note: 10px;
+  /* Optical inset so rotated emblems stay inside the content edge. */
+  --emblem-bleed: 0px;
+}
+.design-dashboard .experiment-kicker,
+.design-dashboard .experiment-edition,
+.design-dashboard .experiment-masthead-actions button,
+.design-dashboard .experiment-masthead-actions a,
+.design-dashboard .experiment-filter > label,
+.design-dashboard .experiment-snapshot,
+.design-dashboard .experiment-export,
+.design-dashboard .experiment-metric > span,
+.design-dashboard .experiment-metric small,
+.design-dashboard .experiment-metric > div,
+.design-dashboard .experiment-section-label,
+.design-dashboard .experiment-chart-stamp,
+.design-dashboard .experiment-chart-stamp small,
+.design-dashboard .experiment-color-key > span,
+.design-dashboard .experiment-color-key > p,
+.design-dashboard .experiment-state-name p,
+.design-dashboard .experiment-state-price > span,
+.design-dashboard .experiment-mini-years,
+.design-dashboard .experiment-ranking-row > span:first-child,
+.design-dashboard .experiment-timeline-label > span,
+.design-dashboard .experiment-timeline-track > div,
+.design-dashboard .experiment-footer {
+  font-size: var(--type-micro);
+}
+.design-dashboard .experiment-metric > div > span,
+.design-dashboard .experiment-chart-heading p,
+.design-dashboard .experiment-chart-caption > p,
+.design-dashboard .experiment-comparison,
+.design-dashboard .experiment-state-facts > div,
+.design-dashboard .experiment-state-facts strong,
+.design-dashboard .experiment-rankings > p,
+.design-dashboard .experiment-data-notes > summary,
+.design-dashboard .experiment-data-notes p {
+  font-size: var(--type-note);
+}
+.design-dashboard .experiment-color-key > span {
+  letter-spacing: 0.6px;
+}
+.design-dashboard .experiment-timeline-label {
+  min-width: max-content;
+}
+.design-dashboard .experiment-toolbar {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.skin-press .experiment-edition {
+  letter-spacing: 1px;
+}
+.skin-blueprint .experiment-hero-copy > p,
+.skin-analog .experiment-hero-copy > p {
+  font-size: 11px;
+}
+.design-dashboard .experiment-hero-emblem {
+  margin-right: var(--emblem-bleed);
+}
+.skin-brutalist {
+  --emblem-bleed: 8px;
+}
+.skin-arcade {
+  --emblem-bleed: 16px;
+}
+.skin-blueprint {
+  --emblem-bleed: 10px;
+}
+.skin-cosmic {
+  --emblem-bleed: 14px;
+}
+.skin-tidal,
+.skin-candy {
+  --emblem-bleed: 6px;
+}
+
+/* Labels that cross marks get a halo in the panel color. */
+.design-chart {
+  --chart-halo: var(--paper);
+}
+.skin-solar .design-chart {
+  --chart-halo: var(--surface);
+}
+.skin-candy .design-chart {
+  /* Candy chart panel background. */
+  --chart-halo: #f5dcf5;
+}
+.chart-state-label,
+.chart-axis,
+.chart-city-label,
+.chart-ridge-label {
+  paint-order: stroke;
+  stroke: var(--chart-halo);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+/* Ridges overlap by design; translucent fill keeps upper ridgelines visible. */
+.chart-ridges .data-mark {
+  fill-opacity: 0.36;
+}
+
+/* Brutalist chart spans the full panel instead of a capped, centered strip. */
+.skin-brutalist .design-chart {
+  max-height: none;
+  min-height: 0;
+  flex: none;
+  aspect-ratio: 900 / 540;
+}
+
+/* Ranking meters: tracks contrast with both ends of each price palette. */
+.design-dashboard .experiment-ranking-meter {
+  height: 4px;
+}
+/* Dark-panel meters: outlined fill keeps price colour and reads as the bar. */
+.skin-brutalist .experiment-ranking-meter > i {
+  box-shadow: inset 0 0 0 1px var(--paper);
+}
+.skin-thermal .experiment-ranking-meter > i {
+  /* Thermal specimen cream. */
+  box-shadow: inset 0 0 0 1px #ffe7c2;
+}
+.skin-analog .experiment-ranking-meter > i {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.skin-brutalist .experiment-ranking-meter,
+.skin-thermal .experiment-ranking-meter,
+.skin-analog .experiment-ranking-meter {
+  height: 6px;
+}
+
+@media (max-width: 940px) {
+  .design-dashboard .experiment-color-key {
+    width: 120px;
+  }
+}
+
+@media (max-width: 700px) {
+  .design-dashboard {
+    --emblem-bleed: 0px;
+  }
+  /* Emblem shares the kicker row instead of overlapping the headline. */
+  .design-dashboard .experiment-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    row-gap: 0;
+    align-items: center;
+  }
+  .design-dashboard .experiment-hero-copy {
+    display: contents;
+  }
+  .design-dashboard .experiment-kicker {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .design-dashboard .experiment-hero-emblem {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    opacity: 1;
+  }
+  .design-dashboard .experiment-hero h1 {
+    grid-column: 1 / -1;
+    margin-top: 14px;
+    max-width: none;
+  }
+  .design-dashboard .experiment-hero-copy > p {
+    grid-column: 1 / -1;
+  }
+  .skin-blueprint .experiment-hero-copy > p,
+  .skin-analog .experiment-hero-copy > p {
+    font-size: 11px;
+  }
+
+  /* National price leads full width; sales and spread pair beneath. */
+  .design-dashboard .experiment-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .design-dashboard .experiment-metric > span {
+    min-height: 0;
+  }
+  .design-dashboard .experiment-metric > div {
+    min-height: 0;
+  }
+  .design-dashboard .metric-national {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: end;
+  }
+  .design-dashboard .metric-national > span {
+    grid-column: 1 / -1;
+  }
+  .design-dashboard .metric-national > p {
+    margin-bottom: 0;
+  }
+  .design-dashboard .metric-national > div,
+  .design-dashboard .metric-national > div > span {
+    text-align: right;
+  }
+  .skin-brutalist .experiment-metric.metric-sales,
+  .skin-blueprint .experiment-metric.metric-sales,
+  .skin-thermal .experiment-metric.metric-sales,
+  .skin-press .experiment-metric.metric-sales {
+    border-left: 0;
+  }
+  .skin-brutalist .metric-sales,
+  .skin-brutalist .metric-range,
+  .skin-thermal .metric-sales,
+  .skin-thermal .metric-range {
+    border-top: 1px solid var(--ink);
+  }
+  .skin-blueprint .metric-sales,
+  .skin-blueprint .metric-range,
+  .skin-press .metric-sales,
+  .skin-press .metric-range {
+    border-top: 1px solid var(--line-color);
+  }
+  .skin-press .experiment-metric.metric-sales {
+    padding-left: 0;
+  }
+
+  /* Height follows the viewBox, so no empty letterbox bands. */
+  .design-dashboard .design-chart {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 900 / 540;
+  }
+  .skin-blueprint .experiment-state-note > p,
+  .skin-arcade .experiment-state-note > p {
+    font-size: 11px;
+  }
+}
+
+/* Chart geometry refinements following the Opus visual review. */
+.skin-solar .design-chart:not(.portrait-chart) {
+  flex: none;
+  min-height: 0;
+  aspect-ratio: 720 / 540;
+}
+.skin-press .design-chart:not(.portrait-chart) {
+  flex: none;
+  min-height: 0;
+  aspect-ratio: 900 / 435;
+}
+.chart-thermal:not(.portrait-chart) .design-state-mark:hover .data-mark,
+.chart-thermal:not(.portrait-chart) .design-state-mark.is-picked .data-mark {
+  stroke-width: 15px;
+}
+.design-dashboard .design-chart.portrait-chart {
+  flex: none;
+  width: min(100%, 480px);
+  min-height: 0;
+  max-height: none;
+  height: auto;
+  aspect-ratio: auto;
+  margin: 20px auto 16px;
+}
+.portrait-chart text {
+  font: 12px var(--mono);
+  fill: var(--ink);
+  pointer-events: none;
+}
+.portrait-chart .portrait-state-code {
+  font-weight: 500;
+  paint-order: stroke;
+  stroke: var(--chart-halo, var(--paper));
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.portrait-chart .portrait-value {
+  font-size: 12px;
+  letter-spacing: -0.35px;
+}
+.portrait-chart .portrait-note,
+.portrait-chart .portrait-small {
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+.portrait-chart .portrait-center {
+  font: 500 29px var(--heading);
+  letter-spacing: -1.4px;
+}
+.chart-thermal.portrait-chart .design-state-mark:hover .data-mark,
+.chart-thermal.portrait-chart .design-state-mark.is-picked .data-mark {
+  stroke-width: 8px;
+}

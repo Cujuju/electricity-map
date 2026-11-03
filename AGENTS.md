@@ -2,6 +2,8 @@
 
 SolidJS + TypeScript frontend, Vite build, and a Node.js HTTP/data service.
 
+The original Observatory contains three lenses. `src/designs/` contains ten additional complete dashboard designs, selected through Design Lab or the `design` URL parameter. Keep filters, selected state, quarter and original lens intact when changing designs. Design-specific CSS is scoped under `.skin-…` to preserve the original application.
+
 ## Commands
 
 - `npm run dev`: Node API at 127.0.0.1:3001 and Vite at 127.0.0.1:4187.
