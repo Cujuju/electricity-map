@@ -1,0 +1,35 @@
+{
+  "name": "electricity-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Three experimental lenses on U.S. electricity prices, built with SolidJS and Node.js.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env scripts/dev.mjs",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "check": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "test:ui": "playwright test",
+    "data:refresh": "node --env-file-if-exists=.env scripts/fetch-data.mjs"
+  },
+  "dependencies": {
+    "d3-geo": "3.1.1",
+    "lucide-solid": "1.66.0",
+    "solid-js": "1.9.18",
+    "topojson-client": "3.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/d3-geo": "3.1.1",
+    "@types/node": "26.6.6",
+    "@types/topojson-client": "3.1.5",
+    "typescript": "7.0.2",
+    "us-atlas": "3.0.1",
+    "vite": "8.3.5",
+    "vite-plugin-solid": "2.11.15"
+  }
+}
