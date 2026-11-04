@@ -3,6 +3,9 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { validateDataset } from './eia.mjs';
+import { validateMonthlyDataset } from './eia.mjs';
+import { validateUtilities } from './utilities.mjs';
+import { gzipSync } from 'node:zlib';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const mime = {
@@ -21,6 +24,24 @@ export async function createApp({
   const snapshot = await readFile(datasetPath);
   const dataset = JSON.parse(snapshot.toString());
   const periods = validateDataset(dataset);
+  const extra = new Map();
+  for (const [route, file, validate] of [
+    ['/api/monthly', 'monthly.json', validateMonthlyDataset],
+    ['/api/utilities', 'utilities.json', validateUtilities],
+  ]) {
+    try {
+      const bytes = await readFile(resolve(root, 'data', file));
+      const data = JSON.parse(bytes.toString());
+      validate(data);
+      extra.set(route, {
+        bytes,
+        gzip: gzipSync(bytes),
+        fetchedAt: data.fetchedAt,
+      });
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+  }
   return createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -48,6 +69,30 @@ export async function createApp({
           'Last-Modified': new Date(dataset.fetchedAt).toUTCString(),
         });
         return response.end(request.method === 'HEAD' ? undefined : snapshot);
+      }
+      if (['/api/monthly', '/api/utilities'].includes(url.pathname)) {
+        const data = extra.get(url.pathname);
+        if (!data)
+          return json(503, {
+            error: 'This data snapshot has not been fetched yet.',
+          });
+        const compressed = (request.headers['accept-encoding'] ?? '').split(',').some((entry) => {
+          const [encoding, ...parameters] = entry.trim().split(';');
+          const quality = parameters.find((part) => part.trim().startsWith('q='));
+          return (
+            encoding.toLowerCase() === 'gzip' && (!quality || Number(quality.split('=')[1]) > 0)
+          );
+        });
+        response.writeHead(200, {
+          'Content-Type': mime['.json'],
+          'Cache-Control': 'public, max-age=3600',
+          'Last-Modified': new Date(data.fetchedAt).toUTCString(),
+          Vary: 'Accept-Encoding',
+          ...(compressed ? { 'Content-Encoding': 'gzip' } : {}),
+        });
+        return response.end(
+          request.method === 'HEAD' ? undefined : compressed ? data.gzip : data.bytes,
+        );
       }
       if (url.pathname.startsWith('/api/')) return json(404, { error: 'API route not found' });
       const pathname = decodeURIComponent(url.pathname);

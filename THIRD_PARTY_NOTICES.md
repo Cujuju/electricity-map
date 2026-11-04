@@ -18,7 +18,9 @@ THIS SOFTWARE.
 
 # Electricity data
 
-U.S. Energy Information Administration, [Electricity Sales to Ultimate Customers](https://www.eia.gov/opendata/browser/electricity/retail-sales), quarterly. Source and units are preserved in `data/electricity.json`. See EIA's [copyright and reuse policy](https://www.eia.gov/about/copyrights_reuse.php).
+U.S. Energy Information Administration, [Electricity Sales to Ultimate Customers](https://www.eia.gov/opendata/browser/electricity/retail-sales), quarterly and monthly. Source and units are preserved in `data/electricity.json` and `data/monthly.json`.
+
+Annual utility sales, revenue, customer counts, and county distribution-equipment presence come from the [EIA-861 annual survey files](https://www.eia.gov/electricity/data/eia861/), 2023–2025. Archive URLs, service coverage notes, and fetch time are preserved in `data/utilities.json`. Derived prices describe utility/state annual averages, not city or county measurements. See EIA's [copyright and reuse policy](https://www.eia.gov/about/copyrights_reuse.php).
 
 # Fonts
 

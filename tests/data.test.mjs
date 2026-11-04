@@ -80,7 +80,10 @@ test('EIA pagination retrieves all pages in deterministic order', async () => {
       assert.equal(query.get('frequency'), 'quarterly');
       assert.equal(query.get('facets[sectorid][]'), 'RES');
       return Response.json({
-        response: { total: '3', data: query.get('offset') === '0' ? [raw, raw] : [raw] },
+        response: {
+          total: '3',
+          data: query.get('offset') === '0' ? [raw, raw] : [raw],
+        },
       });
     },
   });
@@ -89,11 +92,15 @@ test('EIA pagination retrieves all pages in deterministic order', async () => {
 });
 test('EIA errors and premature pagination fail instead of publishing partial data', async () => {
   await assert.rejects(
-    fetchSector('RES', { fetcher: async () => new Response('', { status: 429 }) }),
+    fetchSector('RES', {
+      fetcher: async () => new Response('', { status: 429 }),
+    }),
     /HTTP 429/,
   );
   await assert.rejects(
-    fetchSector('RES', { fetcher: async () => Response.json({ error: 'rate limited' }) }),
+    fetchSector('RES', {
+      fetcher: async () => Response.json({ error: 'rate limited' }),
+    }),
     /invalid response/,
   );
   await assert.rejects(
@@ -102,4 +109,27 @@ test('EIA errors and premature pagination fail instead of publishing partial dat
     }),
     /pagination/,
   );
+});
+
+test('monthly refresh requests customer counts and preserves missing monthly observations', async () => {
+  const monthlyRaw = {
+    ...raw,
+    period: '2026-08',
+    customers: '123456',
+    price: 'NA',
+  };
+  const rows = await fetchSector('RES', {
+    frequency: 'monthly',
+    fetcher: async (input) => {
+      const query = new URL(input).searchParams;
+      assert.equal(query.get('frequency'), 'monthly');
+      assert.equal(query.get('start'), '2015-01');
+      assert.equal(query.get('data[3]'), 'customers');
+      return Response.json({ response: { total: '1', data: [monthlyRaw] } });
+    },
+  });
+  const [row] = normalizeRows(rows, { frequency: 'monthly' });
+  assert.equal(row.period, '2026-08');
+  assert.equal(row.customers, 123456);
+  assert.equal(row.price, null);
 });

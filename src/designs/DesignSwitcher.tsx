@@ -1,12 +1,25 @@
-import { createEffect, For } from 'solid-js';
+import { createEffect, For, onMount, onCleanup } from 'solid-js';
 import { ChevronLeft, ChevronRight, Grid2X2, X, Zap, ArrowUpRight } from 'lucide-solid';
 import { DESIGNS, type DashboardId } from './catalog';
 
 export default function DesignSwitcher(props: {
   selected: DashboardId;
   onChange: (id: DashboardId) => void;
+  mode: 'overview' | 'changes' | 'utilities';
+  onMode: (mode: 'overview' | 'changes' | 'utilities') => void;
 }) {
   let gallery!: HTMLDialogElement;
+  let header!: HTMLDivElement;
+  onMount(() => {
+    const resize = new ResizeObserver(() =>
+      document.documentElement.style.setProperty(
+        '--studio-header-height',
+        `${header.getBoundingClientRect().height}px`,
+      ),
+    );
+    resize.observe(header);
+    onCleanup(() => resize.disconnect());
+  });
   const options = ['original', ...DESIGNS.map((design) => design.id)] as DashboardId[];
   const selectedDesign = () => DESIGNS.find((design) => design.id === props.selected);
   const step = (direction: number) =>
@@ -22,7 +35,7 @@ export default function DesignSwitcher(props: {
   };
   return (
     <>
-      <div class="design-switcher" aria-label="Dashboard design controls">
+      <div ref={header} class="design-switcher" aria-label="Dashboard design controls">
         <button class="design-lab-button" onClick={() => gallery.showModal()}>
           <Grid2X2 size={15} />
           <span>DESIGN LAB</span>
@@ -57,7 +70,20 @@ export default function DesignSwitcher(props: {
             <ChevronRight size={16} />
           </button>
         </div>
-        <span class="design-lab-note">ONE DATASET. TEN OTHER WORLDS.</span>
+        <nav class="data-workspace-nav" aria-label="Data workspace">
+          <button aria-pressed={props.mode === 'overview'} onClick={() => props.onMode('overview')}>
+            Dashboards
+          </button>
+          <button aria-pressed={props.mode === 'changes'} onClick={() => props.onMode('changes')}>
+            Change Lab
+          </button>
+          <button
+            aria-pressed={props.mode === 'utilities'}
+            onClick={() => props.onMode('utilities')}
+          >
+            Local Utilities
+          </button>
+        </nav>
         <button class="design-browse" onClick={() => gallery.showModal()}>
           Browse collection <ArrowUpRight size={13} />
         </button>

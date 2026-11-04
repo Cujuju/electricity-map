@@ -14,13 +14,13 @@ export function numeric(value) {
   return Number.isFinite(number) && number >= 0 ? number : null;
 }
 
-export function normalizeRows(raw) {
+export function normalizeRows(raw, { frequency = 'quarterly' } = {}) {
   const rows = new Map();
   for (const row of raw) {
     if (
       !STATE_IDS.has(row.stateid) ||
       !SECTORS.includes(row.sectorid) ||
-      !/^\d{4}-Q[1-4]$/.test(row.period)
+      !(frequency === 'monthly' ? /^\d{4}-(0[1-9]|1[0-2])$/ : /^\d{4}-Q[1-4]$/).test(row.period)
     )
       continue;
     const key = `${row.period}:${row.stateid}:${row.sectorid}`;
@@ -32,6 +32,7 @@ export function normalizeRows(raw) {
       price: numeric(row.price),
       sales: numeric(row.sales),
       revenue: numeric(row.revenue),
+      ...(frequency === 'monthly' ? { customers: numeric(row.customers) } : {}),
     });
   }
   return [...rows.values()].sort(
@@ -78,18 +79,21 @@ export function validateDataset(dataset) {
   return periods;
 }
 
-export async function fetchSector(sector, { apiKey = 'DEMO_KEY', fetcher = fetch } = {}) {
+export async function fetchSector(
+  sector,
+  { apiKey = 'DEMO_KEY', fetcher = fetch, frequency = 'quarterly' } = {},
+) {
   const rows = [];
   let total = Infinity;
   do {
     const query = new URLSearchParams({
       api_key: apiKey,
-      frequency: 'quarterly',
+      frequency,
       'data[0]': 'price',
       'data[1]': 'sales',
       'data[2]': 'revenue',
       'facets[sectorid][]': sector,
-      start: '2015-Q1',
+      start: frequency === 'monthly' ? '2015-01' : '2015-Q1',
       'sort[0][column]': 'period',
       'sort[0][direction]': 'desc',
       'sort[1][column]': 'stateid',
@@ -97,6 +101,7 @@ export async function fetchSector(sector, { apiKey = 'DEMO_KEY', fetcher = fetch
       offset: String(rows.length),
       length: '5000',
     });
+    if (frequency === 'monthly') query.set('data[3]', 'customers');
     const response = await fetcher(
       `https://api.eia.gov/v2/electricity/retail-sales/data/?${query}`,
       { signal: AbortSignal.timeout(30000) },
@@ -115,4 +120,42 @@ export async function fetchSector(sector, { apiKey = 'DEMO_KEY', fetcher = fetch
     rows.push(...payload.response.data);
   } while (rows.length < total);
   return rows;
+}
+
+export function validateMonthlyDataset(dataset) {
+  if (
+    dataset.schemaVersion !== 1 ||
+    dataset.source?.frequency !== 'monthly' ||
+    !Array.isArray(dataset.rows) ||
+    !dataset.rows.length
+  )
+    throw new Error('Invalid monthly snapshot');
+  const groups = new Map();
+  const keys = new Set();
+  for (const row of dataset.rows) {
+    const key = `${row.period}:${row.state}:${row.sector}`;
+    if (
+      !/^\d{4}-(0[1-9]|1[0-2])$/.test(row.period) ||
+      !STATE_IDS.has(row.state) ||
+      !SECTORS.includes(row.sector) ||
+      keys.has(key)
+    )
+      throw new Error(`Invalid monthly observation: ${key}`);
+    keys.add(key);
+    for (const field of ['price', 'sales', 'revenue', 'customers'])
+      if (row[field] !== null && (!Number.isFinite(row[field]) || row[field] < 0))
+        throw new Error(`Invalid monthly ${field}`);
+    const group = `${row.period}:${row.sector}`;
+    groups.set(group, (groups.get(group) ?? 0) + 1);
+  }
+  const periods = [...new Set(dataset.rows.map((row) => row.period))].sort();
+  const monthIndex = (period) => Number(period.slice(0, 4)) * 12 + Number(period.slice(5)) - 1;
+  for (let i = 1; i < periods.length; i++)
+    if (monthIndex(periods[i]) - monthIndex(periods[i - 1]) !== 1)
+      throw new Error(`Missing month between ${periods[i - 1]} and ${periods[i]}`);
+  for (const period of periods)
+    for (const sector of SECTORS)
+      if (groups.get(`${period}:${sector}`) !== 52 || !keys.has(`${period}:US:${sector}`))
+        throw new Error(`Incomplete month: ${period}/${sector}`);
+  return periods;
 }

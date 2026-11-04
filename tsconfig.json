@@ -18,6 +18,7 @@
     "vite.config.ts",
     "playwright.config.ts",
     "tests/ui.spec.ts",
-    "tests/designs.spec.ts"
+    "tests/designs.spec.ts",
+    "tests/analytics.spec.ts"
   ]
 }
