@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld('electricityDesktop', {
   close: () => ipcRenderer.send('electricity:window:close'),
   showMenu: () => ipcRenderer.send('electricity:window:menu'),
   getWindowState: () => ipcRenderer.invoke('electricity:window:state'),
+  getAppIcon: () => ipcRenderer.invoke('electricity:icon:get'),
+  setAppIcon: (icon) => ipcRenderer.invoke('electricity:icon:set', icon),
   onMaximized: (callback) => {
     const listener = (_event, maximized) => callback(maximized === true);
     ipcRenderer.on('electricity:window:maximized', listener);

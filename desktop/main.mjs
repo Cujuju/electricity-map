@@ -8,9 +8,11 @@ import {
   isExternalURL,
   isTrustedURL,
   readWindowState,
+  readIconPreference,
   sanitizeSearch,
   searchFromDeepLink,
   writeWindowState,
+  writeIconPreference,
 } from './state.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -26,6 +28,9 @@ if (profile) {
   app.setPath('userData', profile);
 }
 const stateFile = join(app.getPath('userData'), 'window-state.json');
+const iconFile = join(app.getPath('userData'), 'icon-preference.json');
+let appIcon = readIconPreference(iconFile);
+const iconPath = () => join(root, development ? 'public' : 'dist', 'icons', `${appIcon}.png`);
 let window = null;
 let api = null;
 let origin = '';
@@ -78,6 +83,18 @@ function registerIPC() {
     if (!trusted(event)) throw new Error('Untrusted window');
     return { maximized: window.isMaximized() };
   });
+  ipcMain.handle('electricity:icon:get', (event) => {
+    if (!trusted(event)) throw new Error('Untrusted window');
+    return appIcon;
+  });
+  ipcMain.handle('electricity:icon:set', (event, icon) => {
+    if (!trusted(event)) throw new Error('Untrusted window');
+    writeIconPreference(iconFile, icon);
+    appIcon = icon;
+    if (process.platform === 'darwin') app.dock?.setIcon(iconPath());
+    else window.setIcon(iconPath());
+    return appIcon;
+  });
 }
 
 function createWindow() {
@@ -100,9 +117,7 @@ function createWindow() {
       : { frame: false }),
     backgroundColor: '#111916',
     title: name,
-    icon: app.isPackaged
-      ? join(process.resourcesPath, 'icon.png')
-      : join(root, 'resources/icon.png'),
+    icon: iconPath(),
     webPreferences: {
       preload: join(root, 'desktop/preload.cjs'),
       contextIsolation: true,
@@ -113,6 +128,7 @@ function createWindow() {
     },
   });
   window.setMenuBarVisibility(false);
+  if (isMac) app.dock?.setIcon(iconPath());
   if (saved.maximized) window.maximize();
   for (const event of ['resize', 'move'])
     window.on(event, () => {

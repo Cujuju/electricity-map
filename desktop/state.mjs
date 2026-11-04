@@ -142,3 +142,16 @@ export function writeWindowState(file, state) {
   writeFileSync(`${file}.tmp`, JSON.stringify(state));
   renameSync(`${file}.tmp`, file);
 }
+
+export function readIconPreference(file) {
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'))?.icon === 'blue' ? 'blue' : 'purple';
+  } catch {
+    return 'purple';
+  }
+}
+
+export function writeIconPreference(file, icon) {
+  if (icon !== 'blue' && icon !== 'purple') throw new Error('Unknown app icon');
+  writeWindowState(file, { icon });
+}

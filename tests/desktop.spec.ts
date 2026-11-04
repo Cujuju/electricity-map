@@ -60,6 +60,15 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     expect(options.packaged).toBe(Boolean(process.env.ELECTRICITY_MAP_EXECUTABLE));
     expect(options.icon).toBe(true);
     expect(options.notices).toBe(true);
+    const titleIcon = page.locator('.desktop-titlebar > img');
+    await expect(titleIcon).toHaveAttribute('src', '/icons/purple.png');
+    await page.getByRole('button', { name: 'App icon', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Purple app icon', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await page.getByRole('button', { name: 'Blue app icon', exact: true }).click();
+    await expect(titleIcon).toHaveAttribute('src', '/icons/blue.png');
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/blue.png');
+    await expect.poll(() => readFile(join(profile, 'icon-preference.json'), 'utf8')).toBe('{"icon":"blue"}');
+    await page.getByRole('button', { name: 'Close icon settings' }).click();
     const headers = await page.evaluate(async () => {
       const r = await fetch('/api/health');
       return { csp: r.headers.get('Content-Security-Policy'), body: await r.json() };
@@ -115,6 +124,11 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     await app.close();
     app = await launch();
     page = await app.firstWindow();
+    await expect(page.locator('.desktop-titlebar > img')).toHaveAttribute('src', '/icons/blue.png');
+    await page.getByRole('button', { name: 'App icon', exact: true }).click();
+    await page.getByRole('button', { name: 'Purple app icon', exact: true }).click();
+    await expect(page.locator('.desktop-titlebar > img')).toHaveAttribute('src', '/icons/purple.png');
+    await page.getByRole('button', { name: 'Close icon settings' }).click();
     await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
     await expect(page.getByLabel('Analysis state', { exact: true })).toHaveValue('TX');
     await expect(page.getByLabel('Analysis month', { exact: true })).toHaveValue('2026-08');

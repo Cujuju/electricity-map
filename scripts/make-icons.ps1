@@ -1,34 +1,19 @@
-# Rasterizes the existing favicon geometry. ICO directory layout follows Spillway's icon builder.
+# Resize the archived Image Gen artwork; purple is the packaged app's default.
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $resourceDir = Join-Path $projectRoot 'resources'
-New-Item -ItemType Directory -Force -Path $resourceDir | Out-Null
+$publicDir = Join-Path $projectRoot 'public/icons'
+New-Item -ItemType Directory -Force -Path $resourceDir, $publicDir | Out-Null
 
-function Get-IconPng([int]$Size) {
+function Get-IconPng([System.Drawing.Image]$Source, [int]$Size) {
   $bitmap = [System.Drawing.Bitmap]::new($Size, $Size)
   $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
   try {
-    $graphics.SmoothingMode = 'AntiAlias'
-    $graphics.Clear([System.Drawing.Color]::Transparent)
-    $graphics.ScaleTransform($Size / 64.0, $Size / 64.0)
-    $shape = [System.Drawing.Drawing2D.GraphicsPath]::new()
-    $shape.AddArc(0, 0, 36, 36, 180, 90)
-    $shape.AddArc(28, 0, 36, 36, 270, 90)
-    $shape.AddArc(28, 28, 36, 36, 0, 90)
-    $shape.AddArc(0, 28, 36, 36, 90, 90)
-    $shape.CloseFigure()
-    $lime = [System.Drawing.SolidBrush]::new([System.Drawing.ColorTranslator]::FromHtml('#d4fa66'))
-    $ink = [System.Drawing.SolidBrush]::new([System.Drawing.ColorTranslator]::FromHtml('#142019'))
-    try {
-      $graphics.FillPath($lime, $shape)
-      $points = [System.Drawing.PointF[]]@(
-        [System.Drawing.PointF]::new(36, 9), [System.Drawing.PointF]::new(16, 36),
-        [System.Drawing.PointF]::new(30, 36), [System.Drawing.PointF]::new(27, 55),
-        [System.Drawing.PointF]::new(49, 25), [System.Drawing.PointF]::new(34, 25)
-      )
-      $graphics.FillPolygon($ink, $points)
-    } finally { $shape.Dispose(); $lime.Dispose(); $ink.Dispose() }
+    $graphics.CompositingQuality = 'HighQuality'
+    $graphics.InterpolationMode = 'HighQualityBicubic'
+    $graphics.PixelOffsetMode = 'HighQuality'
+    $graphics.DrawImage($Source, 0, 0, $Size, $Size)
     $stream = [System.IO.MemoryStream]::new()
     try {
       $bitmap.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
@@ -37,11 +22,24 @@ function Get-IconPng([int]$Size) {
   } finally { $graphics.Dispose(); $bitmap.Dispose() }
 }
 
+$sources = @{
+  blue = '02-midnight-grid-full-bleed.png'
+  purple = '02-midnight-grid-purple-full-bleed.png'
+}
 $sizes = 16, 24, 32, 48, 64, 128, 256
 $pngs = @{}
-foreach ($size in $sizes) { $pngs[$size] = Get-IconPng $size }
-[System.IO.File]::WriteAllBytes((Join-Path $resourceDir 'icon.png'), $pngs[256])
-[System.IO.File]::WriteAllBytes((Join-Path $resourceDir 'icon-1024.png'), (Get-IconPng 1024))
+foreach ($color in 'blue', 'purple') {
+  $sourcePath = Join-Path $projectRoot "output/imagegen/round-3-icons/$($sources[$color])"
+  $source = [System.Drawing.Image]::FromFile($sourcePath)
+  try {
+    [System.IO.File]::WriteAllBytes((Join-Path $publicDir "$color.png"), (Get-IconPng $source 512))
+    if ($color -eq 'purple') {
+      foreach ($size in $sizes) { $pngs[$size] = Get-IconPng $source $size }
+      [System.IO.File]::WriteAllBytes((Join-Path $resourceDir 'icon.png'), $pngs[256])
+      [System.IO.File]::WriteAllBytes((Join-Path $resourceDir 'icon-1024.png'), (Get-IconPng $source 1024))
+    }
+  } finally { $source.Dispose() }
+}
 $output = [System.IO.MemoryStream]::new()
 $writer = [System.IO.BinaryWriter]::new($output)
 try {
@@ -59,4 +57,4 @@ try {
   $writer.Flush()
   [System.IO.File]::WriteAllBytes((Join-Path $resourceDir 'icon.ico'), $output.ToArray())
 } finally { $writer.Dispose(); $output.Dispose() }
-Write-Output 'Electricity Map icons generated.'
+Write-Output 'Blue and purple Electricity Map icons generated; packaged default is purple.'

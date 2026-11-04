@@ -1,6 +1,7 @@
 import { createMemo, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { Copy, Menu, Minus, Square, X } from 'lucide-solid';
 import { DESIGNS, type DashboardId } from '../designs/catalog';
+import { appIconURL } from '../app-icon';
 
 // Adapted from Spillway's Solid title bar; native macOS traffic lights stay native.
 export default function TitleBar(props: { design: DashboardId }) {
@@ -32,7 +33,7 @@ export default function TitleBar(props: { design: DashboardId }) {
         '--desktop-chrome-fg': palette()?.[1] ?? '#e8eddf',
       }}
     >
-      <img src="/favicon.svg" alt="" width="22" height="22" />
+      <img src={appIconURL()} alt="" width="22" height="22" />
       <span>ELECTRICITY MAP</span>
       <div class="desktop-window-controls">
         <button aria-label="Application menu" title="Application menu" onClick={desktop.showMenu}>

@@ -8,6 +8,31 @@ const dataset: Dataset = JSON.parse(
 const latest = [...new Set(dataset.rows.map((row) => row.period))].sort().at(-1)!;
 const quarterCount = new Set(dataset.rows.map((row) => row.period)).size;
 
+test('app icon defaults to purple, remembers blue, and preserves the workspace', async ({ page }) => {
+  await page.goto('/?design=cosmic&lab=changes&state=TX&sector=RES&month=2026-08&custom=kept');
+  await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
+  const before = page.url();
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/purple.png');
+  await page.getByRole('button', { name: 'App icon', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Choose your app icon' });
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Purple app icon', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Blue app icon', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Blue app icon', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/blue.png');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Close icon settings' }).click();
+  await expect(page).toHaveURL(before);
+  await page.reload();
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/blue.png');
+  await page.getByRole('button', { name: 'App icon', exact: true }).click();
+  await page.getByRole('button', { name: 'Purple app icon', exact: true }).click();
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/purple.png');
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test('all lenses share real data, state, sector and quarter selection', async ({
   page,
 }, testInfo) => {

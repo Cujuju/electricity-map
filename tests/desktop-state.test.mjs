@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
   desktopCSP,
   isExternalURL,
@@ -7,7 +10,29 @@ import {
   normalizeWindowState,
   sanitizeSearch,
   searchFromDeepLink,
+  readIconPreference,
+  writeIconPreference,
 } from '../desktop/state.mjs';
+
+test('app icon defaults to purple and persists only supported colors', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'electricity-icon-'));
+  const file = join(directory, 'icon.json');
+  try {
+    assert.equal(readIconPreference(file), 'purple');
+    writeIconPreference(file, 'blue');
+    assert.equal(readIconPreference(file), 'blue');
+    assert.throws(() => writeIconPreference(file, '../../other'), /Unknown app icon/);
+    assert.equal(readIconPreference(file), 'blue');
+    writeIconPreference(file, 'purple');
+    assert.equal(readIconPreference(file), 'purple');
+    for (const value of ['broken', 'null', '{"icon":"unknown"}']) {
+      writeFileSync(file, value);
+      assert.equal(readIconPreference(file), 'purple');
+    }
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 
 test('desktop links accept only the app scheme and recognized dashboard parameters', () => {
   assert.equal(

@@ -82,6 +82,8 @@ For browser development use `npm run dev:web` (Vite on 4187, API on 3001). To se
 
 ## Desktop behavior and packages
 
+Use **App icon** in the toolbar to choose the blue or purple electrical map. Purple is the default. The choice is remembered on this device and updates the toolbar, title bar, favicon and running desktop window icon (Dock icon on macOS). Installed shortcuts and installer branding use purple. `npm run icons` regenerates web/native icon sizes from the archived full-bleed artwork in `output/imagegen/round-3-icons/`.
+
 The desktop shell adapts Spillway's Solid title bar, native macOS traffic-light layout, isolated preload bridge, window restoration, launcher, and installer conventions. It has native minimize/maximize/restore/close controls, an application menu, zoom/fullscreen shortcuts, a single-instance lock, external links in the default browser, and CSV downloads through Electron's native download handling.
 
 Window bounds, maximized state and the selected dashboard/workspace/filters are restored at launch. State lives in the app's user-data directory (`%APPDATA%\Electricity Map` on Windows); development uses `Electricity Map Dev`. Bounds are clamped to connected displays when monitors change. `ELECTRICITY_MAP_PROFILE` accepts an absolute directory for an isolated profile, used by desktop tests.

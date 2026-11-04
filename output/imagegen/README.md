@@ -1,6 +1,6 @@
 # Electricity Map identity explorations
 
-All images were generated with ChatGPT Image Gen. Original concepts are preserved alongside their prompts. These are exploration assets; they are not installed as the application icon.
+All images were generated with ChatGPT Image Gen. Original concepts are preserved alongside their prompts. The two full-bleed Midnight Grid variations are available in the app's **App icon** picker, with purple as the default. Other images remain exploration assets.
 
 ## Round 1: ten logo concepts
 

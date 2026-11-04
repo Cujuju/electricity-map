@@ -20,6 +20,44 @@
 .desktop-titlebar > img {
   pointer-events: none;
 }
+.app-icon-trigger {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  color: #2e442c;
+  font: 11px 'DM Sans', sans-serif;
+}
+.app-icon-trigger img { border-radius: 4px; }
+.app-icon-settings {
+  width: min(480px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid #c5c3d0;
+  border-radius: 16px;
+  background: #f7f6fb;
+  color: #252137;
+  color-scheme: light;
+  font: 14px/1.5 'DM Sans', sans-serif;
+  letter-spacing: normal;
+  white-space: normal;
+}
+.app-icon-settings::backdrop { background: #100b25b8; backdrop-filter: blur(8px); }
+.app-icon-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.app-icon-heading h2 { margin: 0; font-size: 22px; }
+.app-icon-heading button { padding: 6px; }
+.app-icon-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0 16px; }
+.app-icon-option { padding: 8px; border: 2px solid transparent; border-radius: 12px; color: inherit; }
+.app-icon-option[aria-pressed='true'] { border-color: #7450c3; background: #eae3f8; }
+.app-icon-option:focus-visible, .app-icon-trigger:focus-visible { outline: 2px solid #7450c3; outline-offset: 3px; }
+.app-icon-option:disabled { cursor: wait; opacity: .7; }
+.app-icon-option img { display: block; width: 100%; height: auto; border-radius: 6px; margin-bottom: 10px; }
+.app-icon-option strong, .app-icon-option span { display: block; }
+.app-icon-option span, .app-icon-status { font-size: 12px; }
+.app-icon-settings [role='alert'] { color: #a12239; }
+@media (max-width: 1180px) { .design-switcher .design-browse { display: none; } .app-icon-trigger { margin-left: auto; } }
+@media (max-width: 480px) { .app-icon-trigger span { display: none; } }
 .desktop-window-controls {
   display: flex;
   margin-left: auto;

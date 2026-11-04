@@ -1,6 +1,7 @@
 import { createEffect, For, onMount, onCleanup } from 'solid-js';
 import { ChevronLeft, ChevronRight, Grid2X2, X, Zap, ArrowUpRight } from 'lucide-solid';
 import { DESIGNS, type DashboardId } from './catalog';
+import IconSettings from '../IconSettings';
 
 export default function DesignSwitcher(props: {
   selected: DashboardId;
@@ -87,6 +88,7 @@ export default function DesignSwitcher(props: {
         <button class="design-browse" onClick={() => gallery.showModal()}>
           Browse collection <ArrowUpRight size={13} />
         </button>
+        <IconSettings />
       </div>
       <dialog
         ref={gallery}
