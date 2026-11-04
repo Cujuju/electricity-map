@@ -1,0 +1,16 @@
+Mode: built-in Image Gen
+Use case: logo-brand.
+Create ONE polished logo exploration contact sheet containing EXACTLY TEN genuinely distinct potential logo ideas for "Electricity Map", a web-based electricity price and utility data observatory for US states. This is a branding exploration, not an infographic.
+Layout: landscape high-resolution sheet, precisely two columns and five rows, ten generous equal-sized white/off-white tiles, subtle thin separators, ample whitespace. Each tile contains one prominent original vector-style symbol, the wordmark "Electricity Map" in a carefully chosen clean typeface beneath or beside it, and a small number and short concept name. All text clearly spelled. Editorial studio-quality logo presentation, flat crisp geometry, restrained 1–2 color palettes, simple enough to reproduce as SVG and read at favicon size. Variety in silhouette and idea is essential.
+Ten specific directions, in reading order:
+01 "Grid Atlas": a folded map with its center fold becoming a clean lightning bolt; dark navy and electric cyan.
+02 "Current Pin": a solid map pin whose negative space forms a lightning bolt; deep teal.
+03 "EM Circuit": an original compact geometric E/M monogram drawn as a continuous circuit path with only two terminals; royal blue.
+04 "Contour Pulse": three simplified nested topographic contours interrupted by one bold electrical pulse; forest green.
+05 "Price Signal": three ascending bars arranged into a compact angular lightning silhouette; indigo and amber.
+06 "State Mosaic": five interlocking abstract geographic polygon tiles with a lightning-shaped central gap; muted blue and teal. Abstract geographic pieces, not inaccurate literal US states.
+07 "Power Compass": a four-point compass with a single asymmetric bolt as its north needle; charcoal and orange.
+08 "Grid Lens": a bold circular lens framing a very sparse lattice and one energized point; deep blue and mint.
+09 "Current Flow": two bold flowing parallel paths bending into a distinctive E-like wave; cobalt blue.
+10 "Atlas Spark": a minimal open-book/folded-atlas mark with a four-point spark rising at its center; near-black and golden yellow.
+Avoid: realistic photographs, 3D, gradients, shadows, generic lightbulbs, tiny intricate circuits, environmental/solar claims, mockup products, existing company logos, extra concepts, decorative explanatory paragraphs. Make each mark feel intentionally designed with balanced optical weight and distinctive geometry. This is one contact-sheet image with ten concepts.

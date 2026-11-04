@@ -1,0 +1,33 @@
+Mode: ChatGPT built-in Image Gen
+
+Use case: logo-brand. Design ONE original, exceptionally polished logo concept for Electricity Map, a US electricity price and utility data exploration application. This is an identity design commission. Deliver an uncluttered white or warm-white flat presentation with a large primary logo lockup centered, and a small one-color standalone mark or lettering detail below where appropriate. Substantial whitespace, restrained composition. All brand text must read exactly Electricity Map or the case specified. Do not print concept names, descriptions, annotations, or fictitious slogans. Razor-sharp vector-like artwork, expert typography, optical balance, deliberate proportions. Avoid generic AI logo tropes: no lightning bolts, no map pins, no lightbulbs, no leaves, no gradients, no glow, no shadows, no texture, no 3D, no mockup objects, no lens, no compass, no generic app-icon rounded square. No ornamental decoration. The result should feel designed by an experienced independent identity studio, with a clear graphic idea and careful typographic craft. Specific art direction:
+
+1. Editorial Current
+A typography-led identity. Set ELECTRICITY in a beautifully drawn condensed grotesk uppercase, with MAP beneath, dramatically wide letter spacing. One restrained cobalt rectangular rule aligns to the word width and breaks at a precise offset like an editorial map key. The typography itself is the logo. Optical refinements, sophisticated Swiss public-information design. No pictorial symbol. Black and cobalt ink on warm white. Aim for the authority of a national cartography institution with contemporary energy.
+
+2. Longitude
+An abstract cartographic symbol constructed from just three slightly curved vertical strokes and one horizontal stroke, suggesting longitude lines and a compact lowercase e through carefully chosen negative space. Asymmetric, memorable, bold, simple silhouette. Pair with a custom lowercase electricity map wordmark in a humanist sans. Dark ink and one vivid vermilion accent on white. It must look like a serious independent mapping publication, not a globe icon or a technology startup.
+
+3. Meter
+An exceptionally considered custom monospaced wordmark reading electricity map, all lowercase, built with generous counters and subtle utilitarian details inspired by old analog electricity meter lettering. Distinctive customized e and m. A small solid rectangular calibration notch at the left is the only symbol. Rich black on ivory. Quiet technical authority, a collectible typographic identity, extremely strong typography and no illustration.
+
+4. Common Grid
+Create one original compact symbol from four thick equal square tiles organized around an offset cross-shaped gap. The asymmetric interruption makes the form memorable and subtly resembles an abstract map intersection. Not a generic Windows logo: use unusual yet mathematically balanced proportions, slightly staggered tile widths and one clipped interior corner. Restrained deep pine green, white negative space. Pair with an elegant sturdy grotesk Electricity Map wordmark. Public utility, civic trust, graphic economy. Flat single-color mark.
+
+5. Electric Ligature
+A bespoke high-end wordmark reading Electricity Map, with an inventive but legible custom ligature joining the final y of Electricity to the initial M of Map via a single carefully drawn flowing baseline. Lowercase and uppercase rhythm handled exquisitely. Black italic or gently slanted grotesk typography with one acid-yellow underline block. No icon, no literal bolt. Dynamic without speed-line cliches. Brand studio-quality lettering.
+
+6. The Index
+A confident oversized uppercase E built from three thick black horizontal rectangles with unequal right endpoints, and one slim vertical orange bar positioned as an index cursor just beyond them. Form should read simultaneously as E, a ranked chart, and a page index tab, while remaining one powerful simple mark. Pair with compact tightly kerned Electricity Map in a crisp neo-grotesk. Swiss poster logic, striking and restrained. No decorative elements.
+
+7. Territory
+An original single-color abstract territorial emblem: two broad interlocking angular paths create one compact near-square symbol and a single distinctive branching white corridor in the middle. Evokes regional boundaries seen from above, not a literal US map, puzzle piece, or circuit. Warm brick red on ivory. Pair with a characterful contemporary serif wordmark Electricity Map, generous tracking and impeccable optical kerning. Cultured cartographic publisher, timeless, distinctive.
+
+8. Open Circuit
+A minimalist lowercase e monogram drawn with one broad continuous squared stroke. The inner horizontal stroke stops just short of the outside edge, creating a precisely judged open gap that feels like an open electrical circuit. No dots, plug, lightning bolt, or circuit board. Rounded exterior corners, square interior geometry, strong memorable silhouette. Very dark navy on white. Pair with a refined custom geometric Electricity Map wordmark. One-color reproduction must work perfectly.
+
+9. Field Notes
+A charming but rigorous typographic identity reading Electricity Map in a custom medium-weight slab serif, inspired by field atlases and engineering handbooks. Distinctive small-cap M, softly squared curves, no vintage distress. Tiny three-line map scale mark underneath as a secondary detail, with no numbers. Forest ink on pale warm cream. Premium independent publication identity, approachable intellectual character. Typography must be the star, no generic icon.
+
+10. Phase
+Create an original compact monogram formed from two heavy interleaving vertical ribbons whose single right-angle steps suggest both E and M through positive and negative space. Broad solid planes, absolutely no ribbons with gradients, twists, 3D, or infinite loop. Electric ultramarine on white. Place a clean Electricity Map wordmark beside it with precise spacing. Architectural, bold, surprising silhouette, a mark that could be cut from one sheet of metal.
