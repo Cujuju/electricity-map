@@ -17,8 +17,10 @@
     "src",
     "vite.config.ts",
     "playwright.config.ts",
+    "playwright.desktop.config.ts",
     "tests/ui.spec.ts",
     "tests/designs.spec.ts",
-    "tests/analytics.spec.ts"
+    "tests/analytics.spec.ts",
+    "tests/desktop.spec.ts"
   ]
 }

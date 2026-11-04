@@ -20,6 +20,7 @@ const mime = {
 export async function createApp({
   datasetPath = resolve(root, 'data/electricity.json'),
   staticRoot = resolve(root, 'dist'),
+  contentSecurityPolicy,
 } = {}) {
   const snapshot = await readFile(datasetPath);
   const dataset = JSON.parse(snapshot.toString());
@@ -45,6 +46,7 @@ export async function createApp({
   return createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    if (contentSecurityPolicy) response.setHeader('Content-Security-Policy', contentSecurityPolicy);
     const json = (status, body) => {
       response.writeHead(status, { 'Content-Type': mime['.json'] });
       response.end(JSON.stringify(body));

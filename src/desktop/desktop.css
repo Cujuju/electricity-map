@@ -1,0 +1,56 @@
+.desktop-titlebar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding-left: 8px;
+  gap: 10px;
+  background: var(--desktop-chrome-bg);
+  color: var(--desktop-chrome-fg);
+  border-bottom: 1px solid color-mix(in srgb, var(--desktop-chrome-fg) 15%, transparent);
+  -webkit-app-region: drag;
+  user-select: none;
+  font:
+    500 11px 'DM Sans',
+    sans-serif;
+  letter-spacing: 1.2px;
+}
+.desktop-titlebar > img {
+  pointer-events: none;
+}
+.desktop-window-controls {
+  display: flex;
+  margin-left: auto;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+.desktop-window-controls button {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 100%;
+  color: inherit;
+}
+.desktop-window-controls button:hover {
+  background: color-mix(in srgb, var(--desktop-chrome-fg) 12%, transparent);
+}
+.desktop-window-controls .desktop-window-close:hover {
+  background: #c42b1c;
+  color: #fff;
+}
+html[data-desktop='darwin'] .desktop-titlebar {
+  padding-left: 80px;
+}
+html[data-desktop] .design-switcher {
+  top: 36px;
+}
+@media (min-width: 761px) {
+  html[data-desktop][data-dashboard='original'] .sidebar {
+    top: calc(36px + var(--studio-header-height, 52px));
+    height: calc(100vh - 36px - var(--studio-header-height, 52px));
+    min-height: 0;
+    overflow-y: auto;
+  }
+}

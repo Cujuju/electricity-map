@@ -46,6 +46,7 @@ import {
 } from './math';
 import { ChangeMap, HistoryPlot, TimeGrid, dataColor } from './AnalysisCharts';
 import UtilityExplorer from './UtilityExplorer';
+import { shareURL } from '../desktop/links';
 
 async function snapshot<T>(url: string): Promise<T> {
   const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
@@ -257,7 +258,7 @@ export default function AnalysisStudio(props: {
   }
   async function share() {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(shareURL());
       setCopied(true);
     } catch {
       setCopied(false);

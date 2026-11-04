@@ -1,0 +1,46 @@
+{
+  "appId": "dev.cujuju.electricity-map",
+  "productName": "Electricity Map",
+  "asar": true,
+  "npmRebuild": false,
+  "directories": { "output": "release", "buildResources": "resources" },
+  "files": [
+    "dist/**",
+    "!dist/licenses/**",
+    "desktop/**",
+    "server/**",
+    "data/*.json",
+    "package.json",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "extraResources": [
+    { "from": "resources/icon.png", "to": "icon.png" },
+    { "from": "licenses", "to": "licenses" },
+    { "from": "dist/licenses", "to": "licenses/npm" }
+  ],
+  "beforePack": "scripts/before-pack.cjs",
+  "protocols": [{ "name": "Electricity Map dashboard", "schemes": ["electricity-map"] }],
+  "win": {
+    "target": [
+      { "target": "nsis", "arch": ["x64"] },
+      { "target": "portable", "arch": ["x64"] }
+    ],
+    "icon": "resources/icon.ico"
+  },
+  "nsis": {
+    "artifactName": "Electricity-Map-Setup-${version}-${arch}.${ext}",
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "runAfterFinish": true
+  },
+  "portable": { "artifactName": "Electricity-Map-Portable-${version}-${arch}.${ext}" },
+  "mac": {
+    "target": ["dmg"],
+    "icon": "resources/icon-1024.png",
+    "category": "public.app-category.education"
+  },
+  "linux": { "target": ["AppImage"], "icon": "resources/icon.png", "category": "Education" },
+  "publish": null
+}

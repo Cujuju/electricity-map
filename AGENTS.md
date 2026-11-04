@@ -1,6 +1,6 @@
 # Electricity Map
 
-SolidJS + TypeScript frontend, Vite build, and a Node.js HTTP/data service.
+SolidJS + TypeScript frontend, Electron desktop shell, Vite build, and a Node.js HTTP/data service. Desktop code is under `desktop/` and `src/desktop/`; browser mode remains supported.
 
 The original Observatory contains three lenses. `src/designs/` contains ten additional complete dashboard designs, selected through Design Lab or the `design` URL parameter. Keep filters, selected state, quarter and original lens intact when changing designs. Design-specific CSS is scoped under `.skin-…` to preserve the original application.
 
@@ -8,14 +8,18 @@ The original Observatory contains three lenses. `src/designs/` contains ten addi
 
 ## Commands
 
-- `npm run dev`: Node API at 127.0.0.1:3001 and Vite at 127.0.0.1:4187.
+- `npm run dev`: Electron Dev app, Vite at 4187 and a managed Node API on a free loopback port. `npm run dev:web` runs the original browser/API development mode.
 - `npm run check`: TypeScript checking.
 - `npm test`: data transformation, provenance, and HTTP integration tests.
 - `npm run test:ui`: Playwright interaction and responsive checks.
-- `npm run build` then `npm start`: production build served by Node.
+- `npm run build` then `npm start`: production desktop app. `npm run start:web`: production Node web server.
+- `npm run test:desktop`: real Electron tests with isolated profiles. `ELECTRICITY_MAP_EXECUTABLE` selects a packaged binary.
+- `npm run package:dir` / `npm run package`: unpacked desktop app / installers in ignored `release/`.
 - `npm run data:refresh`: sequential quarterly, monthly and annual utility updates. Each file is replaced atomically after its own validation. Individual refresh commands have `:quarterly`, `:monthly`, and `:utilities` suffixes.
 
 ## Data contracts
+
+Desktop contracts: keep the renderer sandboxed, Node integration off and context isolation on. Validate IPC sender/frame/origin. Allow external HTTP(S) links only through the system browser. App links use `electricity-map://open` with a bounded whitelist of query parameters. Keep production/development profiles and app identities separate. The desktop Node service binds loopback on a free port and stops with Electron. Do not reuse Spillway credentials, identity, update feed or signing keys.
 
 Never invent observations or replace missing values with zero. Preserve EIA's U.S. total rather than averaging state prices. Quarterly prices are supplied by EIA, not averages of monthly prices. Sales are million kWh; prices are cents/kWh; revenue is million dollars. State visuals include 50 states and DC; U.S. totals are separate. Color, height, radial distance, and time encodings must be explained in the UI.
 

@@ -35,6 +35,8 @@ import Sparkline from './components/Sparkline';
 import DesignSwitcher from './designs/DesignSwitcher';
 import DesignDashboard from './designs/DesignDashboard';
 import AnalysisStudio from './analytics/AnalysisStudio';
+import TitleBar from './desktop/TitleBar';
+import { shareURL } from './desktop/links';
 import { DESIGNS, isDesign, type DashboardId, type DesignId } from './designs/catalog';
 import {
   downloadCSV,
@@ -273,7 +275,7 @@ export default function App() {
   }
   async function share() {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(shareURL());
       setCopied(true);
       setCopyError(false);
     } catch {
@@ -288,6 +290,7 @@ export default function App() {
 
   return (
     <>
+      <TitleBar design={design()} />
       <DesignSwitcher
         selected={design()}
         onChange={setDesign}

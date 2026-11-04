@@ -1,6 +1,6 @@
 # Electricity Map
 
-A different kind of current. An original three-view observatory plus **ten additional dashboard designs**, all using real U.S. electricity prices. Built with **SolidJS, TypeScript, Vite, and Node.js**.
+A different kind of current. An **Electron desktop app** with an original three-view observatory plus **ten additional dashboard designs**, all using real U.S. electricity prices. Built with **SolidJS, TypeScript, Vite, Electron, and Node.js**. Browser mode remains available.
 
 - **Electric atlas** — a raised geographic map. State elevation and color encode electricity price; switch between relief and flat geography.
 - **Price constellation** — a radial constellation of states. More expensive electricity sits farther from the center; bubble area increases with electricity sales. Census regions determine ordering.
@@ -67,7 +67,7 @@ npm install
 npm run dev
 ```
 
-Open **http://127.0.0.1:4187**. Vite proxies `/api` to the Node service at `127.0.0.1:3001`. Both services run in one process and stop together. Frontend edits use Vite hot reload; restart `npm run dev` for backend or snapshot changes.
+`npm run dev` opens **Electricity Map Dev** as a desktop window with Vite hot reload. The launcher runs Vite and the Node API under plain Node, with an automatically selected API loopback port proxied through **http://127.0.0.1:4187**. Closing the app stops both servers. Restart it after desktop/backend or snapshot changes.
 
 For a production build:
 
@@ -76,7 +76,30 @@ npm run build
 npm start
 ```
 
-Node serves both the built app and API at **http://127.0.0.1:3001**. The host defaults to loopback. Set `HOST` and `PORT` in `.env` for another environment.
+`npm start` opens the built desktop app. It runs its own Node service on a free loopback port, so it does not need a separately running server or port 3001. The launcher clears `ELECTRON_RUN_AS_NODE` if an editor terminal supplied it.
+
+For browser development use `npm run dev:web` (Vite on 4187, API on 3001). To serve the built web app use `npm run start:web`. Only browser server mode uses `HOST` and `PORT` from `.env`.
+
+## Desktop behavior and packages
+
+The desktop shell adapts Spillway's Solid title bar, native macOS traffic-light layout, isolated preload bridge, window restoration, launcher, and installer conventions. It has native minimize/maximize/restore/close controls, an application menu, zoom/fullscreen shortcuts, a single-instance lock, external links in the default browser, and CSV downloads through Electron's native download handling.
+
+Window bounds, maximized state and the selected dashboard/workspace/filters are restored at launch. State lives in the app's user-data directory (`%APPDATA%\Electricity Map` on Windows); development uses `Electricity Map Dev`. Bounds are clamped to connected displays when monitors change. `ELECTRICITY_MAP_PROFILE` accepts an absolute directory for an isolated profile, used by desktop tests.
+
+Share buttons copy `electricity-map://open?...` links in Electron and ordinary HTTP URLs in browser mode. The Windows installer registers the protocol; opening a link activates the existing app and restores the linked dashboard. Unpacked source builds can display/copy these links, but require an installed protocol handler to open them through the operating system.
+
+The production renderer is sandboxed with Node integration disabled, context isolation, a narrow sender-validated window-control bridge, restricted navigation and a Content Security Policy. Its Node service serves bundled EIA snapshots locally. Charts/data work offline; Google Fonts have system fallbacks when offline.
+
+```powershell
+npm run package:dir   # Unpacked app under release\win-unpacked on Windows
+npm run package       # Windows x64 installer and portable executable under release
+```
+
+Windows output names are `Electricity-Map-Setup-1.1.0-x64.exe` and `Electricity-Map-Portable-1.1.0-x64.exe`. The packaged app includes Electron/Node and all three snapshots; users do not need Node or npm installed. Build outputs are ignored by Git. These local packages are unsigned, and automatic application updates are not configured. This app has its own identity and protocol; it does not use Spillway's update feed or credentials.
+
+Windows x64 packaging is tested. macOS DMG and Linux AppImage targets are configured but unverified on their native platforms. Rebuild the app after refreshing source snapshots. `npm run icons` regenerates the desktop icons from the existing favicon geometry using PowerShell/System.Drawing on Windows. Spillway's MIT notice ships in `licenses/Spillway.txt`.
+
+Vite generates bundled renderer dependency notices at `dist/licenses/npm-renderer.txt`. Packaging requires these notices and ships them beside the app under `resources/licenses/`, following Spillway's build convention. The production dependency audit is clean; npm currently reports moderate minimatch-related advisories in the development-only electron-builder toolchain.
 
 ## Data and provenance
 
@@ -113,9 +136,12 @@ npm run check
 npm test
 npm run build
 npm run test:ui
+npm run test:desktop
 ```
 
 UI tests use installed Google Chrome through Playwright and serve the production build on port 3187. They cover the original views and all ten dashboards, chart keyboard interactions, state/sector/quarter selection, playback, URL restoration, switching designs, rankings, source notes, CSV contents, missing data, error recovery, and desktop/mobile overflow. New checks cover monthly calculations against the actual snapshot, per-account units, chosen usage, custom baseline restoration/clamping, heatmap interaction, utility search, county coverage and URL restoration. Unit tests check change calculations, missing months, ties, annualized growth, price/volume reconciliation, snapshot integrity and compressed HTTP responses. Screenshots are written under the ignored test-results directory.
+
+Desktop tests launch the real Electron binary with isolated temporary profiles. They check the bridge, window controls, bundled API/CSP, CSV download, protocol links, clipboard sharing, blocked navigation, restart restoration and utility data. A separate development check verifies Vite/API startup and shutdown. Set `ELECTRICITY_MAP_EXECUTABLE` to an absolute packaged executable to run the production check against that build; development checks are skipped for packaged binaries. Desktop screenshots are written under the ignored `test-results-desktop` directory.
 
 ## Project layout
 
@@ -124,6 +150,10 @@ src/                 SolidJS application and SVG visualizations
 src/assets/          Bundled geographic topology
 src/designs/         Ten dashboard designs, chart components, catalog and Design Lab
 src/analytics/       Monthly Change Lab, shared calculations and annual utility explorer
+src/desktop/         Solid title bar, desktop bridge types, native share links and chrome
+desktop/             Electron main process, sandboxed preload and window/deep-link state
+resources/           Native app icons
+licenses/            Redistributed desktop component notices
 server/              Node HTTP server, EIA adapter and validation
 scripts/             Development runner and snapshot refresh
 data/                Quarterly, monthly and annual utility EIA snapshots

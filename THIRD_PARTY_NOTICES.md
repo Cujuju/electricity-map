@@ -25,3 +25,9 @@ Annual utility sales, revenue, customer counts, and county distribution-equipmen
 # Fonts
 
 DM Sans, IBM Plex Mono, Instrument Serif, Bebas Neue, Space Grotesk, Syne, DotGothic16, and Fraunces are requested from Google Fonts. Their open-source font licenses are available through [Google Fonts](https://fonts.google.com/). System sans, mono, and Georgia fallbacks allow the interface to work without the font network requests.
+
+# Desktop components
+
+Title-bar, window-restoration, preload-subscription, launcher, icon-packaging and installer patterns are adapted from [Spillway](https://github.com/Cujuju/spillway), copyright 2026 Cuju Ju, under the MIT License. The full notice is preserved in `licenses/Spillway.txt` and included in packaged applications.
+
+Vite generates the bundled renderer's npm dependency notices under `dist/licenses/npm-renderer.txt`. Electron packages ship them under `resources/licenses/npm/`, alongside Spillway's notice. Electron and Chromium redistribution notices also ship with the Electron runtime.
