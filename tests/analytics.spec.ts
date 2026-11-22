@@ -2,9 +2,18 @@ import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import type { MonthlyDataset } from '../src/analytics/types';
 import { DESIGNS } from '../src/designs/catalog';
+import { monthLabel } from '../src/analytics/math';
 const data: MonthlyDataset = JSON.parse(
   await readFile(new URL('../data/monthly.json', import.meta.url), 'utf8'),
 );
+
+test('the history note states the dataset span, not the selected To month', async ({ page }) => {
+  await page.goto('/?lab=changes&design=original&grain=month&from=2020-03&to=2021-03');
+  const periods = data.rows.map((row) => row.period).sort();
+  await expect(page.locator('.lab-note', { hasText: 'Historical records cover' })).toHaveText(
+    `Historical records cover ${monthLabel(periods[0])} through ${monthLabel(periods.at(-1)!)}.`,
+  );
+});
 
 test('the DC map inset selects the district by pointer and keyboard', async ({ page }) => {
   await page.goto('/?lab=changes&design=original&state=VA');

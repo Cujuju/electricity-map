@@ -651,7 +651,8 @@ export default function AnalysisStudio(props: {
               />
             </section>
             <p class="lab-note">
-              Historical records cover January 2015 through {monthLabel(month())}.
+              Historical records cover {monthLabel(months()[0])} through{' '}
+              {monthLabel(months().at(-1)!)}.
             </p>
             <section class="lab-records">
               <div>
