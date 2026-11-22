@@ -8,6 +8,7 @@
 // "electricity-map-deploy", accounts CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, EIA_API_KEY).
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -18,8 +19,10 @@ const deploy = !ci && !args.has('--no-deploy');
 const ui = !args.has('--no-ui');
 const project = process.env.PAGES_PROJECT || 'electricity-map';
 const port = Number(process.env.PAGES_DEV_PORT || 8788);
-const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const windows = process.platform === 'win32';
+// npm/npx are .cmd shims on Windows, which Node only runs through a shell.
+const npx = 'npx';
+const npm = 'npm';
 
 function keychain(account) {
   if (process.env[account] || process.platform !== 'darwin') return process.env[account];
@@ -31,11 +34,15 @@ function keychain(account) {
   return result.status === 0 ? result.stdout.trim() : undefined;
 }
 
+// With shell: true (Windows), cmd.exe receives one joined command line, so quote arguments.
+const quote = (arg) => (windows && /[\s"&|<>^]/.test(arg) ? `"${arg.replaceAll('"', '""')}"` : arg);
+
 function run(command, commandArgs, env = {}) {
   console.log(`\n▶ ${[command, ...commandArgs].join(' ')}`);
-  const result = spawnSync(command, commandArgs, {
+  const result = spawnSync(command, commandArgs.map(quote), {
     cwd: root,
     stdio: 'inherit',
+    shell: windows,
     env: { ...process.env, ...env },
   });
   if (result.status !== 0)
@@ -68,7 +75,9 @@ const chrome =
     ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
     : process.platform === 'linux'
       ? '/opt/google/chrome/chrome'
-      : null;
+      : windows
+        ? join(process.env.PROGRAMFILES || 'C:\\Program Files', 'Google/Chrome/Application/chrome.exe')
+        : null;
 const browserEnv = chrome && !existsSync(chrome) ? { PLAYWRIGHT_BUNDLED_CHROMIUM: '1' } : {};
 
 async function waitFor(url, seconds) {
@@ -93,7 +102,7 @@ if (ui) {
   const pages = spawn(
     npx,
     ['wrangler', 'pages', 'dev', 'dist-pages', '--ip', '127.0.0.1', '--port', String(port)],
-    { cwd: root, stdio: ['ignore', 'ignore', 'inherit'], detached: process.platform !== 'win32' },
+    { cwd: root, stdio: ['ignore', 'ignore', 'inherit'], detached: !windows, shell: windows },
   );
   try {
     await waitFor(`http://127.0.0.1:${port}/api/health`, 60);
@@ -103,7 +112,8 @@ if (ui) {
     });
   } finally {
     try {
-      process.kill(process.platform === 'win32' ? pages.pid : -pages.pid);
+      if (windows) spawnSync('taskkill', ['/pid', String(pages.pid), '/T', '/F']);
+      else process.kill(-pages.pid);
     } catch {}
   }
 }

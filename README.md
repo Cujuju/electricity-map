@@ -103,21 +103,25 @@ PLAYWRIGHT_BASE_URL=http://127.0.0.1:8788 npm run test:ui
 
 ### Local CI and release (no GitHub Actions)
 
-GitHub Actions minutes are not used for this private repository, so CI and releases run on a Mac. `.github/workflows/` stays available for manual runs only (`workflow_dispatch`).
+GitHub Actions minutes are not used for this private repository, so CI and releases run on our own machines. `.github/workflows/` stays available for manual runs only (`workflow_dispatch`).
 
 | Command | What it does |
 | --- | --- |
 | `npm run ci:local` | Run before merging a PR: `check`, unit tests, `build:pages`, then the Playwright UI suite against the Node server **and** against `wrangler pages dev dist-pages` |
 | `npm run release` | `data:refresh`, the same checks and tests, then `wrangler pages deploy dist-pages --project-name electricity-map --branch main` |
-| `npm run deploy:install` | Install the weekly launchd agent `foo.cujuju.electricity-map.deploy` (`deploy:uninstall` removes it) |
+| `npm run release:weekly` | The scheduled release below; `-- --force` ignores the freshness check |
 
-Flags for `scripts/release-pages.mjs`: `--no-refresh`, `--no-deploy`, `--no-ui`. Without Google Chrome installed, UI tests use Playwright's bundled Chromium (`PLAYWRIGHT_BUNDLED_CHROMIUM=1`).
+Flags for `scripts/release-pages.mjs`: `--no-refresh`, `--no-deploy`, `--no-ui`. Without Google Chrome installed, UI tests use Playwright's bundled Chromium (`PLAYWRIGHT_BUNDLED_CHROMIUM=1`). Merges to `main` are not deployed automatically: run `npm run release` on an up-to-date `main` after merging, or wait for the weekly release.
 
-The agent is a launchd job (macOS's cron), not a T3 Code task. Every Monday at 09:00, or on the next wake if the Mac was asleep, it runs `~/Library/Application Support/Electricity Map Deploy/runner.mjs`. The runner updates its own clone of `origin/main` in that folder (never your working checkout) and runs `npm run release` there. Output goes to `~/Library/Logs/electricity-map-deploy.log`, and a failure shows a macOS notification. Merges to `main` are not deployed automatically: run `npm run release` on an up-to-date `main` after merging, or wait for Monday. Re-run `npm run deploy:install` after changing `runner.mjs`.
+### Weekly release (T3 Code scheduled tasks)
 
-Every release refreshes the data before it deploys. A failed refresh, validation or test stops the release, and the live site keeps its last good deployment. Nothing is committed or pushed, so the repository's `data/` lags the live site. Refresh locally and open a PR when you want the committed (and desktop-bundled) snapshots updated.
+Weekly **T3 Code scheduled tasks** on two machines run `scripts/local-deploy/runner.mjs` straight from `origin/main`: the Mac on Mondays at 09:00 and the AMD Windows box on Mondays at 13:00. Each run is an agent session that reports in its own T3 thread.
 
-Secrets live in the login Keychain under service `electricity-map-deploy`, or in environment variables of the same names:
+The runner first reads `https://map.cujuju.foo/api/health`. If the live data is less than six days old, it does nothing. Whichever machine is on first does the week's release, and the other skips. Otherwise it updates its own clone of `origin/main` and runs `scripts/release-pages.mjs` there: refresh, checks, tests and deploy. It never touches a working checkout. A failed refresh, validation or test stops the release, and the live site keeps its last good deployment. Nothing is committed or pushed, so the repository's `data/` lags the live site. Refresh locally and open a PR when you want the committed (and desktop-bundled) snapshots updated.
+
+The clone and state live in `~/Library/Application Support/Electricity Map Deploy` (macOS) or `%LOCALAPPDATA%\Electricity Map Deploy` (Windows).
+
+Secrets are read from environment variables, then `secrets.env` (`KEY=value` lines) in that folder, then, on macOS, the login Keychain under service `electricity-map-deploy`:
 
 ```sh
 security add-generic-password -U -s electricity-map-deploy -a CLOUDFLARE_API_TOKEN -w
