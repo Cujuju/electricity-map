@@ -92,26 +92,29 @@ for (const design of DESIGNS) {
   });
 }
 
-test('Power City rooftop labels track tower heights', async ({ page }) => {
+test('Power City labels stay centered in their roofs as tower heights change', async ({ page }) => {
   await page.goto('/?design=arcade&state=HI');
   const chart = page.locator('.chart-city');
-  const labels = chart.locator('.chart-city-label, .portrait-state-code');
+  const labels = chart.locator('.chart-city-label');
   await expect(labels).toHaveCount(51);
 
   const checkLabelPositions = async () => {
     const offsets = await labels.evaluateAll((nodes) =>
       nodes.map((node) => {
         const label = node as SVGTextElement;
-        const roof = label.ownerSVGElement!.querySelector<SVGPathElement>(
-          `[data-chart-state="${label.textContent}"] .data-mark`,
-        )!.getBBox();
+        const tower = label.closest('[data-chart-state]')!;
+        const roof = tower.querySelector<SVGPathElement>('.data-mark')!.getBBox();
         return {
+          stateMatches: tower.getAttribute('data-chart-state') === label.textContent,
+          baseline: getComputedStyle(label).dominantBaseline,
           x: label.x.baseVal.getItem(0).value - (roof.x + roof.width / 2),
-          y: label.y.baseVal.getItem(0).value - roof.y,
+          y: label.y.baseVal.getItem(0).value - (roof.y + roof.height / 2),
         };
       }),
     );
     for (const offset of offsets) {
+      expect(offset.stateMatches).toBe(true);
+      expect(offset.baseline).toBe('central');
       expect(offset.x).toBeCloseTo(0);
       expect(offset.y).toBeCloseTo(0);
     }

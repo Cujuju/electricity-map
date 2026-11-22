@@ -611,12 +611,18 @@ html[data-dashboard='original'] .app-shell {
   fill: var(--ink);
   pointer-events: none;
 }
-.chart-city-label {
-  font:
-    9px 'DotGothic16',
-    var(--mono);
+.chart-city .chart-city-label {
+  font: 600 10px var(--mono);
   fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 2px;
+  stroke-linejoin: round;
   pointer-events: none;
+}
+.chart-city.portrait-chart .chart-city-label {
+  font-size: 12px;
+  stroke-width: 1.5px;
 }
 .chart-city-message {
   font:
@@ -4070,7 +4076,6 @@ html[data-dashboard='original'] .app-shell {
 }
 .chart-state-label,
 .chart-axis,
-.chart-city-label,
 .chart-ridge-label {
   paint-order: stroke;
   stroke: var(--chart-halo);
