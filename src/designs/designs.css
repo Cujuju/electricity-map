@@ -354,9 +354,15 @@ html[data-dashboard='original'] .app-shell {
   background: var(--ink);
   border-radius: 50%;
 }
-/* One headline size for every design; condensed faces raise --hero-title-scale for equal optical width. */
-.experiment-hero {
+/* One headline size for every dashboard and lab; condensed faces raise --hero-title-scale for equal optical width. */
+.design-dashboard {
   --hero-title-size: clamp(36px, 3.5vw, 56px);
+}
+/* Bebas Neue is condensed; this scale matches the other faces' line width. */
+.design-dashboard.skin-brutalist,
+.design-dashboard.skin-thermal,
+.design-dashboard.skin-analog {
+  --hero-title-scale: 1.4;
 }
 .experiment-hero h1 {
   font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1 var(--heading);
@@ -1105,8 +1111,6 @@ html[data-dashboard='original'] .app-shell {
   border-bottom: 0;
 }
 .skin-brutalist .experiment-hero h1 {
-  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
-  --hero-title-scale: 1.4;
   line-height: 0.8;
   letter-spacing: -0.02em;
   margin: 25px 0 22px;
@@ -1486,8 +1490,6 @@ html[data-dashboard='original'] .app-shell {
   font-size: 23px;
 }
 .skin-thermal .experiment-hero h1 {
-  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
-  --hero-title-scale: 1.4;
   line-height: 0.83;
   letter-spacing: -0.01em;
 }
@@ -1720,8 +1722,6 @@ html[data-dashboard='original'] .app-shell {
   padding: 35px 0;
 }
 .skin-analog .experiment-hero h1 {
-  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
-  --hero-title-scale: 1.4;
   letter-spacing: 0;
   line-height: 0.86;
 }
@@ -2770,8 +2770,10 @@ html[data-dashboard='original'] .app-shell {
   .experiment-masthead-actions svg {
     width: 13px;
   }
-  .experiment-hero {
+  .design-dashboard {
     --hero-title-size: 34px;
+  }
+  .experiment-hero {
     padding: 31px 0 26px;
     gap: 14px;
     position: relative;
@@ -3127,8 +3129,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 18px;
   }
   .skin-brutalist .experiment-hero h1 {
-    /* Bebas Neue is condensed; this scale matches the other faces' line width. */
-    --hero-title-scale: 1.4;
     margin-top: 22px;
     max-width: 300px;
   }
@@ -3291,8 +3291,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 22px;
   }
   .skin-thermal .experiment-hero h1 {
-    /* Bebas Neue is condensed; this scale matches the other faces' line width. */
-    --hero-title-scale: 1.4;
     line-height: 0.85;
   }
   .skin-thermal .experiment-hero-emblem {
@@ -3604,7 +3602,7 @@ html[data-dashboard='original'] .app-shell {
   }
 }
 @media (max-width: 380px) {
-  .experiment-hero {
+  .design-dashboard {
     --hero-title-size: 30px;
   }
   .design-switcher {
