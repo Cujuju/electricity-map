@@ -150,7 +150,7 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     await page.getByRole('button', { name: 'Close icon settings' }).click();
     await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
     await expect(page.getByLabel('Analysis state', { exact: true })).toHaveValue('TX');
-    await expect(page.getByLabel('Analysis month', { exact: true })).toHaveValue('2026-08');
+    await expect(page.getByLabel('Compare to', { exact: true })).toHaveValue('2026-08');
     await page.getByRole('button', { name: 'Local Utilities', exact: true }).click();
     await expect(page.getByLabel('Utility report year', { exact: true })).toBeVisible();
     await expect(page.locator('.utility-result').first()).toBeVisible();

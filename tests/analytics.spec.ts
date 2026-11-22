@@ -78,14 +78,15 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
       maximumFractionDigits: 1,
     }),
   );
-  await page.getByLabel('Comparison period', { exact: true }).selectOption('custom');
-  await page.getByLabel('Baseline month', { exact: true }).selectOption('2020-01');
-  await expect(page).toHaveURL(/since=2020-01/);
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2025-08');
+  await page.getByLabel('Compare from', { exact: true }).selectOption('2020-01');
+  await expect(page).toHaveURL(/from=2020-01/);
+  await expect(page).not.toHaveURL(/since=|compare=/);
   await page.getByLabel('Map metric', { exact: true }).selectOption('change');
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export comparison' }).click();
   const exported = await download;
-  expect(exported.suggestedFilename()).toContain('2026-08');
+  expect(exported.suggestedFilename()).toContain('2020-01-to-2026-08');
   const csv = await readFile((await exported.path())!, 'utf8');
   expect(csv.split('\n')[0]).toContain('scenario_kwh,metric,metric_unit,value');
   expect(csv.split('\n')[1].split(',').slice(-4, -1)).toEqual([
@@ -103,13 +104,19 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
   });
   await page.reload();
   await expect(page.getByLabel('Monthly usage kWh', { exact: true })).toHaveValue('1500');
-  await expect(page.getByLabel('Baseline month', { exact: true })).toHaveValue('2020-01');
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2020-01');
   await page.locator('[data-heatmap-cell="TX:2026-08"]').click();
   await expect(page.getByLabel('Analysis state', { exact: true })).toHaveValue('TX');
-  await expect(page.getByLabel('Comparison period', { exact: true })).toHaveValue('year');
-  await page.getByLabel('Comparison period', { exact: true }).selectOption('custom');
-  await page.getByLabel('Analysis month', { exact: true }).selectOption('2015-06');
-  await expect(page.getByLabel('Baseline month', { exact: true })).toHaveValue('2015-05');
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2025-08');
+  // Moving To keeps the one-year gap; before the data starts, the change is unavailable.
+  await page.getByLabel('Compare to', { exact: true }).selectOption('2015-06');
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2014-06');
+  await expect(page.getByTestId('analysis-state-change')).toContainText('—');
+  await page.getByRole('button', { name: 'Earliest', exact: true }).click();
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2015-01');
+  await page.getByRole('button', { name: '1 month back', exact: true }).click();
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue('2015-05');
+  await expect(page.getByTestId('comparison-note')).toContainText('seasonal');
   await page.getByLabel('Analysis sector', { exact: true }).selectOption('IND');
   await page.getByLabel('Map metric', { exact: true }).selectOption('usage');
   for (const design of ['original', ...DESIGNS.map((item) => item.id)]) {
@@ -151,4 +158,37 @@ test('local utility directory searches real counties and retains annual utility 
   await page.getByRole('button', { name: 'Dashboards', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Electric atlas.' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('calendar-year mode compares sales-weighted year-to-date windows', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('/?lab=changes&state=CA&sector=RES');
+  await page.getByLabel('Comparison grain', { exact: true }).selectOption('year');
+  const last = [...new Set(data.rows.map((r) => r.period))].sort().at(-1)!;
+  const [year, through] = [Number(last.slice(0, 4)), Number(last.slice(5))];
+  await expect(page.getByLabel('Compare to', { exact: true })).toHaveValue(String(year));
+  await expect(page.getByLabel('Compare from', { exact: true })).toHaveValue(String(year - 1));
+  await expect(page).toHaveURL(new RegExp(`grain=year.*from=${year - 1}.*to=${year}`));
+  const price = (y: number) => {
+    const rows = data.rows.filter(
+      (r) =>
+        r.state === 'CA' &&
+        r.sector === 'RES' &&
+        r.period.startsWith(`${y}-`) &&
+        Number(r.period.slice(5)) <= through,
+    );
+    expect(rows).toHaveLength(through);
+    return rows.reduce((s, r) => s + r.revenue!, 0) / rows.reduce((s, r) => s + r.sales!, 0);
+  };
+  await expect(page.getByTestId('analysis-state-change')).toContainText(
+    ((price(year) / price(year - 1) - 1) * 100).toFixed(1),
+  );
+  if (through < 12)
+    await expect(page.getByTestId('comparison-note')).toContainText('year-to-date');
+  await page.reload();
+  await expect(page.getByLabel('Comparison grain', { exact: true })).toHaveValue('year');
+  await page.getByLabel('Comparison grain', { exact: true }).selectOption('month');
+  await expect(page.getByLabel('Compare to', { exact: true })).toHaveValue(last);
+  expect(errors).toEqual([]);
 });
