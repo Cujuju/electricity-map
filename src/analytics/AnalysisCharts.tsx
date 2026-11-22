@@ -114,6 +114,7 @@ export function ChangeMap(props: {
   return (
     <svg
       class="change-map"
+      data-label-cull
       viewBox="0 0 975 610"
       role="group"
       aria-label="United States monthly electricity metrics by state. Alaska, Hawaii, and DC are repositioned. DC is enlarged; a line marks its location."
@@ -180,7 +181,7 @@ export function ChangeMap(props: {
               x={labelAnchor(state.id, shape.center)[0]}
               y={labelAnchor(state.id, shape.center)[1]}
               text-anchor="middle"
-              class="analysis-map-label"
+              class="analysis-map-label" data-label
               data-map-label={state.id}
               aria-hidden="true"
             >

@@ -29,6 +29,7 @@ export default function Orbit(props: {
   return (
     <svg
       class="orbit-svg"
+      data-label-cull
       viewBox="0 0 1050 660"
       aria-label="Price constellation. Distance from the center indicates price; bubble area indicates electricity sales. State order follows Census regions; connections are visual guides, not transmission lines."
     >
@@ -52,7 +53,7 @@ export default function Orbit(props: {
               stroke-opacity=".19"
               stroke-dasharray={value === 50 ? '2 7' : undefined}
             />
-            <text class="orbit-axis" x="532" y={325 - (40 + value * 5) + 15}>
+            <text class="orbit-axis" data-label x="532" y={325 - (40 + value * 5) + 15}>
               {value}¢
             </text>
           </g>
@@ -130,7 +131,7 @@ export default function Orbit(props: {
                 stroke={priceColor(star.observation?.price)}
               />
               <circle cx={star.x} cy={star.y} r="24" fill="transparent" />
-              <text x={star.x} y={star.y - star.size - 9} text-anchor="middle" class="orbit-label">
+              <text x={star.x} y={star.y - star.size - 9} text-anchor="middle" class="orbit-label" data-label>
                 {star.id}
               </text>
               <title>
@@ -142,20 +143,24 @@ export default function Orbit(props: {
       </For>
       <circle cx="525" cy="325" r="27" fill="#16251c" stroke="#8aa374" stroke-opacity=".4" />
       <path d="m529 307-14 20h10l-4 17 15-23h-10z" fill="#d4fa66" />
-      <text class="region-label" x="800" y="62">
+      <text class="region-label" data-label x="800" y="62">
         WEST
       </text>
-      <text class="region-label" x="890" y="563">
+      <text class="region-label" data-label x="890" y="563">
         MIDWEST
       </text>
-      <text class="region-label" x="135" y="563">
+      <text class="region-label" data-label x="135" y="563">
         SOUTH
       </text>
-      <text class="region-label" x="88" y="100">
+      <text class="region-label" data-label x="88" y="100">
         NORTHEAST
       </text>
-      <text class="map-inset-label" x="46" y="626">
-        FARTHER OUT = HIGHER PRICE · LARGER AREA = MORE ELECTRICITY SOLD
+      {/* em line spacing tracks the screen-pixel font size at any chart width. */}
+      <text class="map-inset-label" y="612">
+        <tspan x="46">FARTHER OUT = HIGHER PRICE</tspan>
+        <tspan x="46" dy="1.4em">
+          LARGER AREA = MORE ELECTRICITY SOLD
+        </tspan>
       </text>
     </svg>
   );

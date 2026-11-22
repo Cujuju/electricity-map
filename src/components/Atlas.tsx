@@ -12,6 +12,12 @@ const shapes = feature(
   (topology as unknown as Topology<{ states: GeometryCollection }>).objects.states,
 ).features;
 const path = geoPath().digits(1);
+// Oblique map plane [a b c d e f]; labels apply its inverse so they read upright at their CSS size.
+const PLANE = [0.91, -0.1, 0.18, 0.64, 20, 190] as const;
+const [pa, pb, pc, pd] = PLANE;
+const det = pa * pd - pb * pc;
+const UNPLANE = [pd / det, -pb / det, -pc / det, pa / det].map((v) => v.toFixed(4)).join(' ');
+const upright = (x: number, y: number) => `translate(${x} ${y}) matrix(${UNPLANE} 0 0) translate(${-x} ${-y})`;
 
 function simplified(feature: Feature<Geometry>) {
   const geometry = feature.geometry;
@@ -62,6 +68,7 @@ export default function Atlas(props: {
   return (
     <svg
       class="atlas-svg"
+      data-label-cull
       viewBox="0 0 1050 660"
       aria-label="Raised geographic atlas. State elevation and color represent electricity price in cents per kilowatt-hour."
     >
@@ -84,7 +91,7 @@ export default function Atlas(props: {
         </filter>
       </defs>
       <ellipse cx="530" cy="363" rx="490" ry="260" fill="url(#atlas-light)" />
-      <g transform="matrix(.91 -.10 .18 .64 20 190)">
+      <g transform={`matrix(${PLANE.join(' ')})`}>
         <rect x="-60" y="-90" width="1140" height="840" fill="url(#atlas-grid)" />
         <For each={geography}>
           {(shape) => (
@@ -146,10 +153,11 @@ export default function Atlas(props: {
                   </path>
                   <text
                     class="state-label"
+                    data-label
                     x={tile.center[0]}
                     y={tile.center[1] - elevation() + 4}
                     text-anchor="middle"
-                    transform={`rotate(5 ${tile.center[0]} ${tile.center[1] - elevation()})`}
+                    transform={upright(tile.center[0], tile.center[1] - elevation())}
                   >
                     {datum().id}
                   </text>
@@ -160,18 +168,18 @@ export default function Atlas(props: {
         </g>
       </g>
       <g class="map-coordinates">
-        <text x="45" y="588">
+        <text data-label x="45" y="588">
           24° N
         </text>
-        <text x="960" y="588">
+        <text data-label x="960" y="588">
           66° W
         </text>
         <path d="M48 570v-30m-15 15h30" />
         <path d="M991 112v30m-15-15h30" />
-        <text x="974" y="101">
+        <text data-label x="974" y="101">
           N
         </text>
-        <text x="45" y="105">
+        <text data-label x="45" y="105">
           THE UNITED STATES / ALBERS USA
         </text>
       </g>
