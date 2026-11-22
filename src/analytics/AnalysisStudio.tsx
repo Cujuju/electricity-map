@@ -333,15 +333,11 @@ export default function AnalysisStudio(props: {
               <h1>
                 {props.mode === 'utilities' ? (
                   <>
-                    Every place
-                    <br />
-                    <em>has a provider.</em>
+                    Every place <em>has a provider.</em>
                   </>
                 ) : (
                   <>
-                    Where did
-                    <br />
-                    <em>the current shift?</em>
+                    Where did <em>the current shift?</em>
                   </>
                 )}
               </h1>

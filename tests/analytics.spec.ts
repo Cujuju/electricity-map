@@ -15,6 +15,26 @@ test('the history note states the dataset span, not the selected To month', asyn
   );
 });
 
+test('lab headlines stay on one line on desktop in every design', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 1440) <= 700, 'Phone headlines wrap by design.');
+  for (const lab of ['changes', 'utilities']) {
+    for (const design of ['original', ...DESIGNS.map((item) => item.id)]) {
+      await page.goto(`/?lab=${lab}&design=${design}`);
+      const headline = page.locator('.analysis-hero h1');
+      await headline.waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      // Mixed font sizes give each run its own top, so test that every run shares the first run's line.
+      const singleLine = await headline.evaluate((node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        const [first, ...rest] = [...range.getClientRects()];
+        return rest.every((rect) => rect.top < first.bottom && rect.bottom > first.top);
+      });
+      expect(singleLine, `${lab} / ${design}`).toBe(true);
+    }
+  }
+});
+
 test('the DC map inset selects the district by pointer and keyboard', async ({ page }) => {
   await page.goto('/?lab=changes&design=original&state=VA');
   const map = page.locator('.change-map');

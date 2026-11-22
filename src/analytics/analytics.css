@@ -117,9 +117,12 @@ html[data-dashboard='original'] .sidebar {
   letter-spacing: 1.5px;
   color: var(--lab-muted);
 }
+/* Size comes from the shared dashboard headline token in designs.css. */
 .analysis-hero h1 {
-  font: 500 round(nearest, clamp(50px, 5.8vw, 84px), 1px)/0.99 var(--heading);
-  letter-spacing: -3px;
+  font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1
+    var(--heading);
+  white-space: nowrap;
+  letter-spacing: -0.035em;
   margin: 17px 0 20px;
 }
 .analysis-hero h1 em {
@@ -1009,9 +1012,6 @@ html[data-dashboard='original'] .sidebar {
   .analysis-main {
     padding: 0 28px;
   }
-  .analysis-hero h1 {
-    font-size: 66px;
-  }
   .lab-map-layout {
     grid-template-columns: minmax(0, 1fr) 265px;
   }
@@ -1053,9 +1053,6 @@ html[data-dashboard='original'] .sidebar {
 @media (max-width: 900px) {
   .analysis-main {
     padding: 0 23px;
-  }
-  .analysis-hero h1 {
-    font-size: 59px;
   }
   .analysis-orbit {
     width: 145px;
@@ -1187,10 +1184,10 @@ html[data-dashboard='original'] .sidebar {
     display: block;
     position: relative;
   }
+  /* Phones cannot fit every headline on one line; let it wrap. */
   .analysis-hero h1 {
-    font-size: 50px;
+    white-space: normal;
     line-height: 1;
-    letter-spacing: -2.3px;
     margin: 17px 0 18px;
   }
   .analysis-hero h1 em {
