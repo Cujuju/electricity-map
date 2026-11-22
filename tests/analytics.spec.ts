@@ -29,6 +29,23 @@ test('the DC map inset selects the district by pointer and keyboard', async ({ p
   await expect(state).toHaveValue('DC');
 });
 
+test('change chronicle sticky headers do not shift when scrolling', async ({ page }) => {
+  await page.goto('/?lab=changes&design=original&state=VA');
+  await page.getByLabel('Heatmap window').selectOption('240');
+  const scroller = page.locator('.time-grid-scroll');
+  const offsets = (scroll: { top: number; left: number }) =>
+    scroller.evaluate((el, s) => {
+      el.scrollTo(s);
+      const box = el.getBoundingClientRect();
+      return {
+        head: el.querySelector('thead')!.getBoundingClientRect().top - box.top,
+        row: el.querySelector('tbody th')!.getBoundingClientRect().left - box.left,
+      };
+    }, scroll);
+  const resting = await offsets({ top: 0, left: 0 });
+  expect(await offsets({ top: 40, left: 40 })).toEqual(resting);
+});
+
 test('change lab computes real monthly changes, customer metrics, scenarios and share state', async ({
   page,
 }, info) => {

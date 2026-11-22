@@ -664,8 +664,11 @@ html[data-dashboard='original'] .sidebar {
   border-top: 1px solid var(--lab-line);
 }
 .time-grid {
+  --time-grid-gap: 3px;
   border-collapse: separate;
-  border-spacing: 3px;
+  border-spacing: var(--time-grid-gap);
+  /* Cancel the leading spacing so sticky headers rest where they stick. */
+  margin: calc(-1 * var(--time-grid-gap)) 0 0 calc(-1 * var(--time-grid-gap));
   width: max-content;
   min-width: 100%;
   font: 10px var(--mono);
