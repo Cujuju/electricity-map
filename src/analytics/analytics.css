@@ -704,7 +704,7 @@ html[data-dashboard='original'] .sidebar {
   color: var(--lab-ink);
 }
 .time-grid th > span {
-  font: 8px var(--body);
+  font: 10px var(--body);
   color: var(--lab-muted);
   margin-left: 7px;
 }
@@ -718,11 +718,14 @@ html[data-dashboard='original'] .sidebar {
   position: static;
   min-width: 39px;
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
+  /* Same horizontal box as body cells (td), so labels centre over the buttons. */
+  padding-left: 0;
+  padding-right: var(--time-grid-gap);
 }
 .time-grid thead th small {
   display: block;
-  font-size: 7px;
+  font-size: 9px;
   color: var(--lab-muted);
   margin-top: 4px;
 }
@@ -734,6 +737,7 @@ html[data-dashboard='original'] .sidebar {
 }
 .time-grid td button {
   display: block;
+  margin-inline: auto;
   width: 39px;
   height: 25px;
   padding: 0;
@@ -1457,10 +1461,10 @@ html[data-dashboard='original'] .sidebar {
   }
   .time-grid thead th:not(:first-child) {
     min-width: 43px;
-    font-size: 11px;
+    font-size: 13px;
   }
   .time-grid thead th small {
-    font-size: 9px;
+    font-size: 10px;
   }
   .lab-heat-note {
     font-size: 10px;
