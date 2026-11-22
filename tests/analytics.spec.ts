@@ -12,7 +12,7 @@ test('the DC map inset selects the district by pointer and keyboard', async ({ p
   const dc = map.getByRole('button', { name: /^District of Columbia:/ });
   const state = page.getByLabel('Analysis state', { exact: true });
 
-  const label = dc.getByText('DC', { exact: true });
+  const label = map.locator('[data-map-label="DC"]');
   await expect(label).toBeVisible();
   await expect(label).toHaveClass('analysis-map-label');
   await dc.locator('path').click();

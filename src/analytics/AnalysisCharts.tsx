@@ -1,6 +1,6 @@
-import { createMemo, createUniqueId, For, Show } from 'solid-js';
+import { createMemo, createSignal, createUniqueId, For, Show } from 'solid-js';
 import { geoIdentity, geoPath } from 'd3-geo';
-import { feature } from 'topojson-client';
+import { feature, mesh } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import topology from '../assets/states.json';
 import { STATES } from '../data';
@@ -65,6 +65,19 @@ const shapes = feature(topo, topo.objects.states).features.map((shape) => {
   };
 });
 const dcLeader = shapes.find((shape) => shape.leader)?.leader;
+// Shapes keyed by state code, in map draw order; shapes with no matching state are dropped.
+const mapStates = new Map(
+  shapes.flatMap((shape) => {
+    const state = STATES.find((item) => item.fips === shape.id);
+    return state ? [[state.id, { state, shape }] as const] : [];
+  }),
+);
+const isDc = (geometry: { id?: string | number }) =>
+  String(geometry.id).padStart(2, '0') === dcFips;
+// DC is drawn relocated, so its edges are left out of the shared border lines.
+const borders = path(mesh(topo, topo.objects.states, (a, b) => !isDc(a) && !isDc(b))) ?? '';
+// Shapes smaller than this (square map units) are unlabelled unless selected.
+const MIN_LABEL_AREA = 600;
 
 export function dataColor(value: number | null, limit: number, diverging = true) {
   if (value === null) return 'var(--lab-missing)';
@@ -81,6 +94,14 @@ export function ChangeMap(props: {
   onSelect: (id: string) => void;
 }) {
   const clipPrefix = `lab-clip-${createUniqueId()}-`;
+  // Pointer-hovered or keyboard-focused state; drawn with the lighter outline.
+  const [active, setActive] = createSignal<string | null>(null);
+  const outlines = createMemo(() => {
+    const list = [{ id: props.selected, kind: 'selected' }];
+    const hot = active();
+    if (hot && hot !== props.selected) list.push({ id: hot, kind: 'active' });
+    return list.filter((item) => mapStates.has(item.id));
+  });
   return (
     <svg
       class="change-map"
@@ -92,62 +113,72 @@ export function ChangeMap(props: {
         <pattern id="lab-map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
           <path d="M32 0H0V32" fill="none" stroke="currentColor" stroke-opacity=".05" />
         </pattern>
-        {/* Each shape clips its own stroke, so outlines sit inside and neighbours never cover them. */}
-        <For each={shapes}>
-          {(shape) => (
-            <clipPath id={clipPrefix + shape.id}>
-              <path d={shape.d} />
-            </clipPath>
-          )}
-        </For>
       </defs>
       <rect width="975" height="610" fill="url(#lab-map-grid)" />
-      <For each={shapes}>
-        {(shape) => {
-          const state = STATES.find((state) => state.fips === shape.id);
-          const selected = () => props.selected === state?.id;
-          const fill = () =>
-            dataColor(props.values.get(state!.id) ?? null, props.limit, props.diverging);
+      <For each={[...mapStates.values()]}>
+        {({ state, shape }) => (
+          <g
+            data-analysis-state={state.id}
+            role="button"
+            tabindex="0"
+            aria-label={`${state.name}: ${display(props.values.get(state.id))} ${props.unit}`}
+            aria-pressed={props.selected === state.id}
+            onClick={() => props.onSelect(state.id)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                props.onSelect(state.id);
+              }
+            }}
+            onPointerEnter={() => setActive(state.id)}
+            onPointerLeave={() => setActive(null)}
+            onFocus={(event) => {
+              if (event.currentTarget.matches(':focus-visible')) setActive(state.id);
+            }}
+            onBlur={() => setActive(null)}
+          >
+            <title>
+              {state.name}: {display(props.values.get(state.id))} {props.unit}
+            </title>
+            <path
+              class="analysis-map-shape"
+              d={shape.d}
+              fill={dataColor(props.values.get(state.id) ?? null, props.limit, props.diverging)}
+            />
+          </g>
+        )}
+      </For>
+      {/* One line per shared edge, so every border has the same width. */}
+      <path class="analysis-map-borders" d={borders} />
+      {/* Outlines are clipped to their shape, so they sit inside it and borders never cover them. */}
+      <For each={outlines()}>
+        {(item) => {
+          const shape = mapStates.get(item.id)!.shape;
           return (
-            <Show when={state}>
-              <g
-                data-analysis-state={state!.id}
-                classList={{ 'is-selected': selected() }}
-                role="button"
-                tabindex="0"
-                aria-label={`${state!.name}: ${display(props.values.get(state!.id))} ${props.unit}`}
-                aria-pressed={selected()}
-                onClick={() => props.onSelect(state!.id)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    props.onSelect(state!.id);
-                  }
-                }}
-              >
-                <title>
-                  {state!.name}: {display(props.values.get(state!.id))} {props.unit}
-                </title>
-                <path
-                  class="analysis-map-shape"
-                  d={shape.d}
-                  fill={fill()}
-                  clip-path={`url(#${clipPrefix}${shape.id})`}
-                />
-                <Show when={shape.area > 600 || selected()}>
-                  <text
-                    x={shape.center[0]}
-                    y={shape.center[1] + 4}
-                    text-anchor="middle"
-                    class="analysis-map-label"
-                  >
-                    {state!.id}
-                  </text>
-                </Show>
-              </g>
-            </Show>
+            <g class={`analysis-map-outline is-${item.kind}`}>
+              <clipPath id={clipPrefix + item.id}>
+                <path d={shape.d} />
+              </clipPath>
+              <path d={shape.d} clip-path={`url(#${clipPrefix}${item.id})`} />
+            </g>
           );
         }}
+      </For>
+      <For each={[...mapStates.values()]}>
+        {({ state, shape }) => (
+          <Show when={shape.area > MIN_LABEL_AREA || props.selected === state.id}>
+            <text
+              x={shape.center[0]}
+              y={shape.center[1] + 4}
+              text-anchor="middle"
+              class="analysis-map-label"
+              data-map-label={state.id}
+              aria-hidden="true"
+            >
+              {state.id}
+            </text>
+          </Show>
+        )}
       </For>
       <Show when={dcLeader}>
         {(leader) => (

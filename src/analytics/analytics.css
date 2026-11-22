@@ -337,10 +337,10 @@ html[data-dashboard='original'] .sidebar {
   min-height: 280px;
 }
 .change-map {
-  /* Screen pixels. Strokes are clipped to each shape, so half of each width shows. */
-  --lab-map-border: 2px;
-  --lab-map-hover: 3px;
-  --lab-map-selected: 4px;
+  /* Screen pixels. Outlines are clipped to their shape, so half of each width shows. */
+  --lab-map-border: 1px;
+  --lab-map-hover: 2px;
+  --lab-map-selected: 3px;
 }
 .change-map [data-analysis-state] {
   cursor: pointer;
@@ -350,21 +350,29 @@ html[data-dashboard='original'] .sidebar {
   outline: none;
 }
 .analysis-map-shape {
-  stroke: var(--lab-bg);
-  stroke-width: var(--lab-map-border);
-  stroke-linejoin: round;
-  /* Keep outline thickness constant however large the map is drawn. */
-  vector-effect: non-scaling-stroke;
   transition: fill 0.25s;
 }
 .analysis-map-shape:hover,
 .change-map [data-analysis-state]:focus-visible .analysis-map-shape {
   filter: brightness(1.15);
+}
+/* Constant screen-pixel widths however large the map is drawn. */
+.analysis-map-borders,
+.analysis-map-outline path {
+  fill: none;
+  pointer-events: none;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.analysis-map-borders {
+  stroke: var(--lab-bg);
+  stroke-width: var(--lab-map-border);
+}
+.analysis-map-outline path {
   stroke: var(--lab-ink);
   stroke-width: var(--lab-map-hover);
 }
-.change-map [data-analysis-state].is-selected .analysis-map-shape {
-  stroke: var(--lab-ink);
+.analysis-map-outline.is-selected path {
   stroke-width: var(--lab-map-selected);
 }
 .analysis-map-leader {
