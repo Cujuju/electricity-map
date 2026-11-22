@@ -78,6 +78,15 @@ const isDc = (geometry: { id?: string | number }) =>
 const borders = path(mesh(topo, topo.objects.states, (a, b) => !isDc(a) && !isDc(b))) ?? '';
 // Shapes smaller than this (square map units) are unlabelled unless selected.
 const MIN_LABEL_AREA = 600;
+// Label shifts from the shape centroid, in map units. MD's centroid sits on DC's true
+// location, where the DC leader starts; the shift moves the label north-east, toward Baltimore.
+const LABEL_OFFSETS: Record<string, Point> = { MD: [8, -8] };
+// Moves the text baseline down so the label is vertically centred on its anchor.
+const LABEL_BASELINE_SHIFT = 4;
+const labelAnchor = (stateId: string, [x, y]: Point): Point => {
+  const [dx, dy] = LABEL_OFFSETS[stateId] ?? [0, 0];
+  return [x + dx, y + dy + LABEL_BASELINE_SHIFT];
+};
 
 export function dataColor(value: number | null, limit: number, diverging = true) {
   if (value === null) return 'var(--lab-missing)';
@@ -168,8 +177,8 @@ export function ChangeMap(props: {
         {({ state, shape }) => (
           <Show when={shape.area > MIN_LABEL_AREA || props.selected === state.id}>
             <text
-              x={shape.center[0]}
-              y={shape.center[1] + 4}
+              x={labelAnchor(state.id, shape.center)[0]}
+              y={labelAnchor(state.id, shape.center)[1]}
               text-anchor="middle"
               class="analysis-map-label"
               data-map-label={state.id}
