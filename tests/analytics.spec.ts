@@ -21,6 +21,9 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
   await expect(page.getByTestId('analysis-state-change')).toContainText(
     ((now.price! / before.price! - 1) * 100).toFixed(1),
   );
+  await expect(page.locator('[data-heatmap-cell="CA:2026-08"]')).toHaveText(
+    ((now.price! / before.price! - 1) * 100).toFixed(1),
+  );
   await expect(page.locator('[data-analysis-state]')).toHaveCount(51);
   await page.getByLabel('Map metric', { exact: true }).selectOption('cost');
   await page.getByLabel('Monthly usage kWh', { exact: true }).fill('1500');

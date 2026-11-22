@@ -219,7 +219,7 @@ export function TimeGrid(props: {
     <div
       class="time-grid-scroll"
       role="region"
-      aria-label="Scrollable state-by-month annual price-change heatmap"
+      aria-label="Scrollable state-by-month year-over-year price-change heatmap"
       tabindex="0"
     >
       <table class="time-grid">
@@ -250,19 +250,18 @@ export function TimeGrid(props: {
                     const before = () =>
                       props.index.get(`${props.sector}:${offsetMonth(month, -12)}:${state.id}`);
                     const value = () => pct(row()?.price, before()?.price);
+                    const change = () => signedValue(value());
                     return (
                       <td>
                         <button
                           data-heatmap-cell={`${state.id}:${month}`}
-                          aria-label={`${state.name}, ${monthLabel(month)}, ${signedValue(value())} percent year over year, ${display(row()?.price, 2)} cents per kWh`}
-                          title={`${state.name} · ${monthLabel(month)} · ${signedValue(value())}% YoY · ${display(row()?.price, 2)}¢/kWh`}
+                          aria-label={`${state.name}, ${monthLabel(month)}, ${change()} percent year over year, ${display(row()?.price, 2)} cents per kWh`}
+                          title={`${state.name} · ${monthLabel(month)} · ${change()}% YoY · ${display(row()?.price, 2)}¢/kWh`}
                           aria-pressed={state.id === props.selected && month === props.month}
                           style={{ background: dataColor(value(), 30) }}
                           onClick={() => props.onPick(state.id, month)}
                         >
-                          {value() === null
-                            ? '—'
-                            : `${value()! > 0 ? '+' : ''}${Math.round(value()!)}`}
+                          {change()}
                         </button>
                       </td>
                     );

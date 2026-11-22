@@ -643,7 +643,7 @@ html[data-dashboard='original'] .sidebar {
   font: 10px var(--mono);
 }
 .time-grid th {
-  background: var(--lab-surface);
+  background: linear-gradient(var(--lab-surface), var(--lab-surface)), var(--lab-bg);
   font-weight: 400;
   position: sticky;
   left: 0;
@@ -658,12 +658,14 @@ html[data-dashboard='original'] .sidebar {
   color: var(--lab-muted);
   margin-left: 7px;
 }
-.time-grid thead th {
+.time-grid thead {
+  position: sticky;
   top: 0;
   z-index: 4;
+  background: var(--lab-bg);
 }
 .time-grid thead th:not(:first-child) {
-  left: auto;
+  position: static;
   min-width: 39px;
   text-align: center;
   font-size: 10px;
