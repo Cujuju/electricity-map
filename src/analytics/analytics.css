@@ -339,19 +339,14 @@ html[data-dashboard='original'] .sidebar {
 .change-map [data-analysis-state] {
   cursor: pointer;
 }
-.analysis-map-shape,
-.analysis-map-callout {
+.analysis-map-shape {
   transition: fill 0.25s;
 }
 .analysis-map-shape:hover,
-.analysis-map-callout:hover,
-.change-map [data-analysis-state]:focus-visible .analysis-map-callout {
+.change-map [data-analysis-state]:focus-visible .analysis-map-shape {
   filter: brightness(1.15);
   stroke: var(--lab-ink);
   stroke-width: 2;
-}
-.analysis-map-leader {
-  pointer-events: none;
 }
 .analysis-map-label {
   font: 10px var(--mono);
@@ -360,10 +355,6 @@ html[data-dashboard='original'] .sidebar {
   stroke: var(--lab-bg);
   stroke-width: 2px;
   pointer-events: none;
-}
-.change-map .analysis-map-callout-label {
-  font-size: 30px;
-  font-weight: 700;
 }
 .lab-map-legend {
   display: flex;
@@ -1540,8 +1531,7 @@ html[data-dashboard='original'] .sidebar {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .analysis-map-shape,
-  .analysis-map-callout {
+  .analysis-map-shape {
     transition: none;
   }
 }

@@ -1,5 +1,5 @@
 import { createMemo, For, Show } from 'solid-js';
-import { geoPath } from 'd3-geo';
+import { geoIdentity, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import topology from '../assets/states.json';
@@ -10,15 +10,26 @@ import { display, monthLabel, offsetMonth, pct, signedValue } from './math';
 const topo = topology as unknown as Topology<{ states: GeometryCollection }>;
 const path = geoPath().digits(1);
 const dcFips = STATES.find((state) => state.id === 'DC')!.fips;
-const shapes = feature(topo, topo.objects.states)
-  .features.map((shape) => ({
-    id: String(shape.id).padStart(2, '0'),
-    d: path(shape) ?? '',
-    center: path.centroid(shape),
-    area: path.area(shape),
-  }))
-  // Draw the DC leader line above the neighboring states.
-  .sort((a, b) => Number(a.id === dcFips) - Number(b.id === dcFips));
+const shapes = feature(topo, topo.objects.states).features.map((shape) => {
+  const id = String(shape.id).padStart(2, '0');
+  let shapePath = path;
+
+  if (id === dcFips) {
+    // Enlarge the district about its centroid and move it offshore beside MD and VA.
+    const [x, y] = path.centroid(shape);
+    const scale = 16;
+    const projection = geoIdentity().scale(scale).translate([925 - x * scale, 300 - y * scale]);
+    shapePath = geoPath(projection).digits(1);
+  }
+
+  return {
+    id,
+    d: shapePath(shape) ?? '',
+    center: shapePath.centroid(shape),
+    area: shapePath.area(shape),
+  };
+});
+
 export function dataColor(value: number | null, limit: number, diverging = true) {
   if (value === null) return 'var(--lab-missing)';
   const t = Math.max(0, Math.min(1, Math.abs(value) / Math.max(0.001, limit)));
@@ -38,7 +49,7 @@ export function ChangeMap(props: {
       class="change-map"
       viewBox="0 0 975 610"
       role="group"
-      aria-label="United States monthly electricity metrics by state. Alaska and Hawaii are repositioned. DC has a callout."
+      aria-label="United States monthly electricity metrics by state. Alaska, Hawaii, and DC are repositioned. DC is enlarged."
     >
       <defs>
         <pattern id="lab-map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -49,7 +60,6 @@ export function ChangeMap(props: {
       <For each={shapes}>
         {(shape) => {
           const state = STATES.find((state) => state.fips === shape.id);
-          const isDc = shape.id === dcFips;
           const selected = () => props.selected === state?.id;
           const fill = () =>
             dataColor(props.values.get(state!.id) ?? null, props.limit, props.diverging);
@@ -79,39 +89,7 @@ export function ChangeMap(props: {
                   stroke={selected() ? 'var(--lab-ink)' : 'var(--lab-bg)'}
                   stroke-width={selected() ? 3 : 1}
                 />
-                <Show when={isDc}>
-                  <path
-                    class="analysis-map-leader"
-                    d={`M${shape.center.join(' ')} L868 300 H885`}
-                    fill="none"
-                    stroke="var(--lab-ink)"
-                    stroke-width="2"
-                    vector-effect="non-scaling-stroke"
-                  />
-                  <rect
-                    class="analysis-map-callout"
-                    x="884"
-                    y="264"
-                    width="82"
-                    height="72"
-                    rx="10"
-                    fill={fill()}
-                    stroke={selected() ? 'var(--lab-ink)' : 'var(--lab-muted)'}
-                    stroke-width={selected() ? 3 : 1}
-                    vector-effect="non-scaling-stroke"
-                  />
-                  <text
-                    x="925"
-                    y="300"
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    class="analysis-map-label analysis-map-callout-label"
-                    aria-hidden="true"
-                  >
-                    DC
-                  </text>
-                </Show>
-                <Show when={!isDc && (shape.area > 600 || selected())}>
+                <Show when={shape.area > 600 || selected()}>
                   <text
                     x={shape.center[0]}
                     y={shape.center[1] + 4}
