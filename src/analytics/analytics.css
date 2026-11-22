@@ -209,7 +209,7 @@ html[data-dashboard='original'] .sidebar {
   border: 1px solid var(--lab-line);
   border-radius: 5px;
   padding: 10px 11px;
-  font: 16px var(--body);
+  font: 11px var(--body);
   margin-top: 8px;
   color: var(--lab-ink);
   height: 38px;
@@ -1447,6 +1447,10 @@ html[data-dashboard='original'] .sidebar {
   }
   .lab-utility-controls > label {
     min-width: 0;
+  }
+  /* 16px is the smallest text field size that stops iOS Safari zooming the page on focus. */
+  .lab-utility-controls input {
+    font-size: 16px;
   }
   .lab-utility-controls .utility-search {
     grid-column: 1/-1;

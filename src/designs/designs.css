@@ -620,6 +620,22 @@ html[data-dashboard='original'] .app-shell {
   fill: var(--ink);
   pointer-events: none;
 }
+/* Solar and Brutalist draw larger charts; these keep their labels at the previous on-screen size. */
+.skin-solar .chart-state-label,
+.skin-solar .chart-micro {
+  font-size: calc(13px * var(--svg-unit, 1));
+}
+.skin-solar .chart-center-number {
+  font-size: calc(56px * var(--svg-unit, 1));
+}
+.skin-brutalist .chart-axis,
+.skin-brutalist .chart-bar-label,
+.skin-brutalist .chart-micro {
+  font-size: calc(14px * var(--svg-unit, 1));
+}
+.skin-brutalist .chart-big-annotation {
+  font-size: calc(30px * var(--svg-unit, 1));
+}
 .chart-city .chart-city-label {
   font: 600 calc(12px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
@@ -2720,7 +2736,9 @@ html[data-dashboard='original'] .app-shell {
   .design-current > span {
     display: none;
   }
+  /* Layout exception: the phone design bar has no spare width, so the picker steps down to fit the name. */
   .design-current select {
+    font-size: 10px;
     width: 100%;
     max-width: 220px;
     min-width: 0;
@@ -3604,6 +3622,9 @@ html[data-dashboard='original'] .app-shell {
 @media (max-width: 380px) {
   .design-dashboard {
     --hero-title-size: 30px;
+  }
+  .design-current select {
+    font-size: 9px;
   }
   .design-switcher {
     padding: 0 11px;
