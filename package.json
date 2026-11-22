@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "node scripts/desktop.mjs --dev",
     "build": "vite build",
+    "build:pages": "vite build && node scripts/build-pages.mjs",
     "start": "node scripts/desktop.mjs",
     "check": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
@@ -20,6 +21,8 @@
     "data:refresh:utilities": "node scripts/fetch-utilities.mjs",
     "dev:web": "node --env-file-if-exists=.env scripts/dev.mjs",
     "start:web": "node --env-file-if-exists=.env server/index.mjs",
+    "pages:dev": "wrangler pages dev dist-pages --port 8788",
+    "pages:deploy": "wrangler pages deploy dist-pages --project-name electricity-map",
     "package": "npm run build && electron-builder --publish never",
     "package:dir": "npm run build && electron-builder --dir --publish never",
     "test:desktop": "playwright test --config playwright.desktop.config.ts",
@@ -44,7 +47,8 @@
     "typescript": "7.0.2",
     "us-atlas": "3.0.1",
     "vite": "8.3.5",
-    "vite-plugin-solid": "2.11.15"
+    "vite-plugin-solid": "2.11.15",
+    "wrangler": "4.158.0"
   },
   "productName": "Electricity Map",
   "main": "desktop/main.mjs",

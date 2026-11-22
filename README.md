@@ -1,6 +1,6 @@
 # Electricity Map
 
-A different kind of current. An **Electron desktop app** with an original three-view observatory plus **ten additional dashboard designs**, all using real U.S. electricity prices. Built with **SolidJS, TypeScript, Vite, Electron, and Node.js**. Browser mode remains available.
+A different kind of current. Live at **https://map.cujuju.foo**. An **Electron desktop app** with an original three-view observatory plus **ten additional dashboard designs**, all using real U.S. electricity prices. Built with **SolidJS, TypeScript, Vite, Electron, and Node.js**. Browser mode remains available.
 
 - **Electric atlas** — a raised geographic map. State elevation and color encode electricity price; switch between relief and flat geography.
 - **Price constellation** — a radial constellation of states. More expensive electricity sits farther from the center; bubble area increases with electricity sales. Census regions determine ordering.
@@ -79,6 +79,49 @@ npm start
 `npm start` opens the built desktop app. It runs its own Node service on a free loopback port, so it does not need a separately running server or port 3001. The launcher clears `ELECTRON_RUN_AS_NODE` if an editor terminal supplied it.
 
 For browser development use `npm run dev:web` (Vite on 4187, API on 3001). To serve the built web app use `npm run start:web`. Only browser server mode uses `HOST` and `PORT` from `.env`.
+
+## Public website (Cloudflare Pages)
+
+The browser version is published at **https://map.cujuju.foo** (also `https://electricity-map.pages.dev`, which sends `X-Robots-Tag: noindex` so search engines index only the custom domain). The site is fully static: no Node server runs in production.
+
+`npm run build:pages` runs `vite build`, then `scripts/build-pages.mjs` assembles `dist-pages/`:
+
+- The three snapshots are validated with the same validators as the Node server and copied to `/api/electricity.json`, `/api/monthly.json` and `/api/utilities.json`; `/api/health.json` is generated from the quarterly snapshot. `_redirects` rewrites the extensionless `/api/…` routes the frontend fetches to those files (status 200, not a redirect).
+- `_headers` applies the desktop Content Security Policy (`desktopCSP()`, so Google Fonts are allowed and `connect-src` is `'self'`), `nosniff`, `Referrer-Policy`, `Cache-Control: public, max-age=3600` and per-snapshot `Last-Modified` from `fetchedAt`, matching `server/index.mjs`. Hashed `/assets/*` are immutable. Cloudflare negotiates gzip/Brotli itself.
+- `functions/api/[[path]].js` returns the server's JSON 404 (`API route not found`) or 405 for any other `/api/*` path; `_routes.json` keeps the four snapshot routes static so the Function only runs for unknown API paths.
+- `index.html` gains `<link rel="canonical" href="https://map.cujuju.foo/">`. Set `SITE_URL` or `PAGES_PROJECT` to build for another host or project name.
+
+Share links in the browser are `window.location.href`, so they use whichever host served the page. Desktop builds, `npm run dev:web` and `npm run start:web` are unchanged; `dist-pages/` is ignored by Git and not packaged into Electron.
+
+Preview locally with Cloudflare's runtime, then run the UI tests against it:
+
+```sh
+npm run build:pages
+npm run pages:dev                                      # http://127.0.0.1:8788
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:8788 npm run test:ui
+```
+
+### Automatic deploy and data refresh
+
+`.github/workflows/deploy-pages.yml` runs on every push to `main`, every Monday at 14:17 UTC, and on demand (**Actions → Deploy to Cloudflare Pages → Run workflow**; untick *refresh* to deploy the committed snapshots as-is). Each run:
+
+1. `npm ci`, then `npm run data:refresh` with the `EIA_API_KEY` secret (`DEMO_KEY` if unset, with a warning; EIA rate-limits DEMO_KEY on shared runners).
+2. `npm run check`, `npm test`, `npm run build:pages`, and the Playwright UI suite against `wrangler pages dev dist-pages`.
+3. `wrangler pages deploy dist-pages --project-name electricity-map --branch main` (production).
+
+A failed refresh, validation or test stops the run, so the live site keeps its last good deployment. The workflow never commits or pushes. The step summary shows each snapshot's `fetchedAt` and whether it differs from the commit, and the refreshed `data/*.json` files are uploaded as a 30-day artifact named `eia-snapshots-<run id>`.
+
+**Why deploy directly instead of opening a data PR:** EIA revises data monthly, and a weekly bot PR would need a manual merge every time. Pull requests opened with `GITHUB_TOKEN` also do not trigger CI without a separate PAT or GitHub App. Every run, including pushes to `main`, refreshes before it deploys, so merging older committed snapshots never rolls the site back. The tradeoff is that the repository's `data/` lags the live site, and refreshed data is checked by validators and tests, not human review. To bring `data/` up to date, run `npm run data:refresh` locally (or download the artifact) and open a PR. Committed snapshots still determine the desktop app's bundled data.
+
+Repository secrets (**Settings → Secrets and variables → Actions → Repository secrets**):
+
+| Secret | Value |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | Custom API token: Account · Cloudflare Pages · Edit, Account · Account Settings · Read, Zone · DNS · Edit (`cujuju.foo`; only needed to manage the custom domain) |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID (dashboard sidebar, or `wrangler whoami`) |
+| `EIA_API_KEY` | Free key from [EIA registration](https://www.eia.gov/opendata/register.php); optional but recommended |
+
+One-time Cloudflare setup (already done for this repository): `wrangler pages project create electricity-map --production-branch main`; add `map.cujuju.foo` under **Workers & Pages → electricity-map → Custom domains**; the `cujuju.foo` zone is on Cloudflare, so its DNS record is a proxied `CNAME map → electricity-map.pages.dev`.
 
 ## Desktop behavior and packages
 

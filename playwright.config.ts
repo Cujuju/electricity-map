@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// PLAYWRIGHT_BASE_URL runs the suite against an already running server, such as `npm run pages:dev`.
+const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL;
+
 export default defineConfig({
   testDir: './tests',
   testMatch: ['ui.spec.ts', 'designs.spec.ts', 'analytics.spec.ts'],
@@ -7,7 +10,7 @@ export default defineConfig({
   workers: 1,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:3187',
+    baseURL: externalBaseURL ?? 'http://127.0.0.1:3187',
     trace: 'retain-on-failure',
     launchOptions: { channel: 'chrome' },
   },
@@ -18,9 +21,11 @@ export default defineConfig({
     },
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
   ],
-  webServer: {
-    command: 'node tests/serve.mjs',
-    url: 'http://127.0.0.1:3187/api/health',
-    reuseExistingServer: false,
-  },
+  webServer: externalBaseURL
+    ? undefined
+    : {
+        command: 'node tests/serve.mjs',
+        url: 'http://127.0.0.1:3187/api/health',
+        reuseExistingServer: false,
+      },
 });
