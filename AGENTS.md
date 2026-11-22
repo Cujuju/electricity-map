@@ -16,6 +16,17 @@ The original Observatory contains three lenses. `src/designs/` contains ten addi
 - `npm run test:desktop`: real Electron tests with isolated profiles. `ELECTRICITY_MAP_EXECUTABLE` selects a packaged binary.
 - `npm run package:dir` / `npm run package`: unpacked desktop app / installers in ignored `release/`.
 - `npm run data:refresh`: sequential quarterly, monthly and annual utility updates. Each file is replaced atomically after its own validation. Individual refresh commands have `:quarterly`, `:monthly`, and `:utilities` suffixes.
+- `npm run ci:local`: full pre-merge check (types, unit tests, Pages build, UI tests against the Node server and `wrangler pages dev`). GitHub Actions is not used.
+
+## Deploying the website
+
+https://map.cujuju.foo is a static Cloudflare Pages site (project `electricity-map`). Merging to `main` does not deploy it. To update Cloudflare ("deploy", "release", "push to Cloudflare"), run from any checkout of this repo:
+
+```sh
+npm run release:weekly -- --force
+```
+
+It clones `origin/main` into its own folder, installs dependencies, refreshes EIA data, runs all checks and tests, and deploys. Secrets come from the macOS Keychain (service `electricity-map-deploy`) or `secrets.env` in the deploy folder; never ask for them in chat. Success ends with `RESULT: released <sha>`. Then confirm with `curl https://map.cujuju.foo/api/health`. Only unmerged code needs `npm run release` in a worktree with `node_modules`. Weekly T3 scheduled tasks run the same command without `--force`.
 
 ## Data contracts
 
