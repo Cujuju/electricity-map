@@ -219,7 +219,7 @@ export function TimeGrid(props: {
     <div
       class="time-grid-scroll"
       role="region"
-      aria-label="Scrollable state-by-month annual price-change heatmap"
+      aria-label="Scrollable state-by-month year-over-year price-change heatmap"
       tabindex="0"
     >
       <table class="time-grid">

@@ -811,7 +811,9 @@ export default function AnalysisStudio(props: {
                     Every state. <em>Every turning point.</em>
                   </h2>
                   <p>
-                    Year-over-year price changes. Select a cell to inspect that state and month.
+                    For the selected sector, +24 means the average electricity price per kWh was
+                    about 24% higher than in the same month a year earlier. Select a cell to inspect
+                    that state and month.
                   </p>
                 </div>
                 <label>
