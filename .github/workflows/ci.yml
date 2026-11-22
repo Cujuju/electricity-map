@@ -1,9 +1,9 @@
 name: Check Electricity Map
 
+# Manual only: GitHub Actions minutes are not used for this private repository.
+# Run `npm run ci:local` before merging instead (see README, "Local CI and release").
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
