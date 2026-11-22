@@ -543,7 +543,7 @@ select {
   stroke-width: 3;
 }
 .state-label {
-  font: 10px var(--mono);
+  font: calc(10px * var(--svg-unit, 1)) var(--mono);
   fill: #1c3825;
   pointer-events: none;
   font-weight: 500;
@@ -552,7 +552,7 @@ select {
   stroke-width: 2px;
 }
 .map-coordinates {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   letter-spacing: 1px;
   fill: #79956e;
 }
@@ -561,13 +561,17 @@ select {
   stroke-width: 0.8;
 }
 .map-inset-label {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   letter-spacing: 0.7px;
   fill: #647c5d;
 }
 .state-tile.is-selected .state-label {
   fill: #112317;
   font-weight: 700;
+}
+/* Labels that would overlap a kept label (svgUnit.ts); values stay in titles and readouts. */
+svg[data-label-cull] text[data-culled] {
+  visibility: hidden;
 }
 .stage-annotation {
   position: absolute;
@@ -874,7 +878,7 @@ select {
   border-radius: 1px;
 }
 .ranking-row strong {
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   width: 34px;
   text-align: right;
 }
@@ -1002,11 +1006,11 @@ select {
   color: var(--accent);
 }
 .orbit-axis {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #7b9568;
 }
 .orbit-label {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #d2e5b7;
   pointer-events: none;
 }
@@ -1019,12 +1023,12 @@ select {
   stroke-width: 2;
 }
 .region-label {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #657d5c;
   letter-spacing: 2px;
 }
 .spiral-year {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #a9bd90;
   pointer-events: none;
 }
@@ -1036,11 +1040,11 @@ select {
   stroke-width: 3;
 }
 .spiral-origin {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #80996b;
 }
 .spiral-key {
-  font: 9px var(--mono);
+  font: calc(9px * var(--svg-unit, 1)) var(--mono);
   fill: #a9bf92;
   letter-spacing: 1px;
 }
@@ -1225,9 +1229,6 @@ select {
     padding: 14px 8px;
     gap: 8px;
   }
-  .lens-nav strong {
-    font-size: 10px;
-  }
   .nav-arrow {
     display: none;
   }
@@ -1242,25 +1243,12 @@ select {
   }
   .data-controls select {
     width: 127px;
-    font-size: 10px;
   }
   .metric {
     padding: 16px;
   }
   .metric strong {
     font-size: 27px;
-  }
-  .metric-change small {
-    font-size: 9px;
-  }
-  .metric-change {
-    font-size: 9px;
-  }
-  .metric-note {
-    font-size: 9px;
-  }
-  .metric-label {
-    font-size: 9px;
   }
   .exploration-layout {
     grid-template-columns: minmax(0, 1fr) 230px;
@@ -1276,9 +1264,6 @@ select {
     left: 19px;
     width: 156px;
   }
-  .stage-annotation p {
-    font-size: 9px;
-  }
   .visualization-header {
     padding: 14px;
   }
@@ -1289,23 +1274,11 @@ select {
   .legend {
     width: 145px;
   }
-  .encoding-note {
-    font-size: 9px;
-  }
-  .encoding-note small {
-    font-size: 9px;
-  }
-  .workspace-footer > p {
-    font-size: 9px;
-  }
   .workspace-footer > div {
     gap: 10px;
   }
   .snapshot-label {
     display: none;
-  }
-  .state-heading h2 {
-    font-size: 14px;
   }
   .state-monogram {
     width: 37px;
@@ -1325,12 +1298,6 @@ select {
   }
   .rankings {
     max-height: 145px;
-  }
-  .detail-topline .eyebrow {
-    font-size: 9px;
-  }
-  .selection-indicator {
-    font-size: 9px;
   }
 }
 @media (max-width: 980px) {
@@ -1387,7 +1354,6 @@ select {
     margin-bottom: 17px;
   }
   .breadcrumb {
-    font-size: 9px;
     gap: 9px;
   }
   .page-heading h1 {
@@ -1405,11 +1371,7 @@ select {
   .visualization-tools {
     gap: 7px;
   }
-  .quarter-badge {
-    font-size: 9px;
-  }
   .relief-button {
-    font-size: 9px;
     padding: 5px;
   }
   .metric-change {
@@ -1421,9 +1383,6 @@ select {
   .metric > div {
     gap: 6px;
   }
-  .metric-unit {
-    font-size: 9px;
-  }
   .stage-annotation {
     width: 150px;
     top: 12px;
@@ -1432,11 +1391,7 @@ select {
     min-height: 380px;
   }
   .visualization-header .eyebrow {
-    font-size: 9px;
     letter-spacing: 0.8px;
-  }
-  .panel-number {
-    font-size: 9px;
   }
   .visualization-footer {
     gap: 10px;
@@ -1528,7 +1483,6 @@ select {
     height: 49px;
   }
   .breadcrumb {
-    font-size: 9px;
     letter-spacing: 0.6px;
     gap: 7px;
   }
@@ -1537,7 +1491,6 @@ select {
   }
   .share-button {
     padding: 6px 7px;
-    font-size: 9px;
     gap: 5px;
   }
   .share-button svg {
@@ -1557,9 +1510,6 @@ select {
     font-size: 37px;
     margin-top: 11px;
   }
-  .page-heading p {
-    font-size: 11px;
-  }
   .data-controls {
     margin-top: 23px;
     gap: 12px;
@@ -1568,10 +1518,6 @@ select {
   }
   .data-controls select {
     width: 100%;
-    font-size: 11px;
-  }
-  .data-controls label {
-    font-size: 9px;
   }
   .metrics {
     margin-bottom: 15px;
@@ -1583,14 +1529,10 @@ select {
     font-size: 26px;
   }
   .metric-label {
-    font-size: 9px;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
     min-height: 14px;
     line-height: 1.4;
-  }
-  .metric-unit {
-    font-size: 9px;
   }
   .metric > div {
     display: flex;
@@ -1616,12 +1558,6 @@ select {
     top: 0;
     left: 17px;
   }
-  .stage-annotation p {
-    font-size: 9px;
-  }
-  .visualization-header .eyebrow {
-    font-size: 9px;
-  }
   .visualization-header {
     padding: 14px 16px;
   }
@@ -1646,20 +1582,11 @@ select {
     grid-column: 1/-1;
     margin-bottom: 1px;
   }
-  .detail-topline .eyebrow {
-    font-size: 9px;
-  }
-  .selection-indicator {
-    font-size: 9px;
-  }
   .state-heading {
     grid-column: 1;
     grid-row: 2;
     margin: 19px 0 0;
     gap: 9px;
-  }
-  .state-heading h2 {
-    font-size: 15px;
   }
   .state-price {
     grid-column: 1;
@@ -1672,7 +1599,6 @@ select {
   .state-comparison {
     grid-column: 1;
     grid-row: 4;
-    font-size: 9px;
     margin-top: 8px;
   }
   .state-facts {
@@ -1705,12 +1631,6 @@ select {
     align-self: center;
     gap: 7px;
   }
-  .ranking-heading h3 {
-    font-size: 9px;
-  }
-  .ranking-heading button {
-    font-size: 9px;
-  }
   .state-search {
     grid-column: 2;
     grid-row: 3;
@@ -1725,19 +1645,12 @@ select {
   }
   .ranking-row {
     padding: 11px 0;
-    font-size: 9px;
-  }
-  .ranking-row strong {
-    font-size: 10px;
   }
   .timeline-panel {
     padding: 15px 13px;
     gap: 11px;
     margin-top: 15px;
     flex-wrap: wrap;
-  }
-  .timeline-current strong {
-    font-size: 11px;
   }
   .timeline-current {
     min-width: 67px;
@@ -1754,16 +1667,12 @@ select {
   .timeline-stepper .icon-button {
     width: 30px;
   }
-  .timeline-years {
-    font-size: 9px;
-  }
   .workspace-footer {
     padding: 18px 0 22px;
     gap: 12px;
     display: block;
   }
   .workspace-footer > p {
-    font-size: 9px;
     max-width: none;
   }
   .workspace-footer > div {
@@ -1773,17 +1682,9 @@ select {
   .workspace-footer a {
     display: flex;
   }
-  .workspace-footer button,
-  .workspace-footer a {
-    font-size: 9px;
-  }
   .hover-readout {
     bottom: 3px;
-    font-size: 9px;
     padding: 9px 11px;
-  }
-  .hover-readout strong {
-    font-size: 11px;
   }
   .methods-content {
     padding: 28px 24px;
@@ -1791,37 +1692,8 @@ select {
   .methods-content h2 {
     font-size: 34px;
   }
-  .methods-content p,
-  .methods-content dd {
-    font-size: 11px;
-  }
-  .methods-content dt {
-    font-size: 11px;
-  }
   .methods-dialog {
     max-height: 87vh;
-  }
-  .region-label {
-    font-size: 11px;
-  }
-  .map-inset-label {
-    font-size: 9px;
-  }
-  .orbit-label,
-  .spiral-year {
-    font-size: 12px;
-  }
-  .map-coordinates {
-    font-size: 10px;
-  }
-  .state-label {
-    font-size: 12px;
-  }
-  .spiral-key {
-    font-size: 10px;
-  }
-  .spiral-origin {
-    font-size: 10px;
   }
 }
 @media (max-width: 390px) {
@@ -1832,7 +1704,6 @@ select {
     padding: 14px;
   }
   .breadcrumb {
-    font-size: 9px;
     gap: 5px;
   }
   .share-button span {
@@ -1847,12 +1718,6 @@ select {
   .metric strong {
     font-size: 23px;
   }
-  .metric-unit {
-    font-size: 9px;
-  }
-  .metric-label {
-    font-size: 9px;
-  }
   .visualization-stage {
     min-height: 300px;
   }
@@ -1863,41 +1728,19 @@ select {
     column-gap: 16px;
     padding: 18px 15px;
   }
-  .state-heading h2 {
-    font-size: 13px;
-  }
   .state-monogram {
     width: 30px;
     height: 30px;
     font-size: 17px;
   }
-  .state-heading > div > span {
-    font-size: 9px;
-  }
-  .ranking-heading button {
-    font-size: 9px;
-  }
   .legend {
     width: 125px;
   }
   .encoding-note {
-    font-size: 9px;
     max-width: 123px;
-  }
-  .encoding-note small {
-    font-size: 9px;
-  }
-  .visualization-header .eyebrow {
-    font-size: 9px;
   }
   .visualization-tools {
     gap: 5px;
-  }
-  .quarter-badge {
-    font-size: 9px;
-  }
-  .relief-button {
-    font-size: 9px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

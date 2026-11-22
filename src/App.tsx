@@ -628,7 +628,7 @@ export default function App() {
                             </strong>
                           </div>
                         </Show>
-                        <div class="stage-annotation">
+                        <div class="stage-annotation" data-label-obstacle>
                           <span class="annotation-cross">+</span>
                           <p>{lens().description}</p>
                         </div>

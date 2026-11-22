@@ -4,5 +4,8 @@ import './styles.css';
 import './designs/designs.css';
 import './analytics/analytics.css';
 import './desktop/desktop.css';
+import { watchSvgUnits } from './svgUnit';
 
-render(() => <App />, document.getElementById('root')!);
+const root = document.getElementById('root')!;
+watchSvgUnits(root);
+render(() => <App />, root);

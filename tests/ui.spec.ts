@@ -116,3 +116,38 @@ test('invalid URL values recover and data errors can be retried', async ({ page 
   await expect(page.getByLabel('Selected state', { exact: true })).toHaveValue('CA');
   await expect(page.getByLabel('End-use sector')).toHaveValue('RES');
 });
+
+
+test('chart labels render at whole screen pixels of at least 9px and never overlap', async ({ page }) => {
+  for (const [url, chart] of [
+    ['/?design=original&state=CA&sector=RES', '.atlas-svg'],
+    ['/?design=original&view=orbit&state=CA&sector=RES', '.orbit-svg'],
+    ['/?design=original&view=spiral&state=CA&sector=RES', '.spiral-svg'],
+    ['/?lab=changes&design=original&state=CA&sector=RES', '.change-map'],
+    ['/?design=solar&state=CA&sector=RES', '.design-chart'],
+  ]) {
+    await page.goto(url);
+    const svg = page.locator(`${chart}:visible`).first();
+    await expect(svg).toHaveAttribute('style', /--svg-unit/);
+    await page.waitForTimeout(200);
+    const result = await svg.evaluate((root) => {
+      const sizes: number[] = [];
+      const boxes: DOMRect[] = [];
+      let overlaps = 0;
+      for (const text of root.querySelectorAll<SVGTextElement>('text')) {
+        if (!text.textContent!.trim() || getComputedStyle(text).visibility === 'hidden') continue;
+        const m = text.getScreenCTM()!;
+        // Hundredths absorb floating-point noise from the screen transform.
+        sizes.push(Math.round(parseFloat(getComputedStyle(text).fontSize) * Math.hypot(m.a, m.b) * 100) / 100);
+        if (!text.hasAttribute('data-label')) continue;
+        const b = text.getBoundingClientRect();
+        if (boxes.some((k) => b.left < k.right && b.right > k.left && b.top < k.bottom && b.bottom > k.top)) overlaps++;
+        boxes.push(b);
+      }
+      return { min: Math.min(...sizes), fractional: sizes.filter((s) => Math.abs(s - Math.round(s)) > 0.02), overlaps };
+    });
+    expect(result.min, url).toBeGreaterThanOrEqual(9);
+    expect(result.fractional, url).toEqual([]);
+    expect(result.overlaps, url).toBe(0);
+  }
+});

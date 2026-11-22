@@ -359,7 +359,7 @@ html[data-dashboard='original'] .app-shell {
   --hero-title-size: clamp(36px, 3.5vw, 56px);
 }
 .experiment-hero h1 {
-  font: 500 calc(var(--hero-title-size) * var(--hero-title-scale, 1)) / 1 var(--heading);
+  font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1 var(--heading);
   white-space: nowrap;
   letter-spacing: -0.035em;
   margin: 21px 0 20px;
@@ -583,18 +583,18 @@ html[data-dashboard='original'] .app-shell {
 }
 .chart-state-label,
 .chart-axis {
-  font: 9px var(--mono);
+  font: calc(10px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-micro {
-  font: 9px var(--mono);
+  font: calc(10px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   letter-spacing: 1px;
   pointer-events: none;
 }
 .chart-center-number {
-  font: 500 39px var(--heading);
+  font: 500 calc(45px * var(--svg-unit, 1)) var(--heading);
   fill: var(--ink);
   letter-spacing: -2px;
   pointer-events: none;
@@ -605,17 +605,17 @@ html[data-dashboard='original'] .app-shell {
   pointer-events: none;
 }
 .chart-big-annotation {
-  font: 600 20px var(--heading);
+  font: 600 calc(23px * var(--svg-unit, 1)) var(--heading);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-bar-label {
-  font: 9px var(--mono);
+  font: calc(10px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-city .chart-city-label {
-  font: 600 10px var(--mono);
+  font: 600 calc(12px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   paint-order: stroke;
   stroke: var(--paper);
@@ -624,47 +624,47 @@ html[data-dashboard='original'] .app-shell {
   pointer-events: none;
 }
 .chart-city.portrait-chart .chart-city-label {
-  font-size: 12px;
+  font-size: calc(12px * var(--svg-unit, 1));
   stroke-width: 1.5px;
 }
 .chart-city-message {
   font:
-    16px 'DotGothic16',
+    calc(18px * var(--svg-unit, 1)) 'DotGothic16',
     var(--mono);
   fill: var(--accent);
   pointer-events: none;
 }
 .chart-circuit-state {
-  font: 500 11px var(--mono);
+  font: 500 calc(13px * var(--svg-unit, 1)) var(--mono);
   fill: #102c47;
   pointer-events: none;
 }
 .chart-circuit-value {
-  font: 10px var(--mono);
+  font: calc(12px * var(--svg-unit, 1)) var(--mono);
   fill: #102c47;
   pointer-events: none;
 }
 .chart-lollipop-state {
-  font: 700 14px var(--body);
+  font: 700 calc(16px * var(--svg-unit, 1)) var(--body);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-lollipop-value {
-  font: 500 12px var(--mono);
+  font: 500 calc(14px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-ridge-label {
-  font: 12px var(--mono);
+  font: calc(14px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   pointer-events: none;
 }
 .chart-calendar-year {
-  font: 600 13px var(--heading);
+  font: 600 calc(15px * var(--svg-unit, 1)) var(--heading);
   fill: var(--ink);
 }
 .chart-calendar-value {
-  font: 10px var(--mono);
+  font: calc(12px * var(--svg-unit, 1)) var(--mono);
   fill: #211f1a;
   pointer-events: none;
 }
@@ -844,7 +844,7 @@ html[data-dashboard='original'] .app-shell {
   width: 13px;
 }
 .experiment-ranking-row > b {
-  font: 9px var(--mono);
+  font: 10px var(--mono);
   width: 20px;
 }
 .experiment-ranking-meter {
@@ -857,7 +857,7 @@ html[data-dashboard='original'] .app-shell {
   display: block;
 }
 .experiment-ranking-row > strong {
-  font: 10px var(--mono);
+  font: 11px var(--mono);
   min-width: 40px;
   text-align: right;
 }
@@ -1456,7 +1456,7 @@ html[data-dashboard='original'] .app-shell {
   color: var(--accent);
 }
 .skin-blueprint .experiment-state-note > p {
-  font: 10px/1.9 var(--mono);
+  font: 11px/1.9 var(--mono);
 }
 .skin-blueprint .experiment-timeline {
   background: #153e68;
@@ -2113,7 +2113,7 @@ html[data-dashboard='original'] .app-shell {
   border-radius: 10px;
 }
 .skin-tidal .chart-ridge-label {
-  font-size: 11px;
+  font-size: calc(13px * var(--svg-unit, 1));
 }
 /* 10 — Financial press */
 .skin-press {
@@ -2346,10 +2346,8 @@ html[data-dashboard='original'] .app-shell {
   }
   .experiment-filter > select {
     max-width: 145px;
-    font-size: 10px;
   }
   .experiment-snapshot {
-    font-size: 9px;
     letter-spacing: 0.5px;
   }
   .experiment-hero-emblem {
@@ -2374,7 +2372,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 39px;
   }
   .experiment-metric > div > span {
-    font-size: 9px;
     max-width: 120px;
     text-align: right;
   }
@@ -2450,7 +2447,6 @@ html[data-dashboard='original'] .app-shell {
     display: none;
   }
   .experiment-footer {
-    font-size: 9px;
     letter-spacing: 0.4px;
   }
   .gallery-grid {
@@ -2490,7 +2486,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 19px;
   }
   .experiment-edition {
-    font-size: 9px;
     letter-spacing: 1px;
   }
   .experiment-content {
@@ -2507,21 +2502,13 @@ html[data-dashboard='original'] .app-shell {
     font-size: 37px;
   }
   .experiment-metric > span {
-    font-size: 9px;
     letter-spacing: 1px;
   }
-  .experiment-metric > div {
-    font-size: 9px;
-  }
   .experiment-metric > div > span {
-    font-size: 9px;
     max-width: 100px;
   }
   .experiment-state-name h2 {
     font-size: 17px;
-  }
-  .experiment-state-name p {
-    font-size: 9px;
   }
   .experiment-state-name > span {
     width: 33px;
@@ -2569,7 +2556,6 @@ html[data-dashboard='original'] .app-shell {
     padding: 18px 15px;
   }
   .experiment-section-label {
-    font-size: 9px;
     letter-spacing: 1px;
   }
   .experiment-state-note > p {
@@ -2591,9 +2577,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .experiment-data-notes > div {
     gap: 18px;
-  }
-  .experiment-data-notes p {
-    font-size: 9px;
   }
   .skin-blueprint .experiment-content,
   .skin-thermal .experiment-content {
@@ -2719,7 +2702,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .design-lab-button {
     gap: 6px;
-    font-size: 9px;
     letter-spacing: 0.5px;
   }
   .design-lab-button > svg {
@@ -2739,7 +2721,6 @@ html[data-dashboard='original'] .app-shell {
     display: none;
   }
   .design-current select {
-    font-size: 10px;
     width: 100%;
     max-width: 220px;
     min-width: 0;
@@ -2779,12 +2760,10 @@ html[data-dashboard='original'] .app-shell {
     margin-left: auto;
   }
   .experiment-masthead-actions a {
-    font-size: 9px;
     letter-spacing: 0.5px;
     gap: 4px;
   }
   .experiment-masthead-actions button {
-    font-size: 9px;
     letter-spacing: 0.5px;
     gap: 4px;
   }
@@ -2798,7 +2777,6 @@ html[data-dashboard='original'] .app-shell {
     position: relative;
   }
   .experiment-kicker {
-    font-size: 9px;
     letter-spacing: 1.1px;
     gap: 6px;
   }
@@ -2813,7 +2791,6 @@ html[data-dashboard='original'] .app-shell {
     margin: 19px 0 15px;
   }
   .experiment-hero-copy > p {
-    font-size: 11px;
     max-width: 280px;
     line-height: 1.7;
   }
@@ -2854,7 +2831,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .experiment-filter > label {
     display: block;
-    font-size: 9px;
     letter-spacing: 1px;
     margin-bottom: 5px;
   }
@@ -2862,11 +2838,9 @@ html[data-dashboard='original'] .app-shell {
     width: 100%;
     max-width: none;
     padding: 6px 8px 6px 0;
-    font-size: 11px;
   }
   .experiment-export {
     justify-self: end;
-    font-size: 9px;
     align-self: end;
     margin-bottom: 6px;
     padding: 4px 0;
@@ -2881,7 +2855,6 @@ html[data-dashboard='original'] .app-shell {
     min-width: 0;
   }
   .experiment-metric > span {
-    font-size: 9px;
     letter-spacing: 0.5px;
     line-height: 1.5;
     display: block;
@@ -2896,18 +2869,13 @@ html[data-dashboard='original'] .app-shell {
     font-size: 32px;
     letter-spacing: -1px;
   }
-  .experiment-metric small {
-    font-size: 9px;
-  }
   .experiment-metric > div {
     display: block;
-    font-size: 9px;
     line-height: 1.6;
     min-height: 24px;
   }
   .experiment-metric > div > span {
     display: block;
-    font-size: 9px;
     text-align: left;
     max-width: none;
     margin: 0;
@@ -2934,7 +2902,6 @@ html[data-dashboard='original'] .app-shell {
     gap: 10px;
   }
   .experiment-section-label {
-    font-size: 9px;
     letter-spacing: 1px;
   }
   .experiment-chart-heading h2 {
@@ -2968,15 +2935,11 @@ html[data-dashboard='original'] .app-shell {
     width: 93px;
   }
   .experiment-color-key > span {
-    font-size: 9px;
     letter-spacing: 0.5px;
   }
   .experiment-color-key > div {
     height: 4px;
     margin-top: 7px;
-  }
-  .experiment-color-key > p {
-    font-size: 9px;
   }
   .experiment-chart-caption > p {
     font-size: 9px;
@@ -3003,7 +2966,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 20px;
   }
   .experiment-state-name p {
-    font-size: 9px;
     line-height: 1.6;
   }
   .experiment-state-name > span {
@@ -3021,13 +2983,9 @@ html[data-dashboard='original'] .app-shell {
   .experiment-state-price strong {
     font-size: 42px;
   }
-  .experiment-state-price > span {
-    font-size: 9px;
-  }
   .experiment-comparison {
     grid-column: 1;
     grid-row: 4;
-    font-size: 9px;
   }
   .experiment-state-facts {
     grid-column: 2;
@@ -3037,12 +2995,8 @@ html[data-dashboard='original'] .app-shell {
     gap: 16px;
   }
   .experiment-state-facts > div {
-    font-size: 9px;
     gap: 6px;
     flex-wrap: wrap;
-  }
-  .experiment-state-facts strong {
-    font-size: 9px;
   }
   .experiment-state-note {
     grid-column: 1/-1;
@@ -3074,7 +3028,6 @@ html[data-dashboard='original'] .app-shell {
     grid-column: 2;
     grid-row: 3;
     margin: 0;
-    font-size: 9px;
   }
   .experiment-rankings {
     padding: 20px;
@@ -3088,22 +3041,15 @@ html[data-dashboard='original'] .app-shell {
     gap: 12px;
   }
   .experiment-ranking-row > span:first-child {
-    font-size: 9px;
     width: 16px;
   }
   .experiment-ranking-row > b {
-    font-size: 10px;
     width: 25px;
   }
   .experiment-ranking-row > strong {
-    font-size: 11px;
     min-width: 52px;
   }
-  .experiment-ranking-row small {
-    font-size: 9px;
-  }
   .experiment-rankings > p {
-    font-size: 9px;
     line-height: 1.8;
     margin-top: 14px;
   }
@@ -3123,11 +3069,7 @@ html[data-dashboard='original'] .app-shell {
   .experiment-timeline-label {
     min-width: 105px;
   }
-  .experiment-timeline-label > span {
-    font-size: 9px;
-  }
   .experiment-timeline-label > strong {
-    font-size: 11px;
     margin-top: 6px;
   }
   .experiment-timeline-step {
@@ -3142,14 +3084,10 @@ html[data-dashboard='original'] .app-shell {
     flex-basis: 100%;
     margin: 8px 0 0;
   }
-  .experiment-timeline-track > div {
-    font-size: 9px;
-  }
   .experiment-data-notes {
     margin-top: 10px;
   }
   .experiment-data-notes > summary {
-    font-size: 9px;
     padding: 17px 0;
     gap: 12px;
   }
@@ -3158,12 +3096,10 @@ html[data-dashboard='original'] .app-shell {
     gap: 15px;
   }
   .experiment-data-notes p {
-    font-size: 10px;
     line-height: 1.8;
   }
   .experiment-footer {
     padding: 20px 0 24px;
-    font-size: 9px;
     line-height: 1.7;
     gap: 15px;
   }
@@ -3176,30 +3112,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .experiment-masthead-actions a {
     display: none;
-  }
-  .chart-state-label {
-    font-size: 12px;
-  }
-  .chart-axis {
-    font-size: 12px;
-  }
-  .chart-micro {
-    font-size: 10px;
-  }
-  .chart-circuit-state {
-    font-size: 12px;
-  }
-  .chart-circuit-value {
-    font-size: 11px;
-  }
-  .chart-calendar-value {
-    font-size: 12px;
-  }
-  .chart-calendar-year {
-    font-size: 16px;
-  }
-  .chart-bar-label {
-    font-size: 10px;
   }
   .skin-solar .experiment-hero-emblem {
     top: 58px;
@@ -3232,7 +3144,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 53px;
   }
   .skin-brutalist .experiment-hero-copy > p {
-    font-size: 11px;
     max-width: 280px;
   }
   .skin-brutalist .experiment-toolbar {
@@ -3337,11 +3248,7 @@ html[data-dashboard='original'] .app-shell {
   .skin-arcade .experiment-state-price strong {
     font-size: 37px;
   }
-  .skin-arcade .experiment-state-note > p {
-    font-size: 10px;
-  }
   .skin-blueprint .experiment-brand {
-    font-size: 12px;
     letter-spacing: 0.2px;
   }
   .skin-blueprint .experiment-hero h1 {
@@ -3361,7 +3268,6 @@ html[data-dashboard='original'] .app-shell {
     display: none;
   }
   .skin-blueprint .experiment-hero-copy > p {
-    font-size: 9px;
     max-width: 270px;
   }
   .skin-blueprint .experiment-metric strong {
@@ -3375,14 +3281,8 @@ html[data-dashboard='original'] .app-shell {
     font-size: 16px;
     line-height: 1.4;
   }
-  .skin-blueprint .experiment-state-name h2 {
-    font-size: 16px;
-  }
   .skin-blueprint .experiment-state-price strong {
     font-size: 36px;
-  }
-  .skin-blueprint .experiment-state-note > p {
-    font-size: 9px;
   }
   .skin-blueprint .experiment-rankings h2 {
     font-size: 19px;
@@ -3426,7 +3326,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 19px;
   }
   .skin-cosmic .experiment-brand {
-    font-size: 13px;
     letter-spacing: 2px;
   }
   .skin-cosmic .experiment-masthead {
@@ -3467,12 +3366,6 @@ html[data-dashboard='original'] .app-shell {
   .skin-cosmic .experiment-state-name h2 {
     font-size: 18px;
   }
-  .skin-cosmic .experiment-state-note > p {
-    font-size: 11px;
-  }
-  .skin-analog .experiment-brand {
-    font-size: 12px;
-  }
   .skin-analog .experiment-masthead {
     height: 68px;
   }
@@ -3493,7 +3386,6 @@ html[data-dashboard='original'] .app-shell {
     width: 29px;
   }
   .skin-analog .experiment-hero-copy > p {
-    font-size: 9px;
     max-width: 270px;
   }
   .skin-analog .experiment-metrics {
@@ -3525,9 +3417,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-analog .experiment-state-price strong {
     font-size: 36px;
-  }
-  .skin-analog .experiment-state-note > p {
-    font-size: 9px;
   }
   .skin-analog .experiment-rankings h2 {
     font-size: 23px;
@@ -3636,7 +3525,6 @@ html[data-dashboard='original'] .app-shell {
     display: none;
   }
   .skin-press .experiment-hero-copy > p {
-    font-size: 12px;
     max-width: 300px;
   }
   .skin-press .experiment-toolbar {
@@ -3678,12 +3566,6 @@ html[data-dashboard='original'] .app-shell {
   .skin-press .experiment-state-price strong {
     font-size: 57px;
   }
-  .skin-press .experiment-state-note > p {
-    font-size: 13px;
-  }
-  .skin-press .experiment-state-facts > div {
-    font-size: 9px;
-  }
   .skin-press .experiment-rankings {
     padding: 20px 0 0;
   }
@@ -3705,7 +3587,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 38px;
   }
   .gallery-heading > div > span {
-    font-size: 9px;
     letter-spacing: 1px;
   }
   .design-card-art {
@@ -3714,17 +3595,10 @@ html[data-dashboard='original'] .app-shell {
   .design-card-caption {
     padding: 11px;
   }
-  .design-card-caption strong {
-    font-size: 11px;
-  }
-  .design-card-caption small {
-    font-size: 9px;
-  }
   .preview-word {
     font-size: 35px;
   }
   .original-design {
-    font-size: 10px;
     margin-top: 22px;
     padding-top: 20px;
   }
@@ -3738,7 +3612,6 @@ html[data-dashboard='original'] .app-shell {
     gap: 7px;
   }
   .design-lab-button {
-    font-size: 9px;
     gap: 5px;
   }
   .design-lab-button > b {
@@ -3746,9 +3619,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .design-current {
     padding-left: 8px;
-  }
-  .design-current select {
-    font-size: 9px;
   }
   .experiment-main,
   .skin-brutalist .experiment-main,
@@ -3766,7 +3636,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 29px;
   }
   .experiment-metric > span {
-    font-size: 9px;
     letter-spacing: 0.25px;
   }
   .experiment-chart-heading {
@@ -3819,14 +3688,7 @@ html[data-dashboard='original'] .app-shell {
   .experiment-state-facts {
     gap: 15px;
   }
-  .experiment-state-facts > div {
-    font-size: 9px;
-  }
-  .experiment-state-facts strong {
-    font-size: 9px;
-  }
   .experiment-hero-copy > p {
-    font-size: 10px;
     max-width: 260px;
   }
   .skin-brutalist .experiment-metric strong {
@@ -3865,9 +3727,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .experiment-timeline-label {
     min-width: 97px;
-  }
-  .experiment-timeline-label > span {
-    font-size: 9px;
   }
   .experiment-timeline-step > button {
     width: 23px;
@@ -4057,10 +3916,6 @@ html[data-dashboard='original'] .app-shell {
   .design-dashboard .experiment-hero-copy > p {
     grid-column: 1 / -1;
   }
-  .skin-blueprint .experiment-hero-copy > p,
-  .skin-analog .experiment-hero-copy > p {
-    font-size: 11px;
-  }
 
   /* National price leads full width; sales and spread pair beneath. */
   .design-dashboard .experiment-metrics {
@@ -4117,10 +3972,6 @@ html[data-dashboard='original'] .app-shell {
     height: auto;
     aspect-ratio: 900 / 540;
   }
-  .skin-blueprint .experiment-state-note > p,
-  .skin-arcade .experiment-state-note > p {
-    font-size: 11px;
-  }
 }
 
 /* Chart geometry refinements following the Opus visual review. */
@@ -4148,7 +3999,7 @@ html[data-dashboard='original'] .app-shell {
   margin: 20px auto 16px;
 }
 .portrait-chart text {
-  font: 12px var(--mono);
+  font: calc(12px * var(--svg-unit, 1)) var(--mono);
   fill: var(--ink);
   pointer-events: none;
 }
@@ -4160,16 +4011,16 @@ html[data-dashboard='original'] .app-shell {
   stroke-linejoin: round;
 }
 .portrait-chart .portrait-value {
-  font-size: 12px;
+  font-size: calc(12px * var(--svg-unit, 1));
   letter-spacing: -0.35px;
 }
 .portrait-chart .portrait-note,
 .portrait-chart .portrait-small {
-  font-size: 10px;
+  font-size: calc(10px * var(--svg-unit, 1));
   letter-spacing: 0.3px;
 }
 .portrait-chart .portrait-center {
-  font: 500 29px var(--heading);
+  font: 500 calc(29px * var(--svg-unit, 1)) var(--heading);
   letter-spacing: -1.4px;
 }
 .chart-thermal.portrait-chart .design-state-mark:hover .data-mark,

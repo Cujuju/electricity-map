@@ -28,6 +28,7 @@ export default function Spiral(props: {
   return (
     <svg
       class="spiral-svg"
+      data-label-cull
       viewBox="0 0 1050 660"
       aria-label={`Time spiral comparing ${props.name} with the U.S. Each step is a quarter, moving outward through time. Color and marker area indicate price. Solid dots are the selected state; hollow dots are U.S. totals.`}
     >
@@ -127,7 +128,7 @@ export default function Spiral(props: {
                 </title>
               </g>
               {point.row.period.endsWith('Q1') && (
-                <text class="spiral-year" x={point.x + 13} y={point.y - 12}>
+                <text class="spiral-year" data-label x={point.x + 13} y={point.y - 12}>
                   {point.row.period.slice(0, 4)}
                 </text>
               )}
@@ -135,11 +136,11 @@ export default function Spiral(props: {
           );
         }}
       </For>
-      <text class="spiral-origin" x="525" y="325" text-anchor="middle">
-        2015
-      </text>
-      <text class="spiral-origin" x="525" y="341" text-anchor="middle">
-        START
+      <text class="spiral-origin" y="325" text-anchor="middle">
+        <tspan x="525">2015</tspan>
+        <tspan x="525" dy="1.2em">
+          START
+        </tspan>
       </text>
       <g class="spiral-key">
         <circle cx="49" cy="613" r="4" fill="#d4fa66" />
@@ -151,7 +152,7 @@ export default function Spiral(props: {
           U.S. TOTAL
         </text>
       </g>
-      <text class="map-inset-label" x="675" y="617">
+      <text class="map-inset-label" x="1010" y="617" text-anchor="end">
         CENTER → EDGE / 2015 → {props.history.at(-1)?.period.slice(0, 4)}
       </text>
     </svg>
