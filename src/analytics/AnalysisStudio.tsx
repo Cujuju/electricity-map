@@ -58,6 +58,7 @@ import {
   offsetPeriod,
   periodEnd,
   periodLabel,
+  periodStart,
   yearsOf,
 } from './periods';
 import { shareURL } from '../desktop/links';
@@ -631,15 +632,21 @@ export default function AnalysisStudio(props: {
                     {stateName()} <em>through time.</em>
                   </h2>
                 </div>
-                <p>Solid: {props.state} · dashed: U.S. · nominal ¢ per kWh</p>
+                <p>
+                  Solid: {props.state} · dashed: U.S. · bold: compared periods · nominal ¢ per kWh
+                </p>
               </header>
               <HistoryPlot
                 rows={history()}
                 national={usHistory()}
                 state={props.state}
                 design={props.design}
-                selectedMonth={month()}
-                baseline={baseline()}
+                from={{
+                  start: periodStart(from()),
+                  end: baseline(),
+                  price: before()?.price ?? null,
+                }}
+                to={{ start: periodStart(to()), end: month(), price: now()?.price ?? null }}
                 onMonth={(date) => (grain() === 'month' ? selectTo(date) : selectMonth(date))}
               />
             </section>
