@@ -1,4 +1,4 @@
-// Install (or --uninstall) the hourly macOS launchd agent that releases the Pages site.
+// Install (or --uninstall) the weekly macOS launchd agent that releases the Pages site.
 //   npm run deploy:install      npm run deploy:uninstall
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -43,8 +43,8 @@ writeFileSync(
   <key>EnvironmentVariables</key>
   <dict><key>PATH</key><string>${escape([...new Set(path)].join(':'))}</string></dict>
   <key>WorkingDirectory</key><string>${escape(home)}</string>
-  <key>StartInterval</key><integer>3600</integer>
-  <key>RunAtLoad</key><true/>
+  <key>StartCalendarInterval</key>
+  <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
   <key>LowPriorityIO</key><true/>
   <key>ProcessType</key><string>Background</string>
   <key>StandardOutPath</key><string>${escape(logFile)}</string>
@@ -60,7 +60,7 @@ const missing = ['CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID', 'EIA_API_KEY']
   (account) =>
     spawnSync('security', ['find-generic-password', '-s', 'electricity-map-deploy', '-a', account]).status !== 0,
 );
-console.log(`Installed ${label}: checks hourly, log ${logFile}`);
+console.log(`Installed ${label}: Mondays 09:00 (or on next wake), log ${logFile}`);
 for (const account of missing)
   console.log(
     `Missing Keychain secret ${account}. Add it with:\n  security add-generic-password -U -s electricity-map-deploy -a ${account} -w`,

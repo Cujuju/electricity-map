@@ -1,9 +1,7 @@
-// Scheduled by launchd (see install.mjs). Runs hourly; releases only when origin/main has
-// moved since the last successful deploy, or the last EIA refresh is older than seven days.
+// Scheduled weekly by launchd (see install.mjs): refresh EIA data from origin/main and release.
 // Works in its own clone, so it never touches a working checkout.
 //
-//   node runner.mjs            normal scheduled check
-//   node runner.mjs --force    refresh and release now
+//   node runner.mjs
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -16,8 +14,6 @@ const statePath = join(home, 'state.json');
 const lock = join(home, 'lock');
 const remote = process.env.ELECTRICITY_MAP_REMOTE || 'https://github.com/Cujuju/electricity-map';
 const branch = process.env.ELECTRICITY_MAP_BRANCH || 'main';
-const refreshEvery = 7 * 24 * 60 * 60 * 1000;
-const force = process.argv.includes('--force');
 
 const log = (message) => console.log(`[${new Date().toISOString()}] ${message}`);
 const readState = () => {
@@ -64,10 +60,7 @@ async function release() {
     sh('git', ['clone', '--quiet', '--branch', branch, remote, repo], { cwd: home });
   sh('git', ['fetch', '--quiet', 'origin', branch]);
   const head = sh('git', ['rev-parse', `origin/${branch}`]);
-  const stale = !state.refreshedAt || Date.now() - Date.parse(state.refreshedAt) > refreshEvery;
-  const moved = head !== state.deployedSha;
-  if (!force && !stale && !moved) return;
-  log(`Release ${head.slice(0, 7)} (${force ? 'forced' : [moved && 'main moved', stale && 'refresh due'].filter(Boolean).join(', ')})`);
+  log(`Release ${head.slice(0, 7)}`);
 
   sh('git', ['reset', '--quiet', '--hard', head]);
   sh('git', ['clean', '-fdxq', '-e', 'node_modules']);
@@ -94,7 +87,7 @@ try {
   await release();
 } catch (error) {
   log(`Release failed: ${error.message}`);
-  if (!state.failing) notify('Electricity Map deploy failed', 'See ~/Library/Logs/electricity-map-deploy.log. Retrying hourly.');
+  if (!state.failing) notify('Electricity Map deploy failed', 'See ~/Library/Logs/electricity-map-deploy.log. Run npm run release to retry.');
   writeState({ ...state, failing: true, lastError: error.message, failedAt: new Date().toISOString() });
   process.exitCode = 1;
 } finally {
