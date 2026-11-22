@@ -354,12 +354,15 @@ html[data-dashboard='original'] .app-shell {
   background: var(--ink);
   border-radius: 50%;
 }
+/* One headline size for every design; condensed faces raise --hero-title-scale for equal optical width. */
+.experiment-hero {
+  --hero-title-size: clamp(36px, 3.5vw, 56px);
+}
 .experiment-hero h1 {
-  font: 500 clamp(55px, 5.8vw, 88px)/0.96 var(--heading);
-  white-space: pre-line;
-  letter-spacing: -3px;
+  font: 500 calc(var(--hero-title-size) * var(--hero-title-scale, 1)) / 1 var(--heading);
+  white-space: nowrap;
+  letter-spacing: -0.035em;
   margin: 21px 0 20px;
-  max-width: 850px;
 }
 .experiment-hero-copy > p {
   font-size: 12px;
@@ -1071,12 +1074,6 @@ html[data-dashboard='original'] .app-shell {
 .skin-solar .experiment-rankings {
   background: #e7e0ce;
 }
-.skin-solar .experiment-chart-panel {
-  border-radius: 45% 45% 0 0 / 7% 7% 0 0;
-}
-.skin-solar .experiment-chart-heading {
-  padding-top: 33px;
-}
 .skin-solar .experiment-timeline {
   background: #e6e8ce;
 }
@@ -1108,9 +1105,10 @@ html[data-dashboard='original'] .app-shell {
   border-bottom: 0;
 }
 .skin-brutalist .experiment-hero h1 {
-  font-size: clamp(85px, 10.5vw, 152px);
+  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
+  --hero-title-scale: 1.4;
   line-height: 0.8;
-  letter-spacing: -3px;
+  letter-spacing: -0.02em;
   margin: 25px 0 22px;
 }
 .skin-brutalist .experiment-hero-emblem {
@@ -1258,12 +1256,10 @@ html[data-dashboard='original'] .app-shell {
   border-bottom: 1px solid #b960ed70;
 }
 .skin-arcade .experiment-hero h1 {
-  font:
-    700 clamp(55px, 7vw, 102px)/0.91 'Space Grotesk',
-    sans-serif;
+  font-weight: 700;
   font-style: italic;
-  letter-spacing: -5px;
-  text-shadow: 5px 5px #a82f9b;
+  letter-spacing: -0.05em;
+  text-shadow: 3px 3px #a82f9b;
   transform: skewX(-6deg);
 }
 .skin-arcade .experiment-hero-emblem {
@@ -1377,9 +1373,8 @@ html[data-dashboard='original'] .app-shell {
   letter-spacing: 1px;
 }
 .skin-blueprint .experiment-hero h1 {
-  font-size: clamp(48px, 5.3vw, 77px);
   font-weight: 500;
-  letter-spacing: -2px;
+  letter-spacing: -0.025em;
   line-height: 1;
 }
 .skin-blueprint .experiment-hero-emblem {
@@ -1491,9 +1486,10 @@ html[data-dashboard='original'] .app-shell {
   font-size: 23px;
 }
 .skin-thermal .experiment-hero h1 {
-  font-size: clamp(80px, 9.5vw, 136px);
+  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
+  --hero-title-scale: 1.4;
   line-height: 0.83;
-  letter-spacing: -1px;
+  letter-spacing: -0.01em;
 }
 .skin-thermal .experiment-hero-emblem {
   border: 2px solid var(--ink);
@@ -1619,9 +1615,8 @@ html[data-dashboard='original'] .app-shell {
   position: relative;
 }
 .skin-cosmic .experiment-hero h1 {
-  font-size: clamp(51px, 5.9vw, 87px);
   font-weight: 500;
-  letter-spacing: -3px;
+  letter-spacing: -0.035em;
   line-height: 1.03;
 }
 .skin-cosmic .experiment-hero-emblem {
@@ -1725,7 +1720,8 @@ html[data-dashboard='original'] .app-shell {
   padding: 35px 0;
 }
 .skin-analog .experiment-hero h1 {
-  font-size: clamp(65px, 8.4vw, 120px);
+  /* Bebas Neue is condensed; this scale matches the other faces' line width. */
+  --hero-title-scale: 1.4;
   letter-spacing: 0;
   line-height: 0.86;
 }
@@ -1880,11 +1876,10 @@ html[data-dashboard='original'] .app-shell {
   padding: 35px 0 33px;
 }
 .skin-candy .experiment-hero h1 {
-  font-size: clamp(66px, 7.6vw, 110px);
   line-height: 0.9;
   font-weight: 600;
   font-style: italic;
-  letter-spacing: -5px;
+  letter-spacing: -0.045em;
   text-shadow: 3px 3px #faff8255;
 }
 .skin-candy .experiment-hero-emblem {
@@ -2021,8 +2016,7 @@ html[data-dashboard='original'] .app-shell {
 }
 .skin-tidal .experiment-hero h1 {
   font-weight: 400;
-  letter-spacing: -4px;
-  font-size: clamp(60px, 6.5vw, 94px);
+  letter-spacing: -0.04em;
   line-height: 0.98;
 }
 .skin-tidal .experiment-hero-emblem {
@@ -2169,12 +2163,8 @@ html[data-dashboard='original'] .app-shell {
   align-items: flex-end;
 }
 .skin-press .experiment-hero h1 {
-  font:
-    400 clamp(66px, 7.5vw, 108px)/0.86 'Instrument Serif',
-    Georgia,
-    serif;
-  letter-spacing: -3px;
-  max-width: 900px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 .skin-press .experiment-hero-copy > p {
   font-family: Georgia, serif;
@@ -2486,9 +2476,6 @@ html[data-dashboard='original'] .app-shell {
     gap: 30px;
     padding: 30px 0;
   }
-  .experiment-hero h1 {
-    font-size: 67px;
-  }
   .experiment-hero-emblem {
     width: 145px;
     height: 145px;
@@ -2612,9 +2599,6 @@ html[data-dashboard='original'] .app-shell {
   .skin-thermal .experiment-content {
     grid-template-columns: 225px minmax(0, 1fr);
   }
-  .skin-blueprint .experiment-hero h1 {
-    font-size: 55px;
-  }
   .skin-blueprint .experiment-hero-emblem {
     width: 145px;
     height: 145px;
@@ -2624,9 +2608,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-blueprint .experiment-metric strong {
     font-size: 34px;
-  }
-  .skin-thermal .experiment-hero h1 {
-    font-size: 94px;
   }
   .skin-thermal .experiment-hero-emblem {
     width: 150px;
@@ -2640,9 +2621,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-thermal .experiment-state-name h2 {
     font-size: 23px;
-  }
-  .skin-cosmic .experiment-hero h1 {
-    font-size: 59px;
   }
   .skin-cosmic .experiment-metric strong {
     font-size: 38px;
@@ -2659,18 +2637,12 @@ html[data-dashboard='original'] .app-shell {
   .skin-analog .experiment-content {
     grid-template-columns: minmax(0, 1fr) 235px;
   }
-  .skin-analog .experiment-hero h1 {
-    font-size: 92px;
-  }
   .skin-analog .experiment-hero-emblem {
     width: 145px;
     height: 145px;
   }
   .skin-analog .experiment-hero-emblem > svg {
     width: 50px;
-  }
-  .skin-candy .experiment-hero h1 {
-    font-size: 80px;
   }
   .skin-candy .experiment-hero-emblem {
     width: 145px;
@@ -2688,15 +2660,9 @@ html[data-dashboard='original'] .app-shell {
   .skin-candy .experiment-state-price strong {
     font-size: 47px;
   }
-  .skin-tidal .experiment-hero h1 {
-    font-size: 67px;
-  }
   .skin-tidal .experiment-hero-emblem {
     width: 155px;
     height: 145px;
-  }
-  .skin-press .experiment-hero h1 {
-    font-size: 83px;
   }
   .skin-press .experiment-content {
     grid-template-columns: minmax(0, 1fr) 225px;
@@ -2706,9 +2672,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-press .experiment-metric strong {
     font-size: 44px;
-  }
-  .skin-brutalist .experiment-hero h1 {
-    font-size: 105px;
   }
   .skin-brutalist .experiment-hero-emblem {
     width: 165px;
@@ -2731,9 +2694,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-brutalist .experiment-state-name h2 {
     font-size: 23px;
-  }
-  .skin-arcade .experiment-hero h1 {
-    font-size: 77px;
   }
   .skin-arcade .experiment-metric strong {
     font-size: 32px;
@@ -2832,6 +2792,7 @@ html[data-dashboard='original'] .app-shell {
     width: 13px;
   }
   .experiment-hero {
+    --hero-title-size: 34px;
     padding: 31px 0 26px;
     gap: 14px;
     position: relative;
@@ -2845,9 +2806,9 @@ html[data-dashboard='original'] .app-shell {
     width: 4px;
     height: 4px;
   }
+  /* Phones cannot fit every headline on one line; let it wrap. */
   .experiment-hero h1 {
-    font-size: 58px;
-    letter-spacing: -2.5px;
+    white-space: normal;
     line-height: 0.97;
     margin: 19px 0 15px;
   }
@@ -3240,21 +3201,12 @@ html[data-dashboard='original'] .app-shell {
   .chart-bar-label {
     font-size: 10px;
   }
-  .skin-solar .experiment-hero h1 {
-    font-size: 59px;
-  }
   .skin-solar .experiment-hero-emblem {
     top: 58px;
     right: 0;
     width: 70px;
     height: 70px;
     opacity: 0.75;
-  }
-  .skin-solar .experiment-chart-panel {
-    border-radius: 45% 45% 0 0 / 3% 3% 0 0;
-  }
-  .skin-solar .experiment-chart-heading {
-    padding-top: 26px;
   }
   .skin-solar .chart-editorial {
     font-size: 30px;
@@ -3263,8 +3215,8 @@ html[data-dashboard='original'] .app-shell {
     font-size: 18px;
   }
   .skin-brutalist .experiment-hero h1 {
-    font-size: 87px;
-    letter-spacing: -1px;
+    /* Bebas Neue is condensed; this scale matches the other faces' line width. */
+    --hero-title-scale: 1.4;
     margin-top: 22px;
     max-width: 300px;
   }
@@ -3359,8 +3311,6 @@ html[data-dashboard='original'] .app-shell {
     font-size: 16px;
   }
   .skin-arcade .experiment-hero h1 {
-    font-size: 63px;
-    letter-spacing: -3px;
     text-shadow: 3px 3px #a82f9b;
     margin-left: 4px;
   }
@@ -3395,9 +3345,7 @@ html[data-dashboard='original'] .app-shell {
     letter-spacing: 0.2px;
   }
   .skin-blueprint .experiment-hero h1 {
-    font-size: 49px;
     line-height: 1;
-    letter-spacing: -2px;
   }
   .skin-blueprint .experiment-hero-emblem {
     width: 72px;
@@ -3443,9 +3391,9 @@ html[data-dashboard='original'] .app-shell {
     font-size: 22px;
   }
   .skin-thermal .experiment-hero h1 {
-    font-size: 87px;
+    /* Bebas Neue is condensed; this scale matches the other faces' line width. */
+    --hero-title-scale: 1.4;
     line-height: 0.85;
-    letter-spacing: 0;
   }
   .skin-thermal .experiment-hero-emblem {
     width: 72px;
@@ -3488,8 +3436,6 @@ html[data-dashboard='original'] .app-shell {
     padding: 32px 0 27px;
   }
   .skin-cosmic .experiment-hero h1 {
-    font-size: 47px;
-    letter-spacing: -2.8px;
     line-height: 1.05;
   }
   .skin-cosmic .experiment-hero-emblem {
@@ -3532,10 +3478,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-analog .experiment-hero {
     padding: 30px 0;
-  }
-  .skin-analog .experiment-hero h1 {
-    font-size: 78px;
-    letter-spacing: 0;
   }
   .skin-analog .experiment-hero-emblem {
     width: 70px;
@@ -3593,10 +3535,6 @@ html[data-dashboard='original'] .app-shell {
   .skin-candy .experiment-brand {
     font-size: 31px;
   }
-  .skin-candy .experiment-hero h1 {
-    font-size: 68px;
-    letter-spacing: -3px;
-  }
   .skin-candy .experiment-hero-emblem {
     height: 70px;
     width: 70px;
@@ -3639,10 +3577,6 @@ html[data-dashboard='original'] .app-shell {
   }
   .skin-tidal .experiment-masthead {
     height: 70px;
-  }
-  .skin-tidal .experiment-hero h1 {
-    font-size: 58px;
-    letter-spacing: -3px;
   }
   .skin-tidal .experiment-hero-emblem {
     width: 71px;
@@ -3696,8 +3630,6 @@ html[data-dashboard='original'] .app-shell {
     padding: 30px 0 23px;
   }
   .skin-press .experiment-hero h1 {
-    font-size: 62px;
-    letter-spacing: -2px;
     line-height: 0.92;
   }
   .skin-press .experiment-hero-emblem {
@@ -3798,6 +3730,9 @@ html[data-dashboard='original'] .app-shell {
   }
 }
 @media (max-width: 380px) {
+  .experiment-hero {
+    --hero-title-size: 30px;
+  }
   .design-switcher {
     padding: 0 11px;
     gap: 7px;
@@ -3819,9 +3754,6 @@ html[data-dashboard='original'] .app-shell {
   .skin-brutalist .experiment-main,
   .skin-press .experiment-main {
     padding: 0 15px;
-  }
-  .experiment-hero h1 {
-    font-size: 51px;
   }
   .experiment-hero-emblem {
     right: 0;
@@ -3897,23 +3829,11 @@ html[data-dashboard='original'] .app-shell {
     font-size: 10px;
     max-width: 260px;
   }
-  .skin-solar .experiment-hero h1 {
-    font-size: 53px;
-  }
-  .skin-brutalist .experiment-hero h1 {
-    font-size: 79px;
-  }
   .skin-brutalist .experiment-metric strong {
     font-size: 39px;
   }
-  .skin-arcade .experiment-hero h1 {
-    font-size: 56px;
-  }
   .skin-arcade .experiment-metric strong {
     font-size: 25px;
-  }
-  .skin-blueprint .experiment-hero h1 {
-    font-size: 44px;
   }
   .skin-blueprint .experiment-metric strong {
     font-size: 25px;
@@ -3921,38 +3841,20 @@ html[data-dashboard='original'] .app-shell {
   .skin-blueprint .experiment-chart-heading h2 {
     font-size: 14px;
   }
-  .skin-thermal .experiment-hero h1 {
-    font-size: 79px;
-  }
   .skin-thermal .experiment-metric strong {
     font-size: 41px;
-  }
-  .skin-cosmic .experiment-hero h1 {
-    font-size: 42px;
   }
   .skin-cosmic .experiment-metric strong {
     font-size: 27px;
   }
-  .skin-analog .experiment-hero h1 {
-    font-size: 70px;
-  }
   .skin-analog .experiment-metric strong {
     font-size: 25px;
-  }
-  .skin-candy .experiment-hero h1 {
-    font-size: 61px;
   }
   .skin-candy .experiment-metric strong {
     font-size: 28px;
   }
-  .skin-tidal .experiment-hero h1 {
-    font-size: 51px;
-  }
   .skin-tidal .experiment-metric strong {
     font-size: 28px;
-  }
-  .skin-press .experiment-hero h1 {
-    font-size: 57px;
   }
   .skin-press .experiment-metric strong {
     font-size: 35px;
