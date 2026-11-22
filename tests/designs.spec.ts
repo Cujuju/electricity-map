@@ -175,3 +175,52 @@ test('missing EIA observations remain unavailable in history, scatter and state 
   await page.getByLabel('Dashboard design', { exact: true }).selectOption('press');
   await expect(page.locator('[data-chart-period="2016-Q3"]')).toContainText('—');
 });
+
+test('theme selection is independent from dashboard design and carries across workspaces', async ({
+  page,
+}) => {
+  // Legacy URL with ?design= and no ?theme= initializes theme to match design.
+  await page.goto('/?design=arcade&state=CA');
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-design', 'arcade');
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'arcade');
+  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('arcade');
+
+  // Changing theme keeps the current dashboard design and updates URL.
+  await page.getByLabel('Theme', { exact: true }).selectOption('solar');
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-design', 'arcade');
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'solar');
+  await expect(page).toHaveURL(/design=arcade/);
+  await expect(page).toHaveURL(/theme=solar/);
+
+  // Switching dashboard design preserves the chosen theme.
+  await page.getByLabel('Dashboard design', { exact: true }).selectOption('brutalist');
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute(
+    'data-design',
+    'brutalist',
+  );
+  await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'solar');
+  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('solar');
+
+  // Switching to Original Observatory keeps the theme and applies its price ramp.
+  await page.getByLabel('Dashboard design', { exact: true }).selectOption('original');
+  await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'solar');
+  await expect(page.locator('.legend-gradient')).toHaveAttribute(
+    'style',
+    /rgb\(220,\s*234,\s*160\)/,
+  );
+  await expect(page).toHaveURL(/theme=solar/);
+  await expect(page).not.toHaveURL(/design=/);
+
+  // Reload preserves independent design + theme.
+  await page.reload();
+  await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'solar');
+  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('solar');
+
+  // Theme carries over to Change Lab and Local Utilities, and changing theme there updates them.
+  await page.getByRole('button', { name: 'Change Lab', exact: true }).click();
+  await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'solar');
+  await page.getByLabel('Theme', { exact: true }).selectOption('cosmic');
+  await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'cosmic');
+  await page.getByRole('button', { name: 'Local Utilities', exact: true }).click();
+  await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'cosmic');
+});

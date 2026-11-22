@@ -1,3 +1,5 @@
+import { COLOR_STOPS, priceColor } from '../data';
+
 export const DESIGNS = [
   {
     id: 'solar',
@@ -155,19 +157,97 @@ export const DESIGNS = [
 export type Design = (typeof DESIGNS)[number];
 export type DesignId = Design['id'];
 export type DashboardId = 'original' | DesignId;
+export type ThemeId = DashboardId;
+
+export interface ThemeMeta {
+  id: ThemeId;
+  number: string;
+  name: string;
+  category: string;
+  palette: readonly [string, string, string, string, string];
+}
+
+export const ORIGINAL_THEME: ThemeMeta = {
+  id: 'original',
+  number: '00',
+  name: 'Original Observatory',
+  category: 'DARK BOTANICAL / OBSERVATORY',
+  palette: ['#111916', '#e8eddf', '#d4fa66', '#79ccb6', '#ec665d'],
+};
+
+export const THEMES: readonly ThemeMeta[] = [ORIGINAL_THEME, ...DESIGNS];
+
 export function isDesign(value: string | null): value is DesignId {
   return DESIGNS.some((design) => design.id === value);
 }
 
+export function isTheme(value: string | null): value is ThemeId {
+  return value === 'original' || isDesign(value);
+}
+
+export function themeById(id: ThemeId): ThemeMeta {
+  return THEMES.find((theme) => theme.id === id) ?? ORIGINAL_THEME;
+}
+
+export function themeGradient(id: ThemeId): string {
+  if (id === 'original') return `linear-gradient(90deg, ${COLOR_STOPS.join(', ')})`;
+  const { palette } = themeById(id);
+  return `linear-gradient(90deg, ${palette[3]}, ${palette[4]})`;
+}
+
+function parseRgb(color: string): [number, number, number] | null {
+  if (color.startsWith('#') && color.length === 7) {
+    return [
+      parseInt(color.slice(1, 3), 16),
+      parseInt(color.slice(3, 5), 16),
+      parseInt(color.slice(5, 7), 16),
+    ];
+  }
+  const match = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/.exec(color);
+  return match ? [Number(match[1]), Number(match[2]), Number(match[3])] : null;
+}
+
+function mixStops(stops: readonly string[], t: number): string {
+  const clamped = Math.max(0, Math.min(1, t));
+  const scaled = clamped * (stops.length - 1);
+  const left = Math.floor(scaled);
+  const right = Math.min(left + 1, stops.length - 1);
+  const frac = scaled - left;
+  const a = parseRgb(stops[left])!;
+  const b = parseRgb(stops[right])!;
+  return `rgb(${a.map((channel, index) => Math.round(channel + (b[index] - channel) * frac)).join(',')})`;
+}
+
 export function interpolateColor(
   value: number | null | undefined,
-  design: Design,
+  themeOrDesign: ThemeId | Design,
   ceiling: number,
 ) {
   if (value == null) return '#868b88';
-  const t = Math.max(0, Math.min(1, value / ceiling));
-  const rgb = (hex: string) => [1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16));
-  const low = rgb(design.palette[3]);
-  const high = rgb(design.palette[4]);
-  return `rgb(${low.map((channel, index) => Math.round(channel + (high[index] - channel) * t)).join(',')})`;
+  const id = typeof themeOrDesign === 'string' ? themeOrDesign : themeOrDesign.id;
+  const t = value / ceiling;
+  if (id === 'original') return mixStops(COLOR_STOPS, t);
+  const { palette } = themeById(id);
+  return mixStops([palette[3], palette[4]], t);
+}
+
+// Observatory lenses map prices onto a fixed 5–50¢ range.
+const OBSERVATORY_MIN_PRICE = 5;
+const OBSERVATORY_PRICE_SPAN = 45;
+
+export function observatoryPriceColor(value: number | null | undefined, themeId: ThemeId) {
+  if (themeId === 'original') return priceColor(value);
+  if (value == null) return '#868b88';
+  const { palette } = themeById(themeId);
+  return mixStops([palette[3], palette[4]], (value - OBSERVATORY_MIN_PRICE) / OBSERVATORY_PRICE_SPAN);
+}
+
+// Perceived luminance threshold separating dark ink from light ink on data tiles.
+const CONTRAST_LUMINANCE_MIDPOINT = 140;
+
+export function contrastInk(color: string): string {
+  const rgb = parseRgb(color);
+  if (!rgb) return 'var(--ink)';
+  const luminance = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
+  return luminance > CONTRAST_LUMINANCE_MIDPOINT ? '#111916' : '#f7f9f4';
 }

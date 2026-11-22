@@ -10,7 +10,8 @@ const quarterCount = new Set(dataset.rows.map((row) => row.period)).size;
 
 test('app icon defaults to purple, remembers blue, and preserves the workspace', async ({ page }) => {
   await page.goto('/?design=cosmic&lab=changes&state=TX&sector=RES&month=2026-08&custom=kept');
-  await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
+  await expect(page.getByTestId('analysis-studio')).toHaveClass(/theme-cosmic/);
+  await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'cosmic');
   const before = page.url();
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/icons/purple.png');
   await page.getByRole('button', { name: 'App icon', exact: true }).click();

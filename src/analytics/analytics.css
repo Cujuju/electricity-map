@@ -48,18 +48,6 @@ html[data-dashboard='original'] .sidebar {
   --lab-radius: var(--radius-exp, 7px);
   color: var(--lab-ink);
 }
-.skin-original.analysis-studio {
-  --paper: #101d19;
-  --ink: #e8f0dc;
-  --accent: #d4fa66;
-  --muted-ink: #9bb297;
-  --line-color: #d8ebbc29;
-  --surface: #192b23;
-  --heading: 'Syne', 'DM Sans', sans-serif;
-  --radius-exp: 9px;
-  color-scheme: dark;
-  background: radial-gradient(ellipse at 85% 0%, #35523135, transparent 35%), #101d19;
-}
 .analysis-main {
   padding: 0 44px;
   max-width: 1620px;
@@ -128,16 +116,8 @@ html[data-dashboard='original'] .sidebar {
 .analysis-hero h1 em {
   font-family: 'Instrument Serif', Georgia, serif;
   font-weight: 400;
-  color: var(--lab-accent);
+  color: var(--lab-em-color, var(--lab-accent));
   font-size: round(nearest, 1.14em, 1px);
-}
-.skin-solar .analysis-hero h1 em,
-.skin-candy .analysis-hero h1 em,
-.skin-analog .analysis-hero h1 em,
-.skin-thermal .analysis-hero h1 em,
-.skin-brutalist .analysis-hero h1 em,
-.skin-press .analysis-hero h1 em {
-  color: var(--lab-ink);
 }
 .analysis-hero p {
   font-size: 12px;

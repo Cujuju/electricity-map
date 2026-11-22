@@ -1,12 +1,13 @@
 import { createMemo, createSignal, For, Show, Switch, Match, onMount, onCleanup } from 'solid-js';
 import { price, quarter } from '../data';
 import type { Observation, StateDatum } from '../types';
-import { interpolateColor, type Design } from './catalog';
+import { contrastInk, interpolateColor, type Design, type ThemeId } from './catalog';
 import { StateMark, quarterEvents as periodEvents } from './ChartMark';
 import PortraitCharts from './PortraitCharts';
 
 export interface ChartProps {
   design: Design;
+  theme: ThemeId;
   states: StateDatum[];
   selected: string;
   period: string;
@@ -89,7 +90,7 @@ export default function DesignCharts(props: ChartProps) {
   onMount(() => media.addEventListener('change', updateCompact));
   onCleanup(() => media.removeEventListener('change', updateCompact));
   const color = (value: number | null | undefined) =>
-    interpolateColor(value, props.design, props.ceiling);
+    interpolateColor(value, props.theme, props.ceiling);
   const ranked = createMemo(() =>
     [...props.states].sort((a, b) => (b.observation?.price ?? -1) - (a.observation?.price ?? -1)),
   );
@@ -383,7 +384,7 @@ export default function DesignCharts(props: ChartProps) {
                           y={y() + 16}
                           class="chart-circuit-state"
                           style={{
-                            fill: ratio(state.observation?.price) > 0.5 ? '#102c47' : '#e4f5ff',
+                            fill: contrastInk(color(state.observation?.price)),
                           }}
                         >
                           {state.id}
@@ -393,7 +394,7 @@ export default function DesignCharts(props: ChartProps) {
                           y={y() + 35}
                           class="chart-circuit-value"
                           style={{
-                            fill: ratio(state.observation?.price) > 0.5 ? '#102c47' : '#e4f5ff',
+                            fill: contrastInk(color(state.observation?.price)),
                           }}
                         >
                           {price(state.observation?.price)}
@@ -822,7 +823,7 @@ export default function DesignCharts(props: ChartProps) {
                         y={y + 37}
                         text-anchor="middle"
                         class="chart-calendar-value"
-                        style={{ fill: ratio(row.price) > 0.65 ? '#fff9ec' : '#211f1a' }}
+                        style={{ fill: contrastInk(color(row.price)) }}
                       >
                         {price(row.price)}
                       </text>

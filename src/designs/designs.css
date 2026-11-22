@@ -79,6 +79,30 @@
 .design-step button:hover {
   background: #dce5d0;
 }
+.theme-current {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 16px;
+  border-left: 1px solid #ccd2c7;
+  color: #5b6855;
+}
+.theme-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: none;
+  border: 1px solid #8a9483;
+}
+.theme-current select {
+  border: 0;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #273c30;
+  width: 184px;
+  cursor: pointer;
+}
 .design-lab-note {
   font: 9px var(--mono);
   letter-spacing: 1px;
@@ -255,21 +279,9 @@ html[data-dashboard='original'] .app-shell {
 }
 
 .design-dashboard {
-  --paper: #f2eedc;
-  --ink: #273d29;
-  --accent: #b9d342;
-  --muted-ink: #66715b;
-  --line-color: #273d2935;
-  --surface: #f7f4e6;
-  --heading: 'Fraunces', Georgia, serif;
-  --body: 'DM Sans', sans-serif;
-  --radius-exp: 0px;
-  --secondary-signal: #9fbdab;
   color: var(--ink);
-  background: var(--paper);
   min-height: calc(100vh - 52px);
   font-family: var(--body);
-  color-scheme: light;
   overflow: hidden;
 }
 .design-dashboard button,
@@ -354,15 +366,9 @@ html[data-dashboard='original'] .app-shell {
   background: var(--ink);
   border-radius: 50%;
 }
-/* One headline size for every dashboard and lab; condensed faces raise --hero-title-scale for equal optical width. */
+/* One headline size for every dashboard and lab; condensed theme faces raise --hero-title-scale for equal optical width. */
 .design-dashboard {
   --hero-title-size: clamp(36px, 3.5vw, 56px);
-}
-/* Bebas Neue is condensed; this scale matches the other faces' line width. */
-.design-dashboard.skin-brutalist,
-.design-dashboard.skin-thermal,
-.design-dashboard.skin-analog {
-  --hero-title-scale: 1.4;
 }
 .experiment-hero h1 {
   font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1 var(--heading);
@@ -621,19 +627,19 @@ html[data-dashboard='original'] .app-shell {
   pointer-events: none;
 }
 /* Solar and Brutalist draw larger charts; these keep their labels at the previous on-screen size. */
-.skin-solar .chart-state-label,
-.skin-solar .chart-micro {
+.design-solar .chart-state-label,
+.design-solar .chart-micro {
   font-size: calc(13px * var(--svg-unit, 1));
 }
-.skin-solar .chart-center-number {
+.design-solar .chart-center-number {
   font-size: calc(56px * var(--svg-unit, 1));
 }
-.skin-brutalist .chart-axis,
-.skin-brutalist .chart-bar-label,
-.skin-brutalist .chart-micro {
+.design-brutalist .chart-axis,
+.design-brutalist .chart-bar-label,
+.design-brutalist .chart-micro {
   font-size: calc(14px * var(--svg-unit, 1));
 }
-.skin-brutalist .chart-big-annotation {
+.design-brutalist .chart-big-annotation {
   font-size: calc(30px * var(--svg-unit, 1));
 }
 .chart-city .chart-city-label {
@@ -1061,1266 +1067,1176 @@ html[data-dashboard='original'] .app-shell {
 }
 
 /* 01 — Botanical editorial */
-.skin-solar .experiment-brand {
-  font-family: 'Fraunces', serif;
+.design-solar .experiment-brand {
+  font-family: var(--heading);
   font-style: italic;
 }
-.skin-solar .experiment-hero h1 {
+.design-solar .experiment-hero h1 {
   font-style: italic;
 }
-.skin-solar .experiment-hero-emblem {
-  background: #c7d957;
+.design-solar .experiment-hero-emblem {
+  background: var(--accent);
+  color: var(--accent-ink);
   border: 0;
   transform: rotate(-12deg);
   box-shadow:
-    0 0 0 10px #c7d95720,
-    0 0 0 21px #c7d9570c;
+    0 0 0 10px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 0 0 21px color-mix(in srgb, var(--accent) 6%, transparent);
 }
-.skin-solar .experiment-hero-emblem::before {
-  border-color: #273d2940;
+.design-solar .experiment-hero-emblem::before {
+  border-color: color-mix(in srgb, var(--accent-ink) 30%, transparent);
 }
-.skin-solar .metric-national {
-  background: #273d29;
-  color: #edf2d9;
+.design-solar .metric-national {
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --muted-ink: var(--muted-inverse);
+  --line-color: var(--line-inverse);
 }
-.skin-solar .metric-national > span,
-.skin-solar .metric-national > div > span {
-  color: #b5c6a3;
+.design-solar .experiment-specimen {
+  background: var(--surface-alt);
 }
-.skin-solar .experiment-specimen {
-  background: #e6e9cb;
+.design-solar .experiment-state-name > span {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
-.skin-solar .experiment-state-name > span {
-  background: #c7d957;
+.design-solar .experiment-rankings {
+  background: var(--surface-alt);
 }
-.skin-solar .experiment-rankings {
-  background: #e7e0ce;
+.design-solar .experiment-timeline {
+  background: var(--surface-alt);
 }
-.skin-solar .experiment-timeline {
-  background: #e6e8ce;
-}
-.skin-solar .chart-editorial {
+.design-solar .chart-editorial {
   font-size: 29px;
 }
 /* 02 — Radical Swiss */
-.skin-brutalist {
-  --paper: #e9e9e2;
-  --ink: #151515;
-  --accent: #d7ff00;
-  --muted-ink: #5d6258;
-  --line-color: #151515;
-  --surface: #e9e9e2;
-  --heading: 'Bebas Neue', Impact, sans-serif;
-}
-.skin-brutalist .experiment-main {
+.design-brutalist .experiment-main {
   padding: 0 38px;
 }
-.skin-brutalist .experiment-masthead {
-  border-bottom: 3px solid;
+.design-brutalist .experiment-masthead {
+  border-bottom: 3px solid var(--ink);
 }
-.skin-brutalist .experiment-brand {
-  font-family: 'Space Grotesk', sans-serif;
+.design-brutalist .experiment-brand {
   font-size: 22px;
   letter-spacing: -1px;
 }
-.skin-brutalist .experiment-hero {
+.design-brutalist .experiment-hero {
   border-bottom: 0;
 }
-.skin-brutalist .experiment-hero h1 {
-  line-height: 0.8;
+.design-brutalist .experiment-hero h1 {
+  line-height: 0.85;
   letter-spacing: -0.02em;
   margin: 25px 0 22px;
 }
-.skin-brutalist .experiment-hero-emblem {
-  border: 3px solid;
-  border-radius: 0;
+.design-brutalist .experiment-hero-emblem {
+  border: 3px solid var(--ink);
+  border-radius: var(--radius-exp);
   background: var(--accent);
+  color: var(--accent-ink);
   width: 230px;
   height: 225px;
   transform: rotate(4deg);
 }
-.skin-brutalist .experiment-hero-emblem::before {
+.design-brutalist .experiment-hero-emblem::before {
   display: none;
 }
-.skin-brutalist .experiment-hero-emblem > span {
+.design-brutalist .experiment-hero-emblem > span {
   font: 180px/0.8 var(--heading);
   font-style: normal;
   margin: 0;
   letter-spacing: -2px;
 }
-.skin-brutalist .experiment-hero-copy > p {
+.design-brutalist .experiment-hero-copy > p {
   font-size: 13px;
   line-height: 1.6;
   max-width: 475px;
 }
-.skin-brutalist .experiment-toolbar {
-  border-top: 3px solid;
-  border-bottom: 3px solid;
+.design-brutalist .experiment-toolbar {
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
 }
-.skin-brutalist .experiment-metrics {
+.design-brutalist .experiment-metrics {
   gap: 0;
-  border: 2px solid;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-exp);
+  overflow: hidden;
   margin-bottom: 22px;
 }
-.skin-brutalist .experiment-metric {
+.design-brutalist .experiment-metric {
   border: 0;
+  border-radius: 0;
   padding: 18px 25px;
 }
-.skin-brutalist .experiment-metric + .experiment-metric {
-  border-left: 2px solid;
+.design-brutalist .experiment-metric + .experiment-metric {
+  border-left: 2px solid var(--ink);
 }
-.skin-brutalist .experiment-metric strong {
+.design-brutalist .experiment-metric strong {
   font-size: 68px;
   letter-spacing: -1px;
 }
-.skin-brutalist .metric-national {
+.design-brutalist .metric-national {
   background: var(--accent);
+  color: var(--accent-ink);
+  --muted-ink: color-mix(in srgb, var(--accent-ink) 72%, transparent);
 }
-.skin-brutalist .experiment-metric > div > span {
+.design-brutalist .experiment-metric > div > span {
   max-width: 140px;
 }
-.skin-brutalist .experiment-content {
+.design-brutalist .experiment-content {
   grid-template-columns: 1fr 1fr;
   grid-template-areas: 'chart chart' 'specimen ranking';
   gap: 0;
-  border: 2px solid;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-exp);
+  overflow: hidden;
 }
-.skin-brutalist .experiment-chart-panel {
+.design-brutalist .experiment-chart-panel {
   border: 0;
-  border-bottom: 2px solid;
+  border-radius: 0;
+  border-bottom: 2px solid var(--ink);
 }
-.skin-brutalist .experiment-chart-heading h2 {
+.design-brutalist .experiment-chart-heading h2 {
   font-size: 32px;
 }
-.skin-brutalist .design-chart {
+.design-brutalist .design-chart {
   min-height: 400px;
   max-height: 490px;
 }
-.skin-brutalist .experiment-specimen {
+.design-brutalist .experiment-specimen {
   border: 0;
-  border-right: 2px solid;
+  border-radius: 0;
+  border-right: 2px solid var(--ink);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 30px;
 }
-.skin-brutalist .experiment-specimen-top {
+.design-brutalist .experiment-specimen-top {
   grid-column: 1/-1;
   margin: 0;
 }
-.skin-brutalist .experiment-state-name {
+.design-brutalist .experiment-state-name {
   grid-column: 1;
 }
-.skin-brutalist .experiment-state-price {
+.design-brutalist .experiment-state-price {
   grid-column: 1;
   margin: 0;
 }
-.skin-brutalist .experiment-state-price strong {
+.design-brutalist .experiment-state-price strong {
   font-size: 74px;
 }
-.skin-brutalist .experiment-comparison {
+.design-brutalist .experiment-comparison {
   grid-column: 1;
 }
-.skin-brutalist .experiment-state-facts {
+.design-brutalist .experiment-state-facts {
   grid-column: 2;
   grid-row: 2/4;
   margin: 5px 0;
 }
-.skin-brutalist .experiment-state-note {
+.design-brutalist .experiment-state-note {
   grid-column: 2;
   grid-row: 4/6;
 }
-.skin-brutalist .experiment-rankings {
+.design-brutalist .experiment-rankings {
   border: 0;
-  background: var(--ink);
-  color: var(--paper);
-  --line-color: #e9e9e23a;
-  --muted-ink: #bfc0b3;
+  border-radius: 0;
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --line-color: var(--line-inverse);
+  --muted-ink: var(--muted-inverse);
 }
-.skin-brutalist .experiment-ranking-row {
+.design-brutalist .experiment-ranking-row {
   padding: 8px 0;
 }
-.skin-brutalist .experiment-timeline {
-  border: 2px solid;
+.design-brutalist .experiment-timeline {
+  border: 2px solid var(--ink);
   background: var(--accent);
+  color: var(--accent-ink);
+  --ink: var(--accent-ink);
+  --muted-ink: color-mix(in srgb, var(--accent-ink) 72%, transparent);
+  --line-color: color-mix(in srgb, var(--accent-ink) 35%, transparent);
 }
-.skin-brutalist .experiment-play {
-  border-radius: 0;
+.design-brutalist .experiment-play {
+  border-radius: var(--radius-exp);
 }
-.skin-brutalist .experiment-section-label {
+.design-brutalist .experiment-section-label {
   letter-spacing: 1px;
 }
-.skin-brutalist .experiment-state-name h2 {
+.design-brutalist .experiment-state-name h2 {
   font-size: 28px;
 }
 /* 03 — Neon city */
-.skin-arcade {
-  --paper: #120b2e;
-  --ink: #f1dcff;
-  --accent: #faff00;
-  --muted-ink: #b79ed0;
-  --line-color: #b861f340;
-  --surface: #1b1038;
-  --heading: 'Space Grotesk', sans-serif;
-  --body: 'Space Grotesk', sans-serif;
-  color-scheme: dark;
-  background-image: radial-gradient(ellipse at 70% 15%, #622b8b38, transparent 48%);
-}
-.skin-arcade .experiment-brand {
-  font:
-    18px 'DotGothic16',
-    monospace;
+.design-arcade .experiment-brand {
+  font-size: 18px;
   color: var(--accent);
-  text-shadow: 3px 3px #d638a588;
+  text-shadow: 3px 3px color-mix(in srgb, var(--secondary-signal) 50%, transparent);
 }
-.skin-arcade .experiment-masthead {
-  border-bottom: 1px solid #b960ed70;
+.design-arcade .experiment-masthead {
+  border-bottom: 1px solid var(--line-color);
 }
-.skin-arcade .experiment-hero h1 {
+.design-arcade .experiment-hero h1 {
   font-weight: 700;
   font-style: italic;
   letter-spacing: -0.05em;
-  text-shadow: 3px 3px #a82f9b;
+  text-shadow: 3px 3px color-mix(in srgb, var(--secondary-signal) 45%, transparent);
   transform: skewX(-6deg);
 }
-.skin-arcade .experiment-hero-emblem {
-  border: 1px solid #ff5bcb;
-  border-radius: 14px;
+.design-arcade .experiment-hero-emblem {
+  border: 1px solid var(--secondary-signal);
+  border-radius: max(var(--radius-exp), 14px);
   transform: rotate(8deg);
-  color: #ff80d6;
+  color: var(--secondary-signal);
   box-shadow:
-    8px 8px #59125450,
-    inset 0 0 30px #ff47d511;
+    8px 8px color-mix(in srgb, var(--secondary-signal) 22%, transparent),
+    inset 0 0 30px color-mix(in srgb, var(--secondary-signal) 8%, transparent);
 }
-.skin-arcade .experiment-hero-emblem::before {
-  border-color: #ff5bcb70;
-  border-radius: 8px;
+.design-arcade .experiment-hero-emblem::before {
+  border-color: color-mix(in srgb, var(--secondary-signal) 45%, transparent);
+  border-radius: max(var(--radius-exp), 8px);
 }
-.skin-arcade .experiment-hero-emblem > span {
-  font:
-    96px 'DotGothic16',
-    var(--mono);
+.design-arcade .experiment-hero-emblem > span {
+  font: 96px var(--heading);
   margin: 0;
   letter-spacing: -8px;
 }
-.skin-arcade .experiment-metrics {
+.design-arcade .experiment-metrics {
   gap: 17px;
 }
-.skin-arcade .experiment-metric {
-  background: #24123d;
-  border-bottom: 3px solid #b14fc5;
+.design-arcade .experiment-metric {
+  background: var(--surface-alt);
+  border-bottom: 3px solid var(--secondary-signal);
 }
-.skin-arcade .metric-national {
+.design-arcade .metric-national {
   border-bottom-color: var(--accent);
 }
-.skin-arcade .experiment-metric strong {
-  font-family: 'DotGothic16', var(--mono);
+.design-arcade .experiment-metric strong {
   font-size: 39px;
-  color: #f9f0ff;
 }
-.skin-arcade .experiment-chart-panel {
-  background: radial-gradient(ellipse at 50% 80%, #471b5860, transparent), #160d2d;
-  border: 1px solid #c364e75c;
-  box-shadow: inset 0 0 70px #9c35d309;
+.design-arcade .experiment-chart-panel {
+  background:
+    radial-gradient(
+      ellipse at 50% 80%,
+      color-mix(in srgb, var(--secondary-signal) 14%, transparent),
+      transparent
+    ),
+    var(--surface);
+  border: 1px solid var(--line-color);
+  box-shadow: inset 0 0 70px color-mix(in srgb, var(--secondary-signal) 5%, transparent);
 }
-.skin-arcade .chart-city .design-state-mark:hover .data-mark,
-.skin-arcade .chart-city .design-state-mark.is-picked .data-mark {
+.design-arcade .chart-city .design-state-mark:hover .data-mark,
+.design-arcade .chart-city .design-state-mark.is-picked .data-mark {
   stroke-width: 1.2;
 }
-.skin-arcade .experiment-chart-heading h2 {
-  font:
-    20px 'DotGothic16',
-    var(--mono);
+.design-arcade .experiment-chart-heading h2 {
+  font-size: 20px;
   letter-spacing: 0;
 }
-.skin-arcade .experiment-specimen {
-  background: #2c1742;
-  border: 1px solid #bd68df70;
-  box-shadow: 5px 5px #b94b9d1a;
+.design-arcade .experiment-specimen {
+  background: var(--surface-alt);
+  border: 1px solid var(--line-color);
+  box-shadow: 5px 5px color-mix(in srgb, var(--secondary-signal) 14%, transparent);
 }
-.skin-arcade .experiment-state-name > span {
-  border-radius: 0;
-  border-color: #dd7aff;
+.design-arcade .experiment-state-name > span {
+  border-radius: var(--radius-exp);
+  border-color: var(--secondary-signal);
   color: var(--accent);
-  font:
-    19px 'DotGothic16',
-    var(--mono);
+  font-size: 19px;
 }
-.skin-arcade .experiment-state-price strong {
-  font-family: 'DotGothic16', var(--mono);
+.design-arcade .experiment-state-price strong {
   font-size: 43px;
-  color: #faff8e;
+  color: var(--accent);
 }
-.skin-arcade .experiment-state-note > p {
-  font:
-    12px/1.7 'DotGothic16',
-    var(--mono);
+.design-arcade .experiment-state-note > p {
+  font: 12px/1.7 var(--mono);
 }
-.skin-arcade .experiment-rankings {
-  background: #1d1135;
-  border-color: #a24fc74d;
+.design-arcade .experiment-rankings {
+  background: var(--surface);
+  border-color: var(--line-color);
 }
-.skin-arcade .experiment-timeline {
-  background: #24143e;
-  border-color: #a954d871;
-  box-shadow: 0 6px #6b2a8c25;
+.design-arcade .experiment-timeline {
+  background: var(--surface-alt);
+  border-color: var(--line-color);
+  box-shadow: 0 6px color-mix(in srgb, var(--secondary-signal) 14%, transparent);
 }
-.skin-arcade .experiment-play {
+.design-arcade .experiment-play {
   background: var(--accent);
-  color: #241038 !important;
-  border-radius: 4px;
+  color: var(--accent-ink) !important;
+  border-radius: var(--radius-exp);
 }
-.skin-arcade .experiment-snapshot > span {
+.design-arcade .experiment-snapshot > span {
   background: var(--accent);
 }
 /* 04 — Cyanotype engineering */
-.skin-blueprint {
-  --paper: #123b66;
-  --ink: #d9efff;
-  --accent: #a9f5f1;
-  --muted-ink: #a2c4de;
-  --line-color: #acd9fc45;
-  --surface: #143e6a;
-  --heading: 'Space Grotesk', sans-serif;
-  --body: 'IBM Plex Mono', monospace;
-  color-scheme: dark;
-  background-image:
-    linear-gradient(#acd9fc06 1px, transparent 1px),
-    linear-gradient(90deg, #acd9fc06 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.skin-blueprint .experiment-brand {
+.design-blueprint .experiment-brand {
   font: 500 16px var(--mono);
   letter-spacing: 1px;
 }
-.skin-blueprint .experiment-hero h1 {
+.design-blueprint .experiment-hero h1 {
   font-weight: 500;
   letter-spacing: -0.025em;
   line-height: 1;
 }
-.skin-blueprint .experiment-hero-emblem {
-  border-radius: 0;
+.design-blueprint .experiment-hero-emblem {
+  border-radius: var(--radius-exp);
   border-style: dashed;
   transform: rotate(-7deg);
   width: 170px;
   height: 170px;
 }
-.skin-blueprint .experiment-hero-emblem::after {
+.design-blueprint .experiment-hero-emblem::after {
   content: 'APPROVED FOR INSPECTION';
   position: absolute;
   bottom: 29px;
   font: 9px var(--mono);
   letter-spacing: 1px;
 }
-.skin-blueprint .experiment-hero-emblem::before {
+.design-blueprint .experiment-hero-emblem::before {
   inset: 8px;
   border-style: solid;
-  border-radius: 0;
+  border-radius: var(--radius-exp);
 }
-.skin-blueprint .experiment-hero-emblem > span {
+.design-blueprint .experiment-hero-emblem > span {
   font: 75px var(--mono);
   font-style: normal;
   letter-spacing: -6px;
   opacity: 0.7;
   margin-top: -17px;
 }
-.skin-blueprint .experiment-hero-emblem > small {
+.design-blueprint .experiment-hero-emblem > small {
   display: none;
 }
-.skin-blueprint .experiment-hero-copy > p {
+.design-blueprint .experiment-hero-copy > p {
   font-size: 10px;
   max-width: 455px;
   line-height: 2;
 }
-.skin-blueprint .experiment-metrics {
+.design-blueprint .experiment-metrics {
   gap: 0;
   border: 1px solid var(--line-color);
+  border-radius: var(--radius-exp);
+  overflow: hidden;
 }
-.skin-blueprint .experiment-metric {
+.design-blueprint .experiment-metric {
   border: 0;
+  border-radius: 0;
 }
-.skin-blueprint .experiment-metric + .experiment-metric {
+.design-blueprint .experiment-metric + .experiment-metric {
   border-left: 1px solid var(--line-color);
 }
-.skin-blueprint .experiment-metric strong {
+.design-blueprint .experiment-metric strong {
   font: 500 42px var(--mono);
   letter-spacing: -3px;
 }
-.skin-blueprint .experiment-content {
+.design-blueprint .experiment-content {
   grid-template-columns: 265px minmax(0, 1fr);
   grid-template-areas: 'specimen chart' 'ranking chart';
   gap: 18px;
 }
-.skin-blueprint .experiment-chart-panel {
-  background: #153e68;
+.design-blueprint .experiment-chart-panel {
+  background: var(--surface);
 }
-.skin-blueprint .experiment-chart-heading h2 {
+.design-blueprint .experiment-chart-heading h2 {
   font: 500 18px/1.3 var(--mono);
 }
-.skin-blueprint .experiment-chart-stamp {
+.design-blueprint .experiment-chart-stamp {
   border-style: dashed;
 }
-.skin-blueprint .experiment-specimen {
-  background: #174672;
+.design-blueprint .experiment-specimen {
+  background: var(--surface-alt);
 }
-.skin-blueprint .experiment-state-name h2 {
+.design-blueprint .experiment-state-name h2 {
   font: 500 16px var(--mono);
 }
-.skin-blueprint .experiment-state-price strong {
+.design-blueprint .experiment-state-price strong {
   font: 500 43px var(--mono);
   letter-spacing: -3px;
 }
-.skin-blueprint .experiment-state-name > span {
-  border-radius: 0;
+.design-blueprint .experiment-state-name > span {
+  border-radius: var(--radius-exp);
   font-family: var(--mono);
   font-style: normal;
   color: var(--accent);
 }
-.skin-blueprint .experiment-state-note > p {
+.design-blueprint .experiment-state-note > p {
   font: 11px/1.9 var(--mono);
 }
-.skin-blueprint .experiment-timeline {
-  background: #153e68;
+.design-blueprint .experiment-timeline {
+  background: var(--surface);
 }
-.skin-blueprint .experiment-play {
-  border-radius: 0;
+.design-blueprint .experiment-play {
+  border-radius: var(--radius-exp);
   background: var(--accent);
-  color: #123b66 !important;
+  color: var(--accent-ink) !important;
 }
-.skin-blueprint .experiment-rankings h2 {
+.design-blueprint .experiment-rankings h2 {
   font: 500 18px var(--mono);
 }
 /* 05 — Thermal poster */
-.skin-thermal {
-  --paper: #ff5b35;
-  --ink: #3d1415;
-  --accent: #f7ff82;
-  --muted-ink: #6c2925;
-  --line-color: #5a1b2545;
-  --surface: #ffb690;
-  --heading: 'Bebas Neue', Impact, sans-serif;
-}
-.skin-thermal .experiment-brand {
-  font-family: 'Space Grotesk', sans-serif;
+.design-thermal .experiment-brand {
   font-weight: 700;
   letter-spacing: -1px;
   font-size: 23px;
 }
-.skin-thermal .experiment-hero h1 {
-  line-height: 0.83;
+.design-thermal .experiment-hero h1 {
+  line-height: 0.85;
   letter-spacing: -0.01em;
 }
-.skin-thermal .experiment-hero-emblem {
+.design-thermal .experiment-hero-emblem {
   border: 2px solid var(--ink);
   border-radius: 50%;
   width: 180px;
   height: 180px;
   transform: rotate(-14deg);
   background: var(--accent);
+  color: var(--accent-ink);
 }
-.skin-thermal .experiment-hero-emblem > span {
+.design-thermal .experiment-hero-emblem > span {
   font-style: normal;
   font-size: 125px;
   letter-spacing: -3px;
   margin-left: 0;
 }
-.skin-thermal .experiment-metrics {
+.design-thermal .experiment-metrics {
   gap: 0;
   border: 1px solid var(--ink);
+  border-radius: var(--radius-exp);
+  overflow: hidden;
 }
-.skin-thermal .experiment-metric {
+.design-thermal .experiment-metric {
   border: 0;
+  border-radius: 0;
 }
-.skin-thermal .experiment-metric + .experiment-metric {
+.design-thermal .experiment-metric + .experiment-metric {
   border-left: 1px solid var(--ink);
 }
-.skin-thermal .metric-national {
-  background: var(--ink);
-  color: #ffc6a3;
-  --muted-ink: #d7a082;
+.design-thermal .metric-national {
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --muted-ink: var(--muted-inverse);
+  --line-color: var(--line-inverse);
 }
-.skin-thermal .experiment-metric strong {
+.design-thermal .experiment-metric strong {
   font-size: 63px;
   letter-spacing: 0;
 }
-.skin-thermal .experiment-content {
+.design-thermal .experiment-content {
   grid-template-columns: 270px minmax(0, 1fr);
   grid-template-areas: 'specimen chart' 'ranking chart';
   gap: 17px;
 }
-.skin-thermal .experiment-chart-panel {
-  background: #ffc99f;
+.design-thermal .experiment-chart-panel {
+  background: var(--surface);
   border: 1px solid var(--ink);
-  --paper: #ffc99f;
 }
-.skin-thermal .experiment-chart-heading h2 {
+.design-thermal .experiment-chart-heading h2 {
   font-size: 31px;
   letter-spacing: 0;
 }
-.skin-thermal .chart-thermal {
+.design-thermal .chart-thermal {
   min-height: 420px;
 }
-.skin-thermal .experiment-specimen {
-  background: #ffe7c2;
+.design-thermal .experiment-specimen {
+  background: var(--surface-alt);
   border: 1px solid var(--ink);
 }
-.skin-thermal .experiment-rankings {
-  background: #b12838;
-  color: #fff0d1;
-  --line-color: #ffe7c24d;
-  --muted-ink: #ffcfb8;
-  border-color: #641725;
+.design-thermal .experiment-rankings {
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --line-color: var(--line-inverse);
+  --muted-ink: var(--muted-inverse);
+  border-color: var(--line-inverse);
 }
-.skin-thermal .experiment-rankings h2 {
+.design-thermal .experiment-rankings h2 {
   font-size: 25px;
 }
-.skin-thermal .experiment-state-name h2 {
+.design-thermal .experiment-state-name h2 {
   font-size: 26px;
   letter-spacing: 0;
 }
-.skin-thermal .experiment-state-price strong {
+.design-thermal .experiment-state-price strong {
   font-size: 65px;
   letter-spacing: 0;
 }
-.skin-thermal .experiment-state-note > p {
+.design-thermal .experiment-state-note > p {
   font: 20px/1.2 var(--heading);
   letter-spacing: 0.4px;
 }
-.skin-thermal .experiment-timeline {
-  background: #ffc99f;
+.design-thermal .experiment-timeline {
+  background: var(--surface);
   border: 1px solid var(--ink);
 }
-.skin-thermal .experiment-play {
+.design-thermal .experiment-play {
   background: var(--ink);
+  color: var(--paper) !important;
 }
 /* 06 — Scientific cosmic glass */
-.skin-cosmic {
-  --paper: #101127;
-  --ink: #f1ecff;
-  --accent: #d1abff;
-  --muted-ink: #b0aacb;
-  --line-color: #b2a6e331;
-  --surface: #24223c60;
-  --heading: 'Syne', sans-serif;
-  --radius-exp: 16px;
-  color-scheme: dark;
-  background:
-    radial-gradient(ellipse at 90% 30%, #7136752b, transparent 40%),
-    radial-gradient(ellipse at 15% 50%, #4c54ae32, transparent 40%), #101127;
-}
-.skin-cosmic .experiment-masthead {
+.design-cosmic .experiment-masthead {
   height: 90px;
 }
-.skin-cosmic .experiment-brand {
-  font:
-    600 15px 'Syne',
-    sans-serif;
+.design-cosmic .experiment-brand {
+  font: 600 15px var(--heading);
   letter-spacing: 3px;
 }
-.skin-cosmic .experiment-brand-icon {
+.design-cosmic .experiment-brand-icon {
   display: grid;
   place-items: center;
-  border: 1px solid #d1abff60;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   width: 29px;
   height: 29px;
   border-radius: 50%;
-  color: #d1abff;
+  color: var(--accent);
 }
-.skin-cosmic .experiment-brand-icon > svg {
+.design-cosmic .experiment-brand-icon > svg {
   width: 15px;
 }
-.skin-cosmic .experiment-hero {
+.design-cosmic .experiment-hero {
   padding: 45px 0 36px;
   position: relative;
 }
-.skin-cosmic .experiment-hero h1 {
+.design-cosmic .experiment-hero h1 {
   font-weight: 500;
   letter-spacing: -0.035em;
   line-height: 1.03;
 }
-.skin-cosmic .experiment-hero-emblem {
-  border-color: #aa8dd951;
+.design-cosmic .experiment-hero-emblem {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
   box-shadow:
-    0 0 80px #c765e91b,
-    inset 0 0 60px #a987e311;
+    0 0 80px color-mix(in srgb, var(--accent) 14%, transparent),
+    inset 0 0 60px color-mix(in srgb, var(--accent) 8%, transparent);
   transform: rotate(-15deg);
-  background: radial-gradient(circle at 35% 30%, #a174cb66, #261d4266 70%);
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--accent) 30%, transparent),
+    color-mix(in srgb, var(--surface) 70%, transparent) 70%
+  );
 }
-.skin-cosmic .experiment-hero-emblem::before {
+.design-cosmic .experiment-hero-emblem::before {
   inset: -16px;
-  border-color: #d1abff4a;
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   transform: scaleY(0.5) rotate(-35deg);
   border-style: solid;
 }
-.skin-cosmic .experiment-hero-emblem > span {
+.design-cosmic .experiment-hero-emblem > span {
   font: 500 85px var(--heading);
   letter-spacing: -7px;
-  color: #dcc5f7;
+  color: var(--accent);
 }
-.skin-cosmic .experiment-toolbar {
-  border-color: #ada2da24;
+.design-cosmic .experiment-toolbar {
+  border-color: var(--line-color);
 }
-.skin-cosmic .experiment-metrics {
+.design-cosmic .experiment-metrics {
   gap: 17px;
 }
-.skin-cosmic .experiment-metric {
-  background: linear-gradient(130deg, #8a72b617, #41446a0b);
+.design-cosmic .experiment-metric {
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--accent) 10%, var(--surface)),
+    var(--surface)
+  );
   backdrop-filter: blur(10px);
 }
-.skin-cosmic .experiment-metric strong {
-  font-family: 'Space Grotesk', sans-serif;
+.design-cosmic .experiment-metric strong {
   font-size: 44px;
 }
-.skin-cosmic .experiment-chart-panel {
-  background: radial-gradient(ellipse at 40% 50%, #55579215, transparent 70%), #16172b77;
+.design-cosmic .experiment-chart-panel {
+  background:
+    radial-gradient(
+      ellipse at 40% 50%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 70%
+    ),
+    var(--surface);
 }
-.skin-cosmic .experiment-chart-heading h2 {
+.design-cosmic .experiment-chart-heading h2 {
   font-size: 23px;
 }
-.skin-cosmic .experiment-chart-stamp {
+.design-cosmic .experiment-chart-stamp {
   border-radius: 30px;
 }
-.skin-cosmic .experiment-specimen {
-  background: linear-gradient(145deg, #6d477b2c, #16192c11);
+.design-cosmic .experiment-specimen {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent) 12%, var(--surface)),
+    var(--surface)
+  );
 }
-.skin-cosmic .experiment-state-price strong {
-  font-family: 'Space Grotesk', sans-serif;
-}
-.skin-cosmic .experiment-state-name > span {
-  border-color: #d1abff70;
-  background: #d1abff15;
-  font-family: 'Space Grotesk', sans-serif;
+.design-cosmic .experiment-state-name > span {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   font-style: normal;
 }
-.skin-cosmic .experiment-state-name h2 {
+.design-cosmic .experiment-state-name h2 {
   font-size: 19px;
 }
-.skin-cosmic .experiment-state-note > p {
+.design-cosmic .experiment-state-note > p {
   font: 12px/1.8 var(--body);
 }
-.skin-cosmic .experiment-rankings {
-  background: #23213b55;
+.design-cosmic .experiment-rankings {
+  background: var(--surface-alt);
 }
-.skin-cosmic .experiment-rankings h2 {
+.design-cosmic .experiment-rankings h2 {
   font-size: 19px;
 }
-.skin-cosmic .experiment-play {
-  background: #d1abff;
-  color: #1b1230 !important;
+.design-cosmic .experiment-play {
+  background: var(--accent);
+  color: var(--accent-ink) !important;
 }
-.skin-cosmic .experiment-timeline {
-  background: #8f80bd0b;
+.design-cosmic .experiment-timeline {
+  background: var(--surface);
 }
-.skin-cosmic .experiment-color-key > div {
+.design-cosmic .experiment-color-key > div {
   border-radius: 10px;
 }
 /* 07 — Analog instrument */
-.skin-analog {
-  --paper: #d8c9aa;
-  --ink: #352d24;
-  --accent: #bd4b2c;
-  --muted-ink: #76674f;
-  --line-color: #5a493c50;
-  --surface: #dfd4bc;
-  --heading: 'Bebas Neue', Impact, sans-serif;
-  --radius-exp: 8px;
-  background-image: repeating-linear-gradient(0deg, #2a251307 0 1px, transparent 1px 4px);
-}
-.skin-analog .experiment-masthead {
+.design-analog .experiment-masthead {
   height: 83px;
-  border-bottom: 2px solid #5c4b38;
+  border-bottom: 2px solid var(--line-color);
 }
-.skin-analog .experiment-brand {
+.design-analog .experiment-brand {
   font-family: var(--mono);
   font-size: 16px;
   letter-spacing: 0;
 }
-.skin-analog .experiment-hero {
+.design-analog .experiment-hero {
   padding: 35px 0;
 }
-.skin-analog .experiment-hero h1 {
+.design-analog .experiment-hero h1 {
   letter-spacing: 0;
-  line-height: 0.86;
+  line-height: 0.88;
 }
-.skin-analog .experiment-hero-emblem {
+.design-analog .experiment-hero-emblem {
   background:
-    repeating-conic-gradient(from 0deg, #9b8b70 0deg 1deg, transparent 1deg 8deg), #c2b495;
-  box-shadow:
-    inset 0 3px 8px #30271822,
-    0 2px 2px #fff6;
+    repeating-conic-gradient(
+      from 0deg,
+      color-mix(in srgb, var(--ink) 25%, transparent) 0deg 1deg,
+      transparent 1deg 8deg
+    ),
+    var(--surface-alt);
+  box-shadow: inset 0 3px 8px color-mix(in srgb, var(--ink) 14%, transparent);
   width: 180px;
   height: 180px;
-  border-color: #8f7c60;
-  color: #68573e;
+  border-color: var(--line-color);
+  color: var(--muted-ink);
 }
-.skin-analog .experiment-hero-emblem::before {
-  background: linear-gradient(135deg, #f1e8d4, #b7a787);
-  border: 1px solid #a49477;
-  box-shadow: 3px 5px 12px #322b2126;
+.design-analog .experiment-hero-emblem::before {
+  background: linear-gradient(135deg, var(--surface), var(--surface-alt));
+  border: 1px solid var(--line-color);
+  box-shadow: 3px 5px 12px color-mix(in srgb, var(--ink) 16%, transparent);
   inset: 20px;
 }
-.skin-analog .experiment-hero-emblem > svg {
+.design-analog .experiment-hero-emblem > svg {
   position: relative;
   width: 64px;
-  color: #66513b;
+  color: var(--ink);
 }
-.skin-analog .experiment-hero-emblem > small {
+.design-analog .experiment-hero-emblem > small {
   position: relative;
   z-index: 1;
   font-size: 9px;
 }
-.skin-analog .experiment-hero-copy > p {
+.design-analog .experiment-hero-copy > p {
   font-family: var(--mono);
   font-size: 10px;
   max-width: 470px;
   line-height: 1.9;
 }
-.skin-analog .experiment-toolbar {
-  border-top: 2px solid #5c4b38;
-  border-bottom: 2px solid #5c4b38;
+.design-analog .experiment-toolbar {
+  border-top: 2px solid var(--line-color);
+  border-bottom: 2px solid var(--line-color);
 }
-.skin-analog .experiment-metrics {
+.design-analog .experiment-metrics {
   gap: 18px;
 }
-.skin-analog .experiment-metric {
-  box-shadow:
-    inset 0 2px 4px #5a432818,
-    0 1px 0 #fff6;
-  background: #cbbd9e;
+.design-analog .experiment-metric {
+  box-shadow: inset 0 2px 4px color-mix(in srgb, var(--ink) 10%, transparent);
+  background: var(--surface-alt);
 }
-.skin-analog .experiment-metric strong {
+.design-analog .experiment-metric strong {
   font: 500 44px var(--mono);
   letter-spacing: -3px;
 }
-.skin-analog .experiment-content {
+.design-analog .experiment-content {
   grid-template-columns: minmax(0, 1fr) 280px;
 }
-.skin-analog .experiment-chart-panel {
-  background: #142e29;
-  color: #b7dcc3;
-  --paper: #142e29;
-  --ink: #b7dcc3;
-  --muted-ink: #92b69f;
-  --line-color: #779d873d;
-  --accent: #ffc872;
-  --secondary-signal: #77cbb4;
-  border: 8px solid #87775b;
-  box-shadow:
-    inset 0 0 40px #0007,
-    0 2px 4px #35241533;
-  border-radius: 15px;
+.design-analog .experiment-chart-panel {
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --paper: var(--surface-inverse);
+  --ink: var(--ink-inverse);
+  --muted-ink: var(--muted-inverse);
+  --line-color: var(--line-inverse);
+  --chart-halo: var(--surface-inverse);
+  border: 8px solid color-mix(in srgb, var(--line-color) 70%, var(--surface-alt));
+  box-shadow: inset 0 0 40px #0005;
+  border-radius: max(var(--radius-exp), 12px);
 }
-.skin-analog .experiment-chart-heading {
+.design-analog .experiment-chart-heading {
   padding: 23px 22px 0;
 }
-.skin-analog .experiment-chart-heading h2 {
+.design-analog .experiment-chart-heading h2 {
   font: 17px var(--mono);
   letter-spacing: -0.5px;
 }
-.skin-analog .experiment-chart-stamp {
-  background: #11271f;
+.design-analog .experiment-chart-stamp {
+  background: color-mix(in srgb, var(--surface-inverse) 80%, #000);
 }
-.skin-analog .experiment-specimen {
-  background: #392f26;
-  color: #e6d6b7;
-  --ink: #e6d6b7;
-  --muted-ink: #b5a58b;
-  --line-color: #e6d6b739;
-  border: 3px solid #8a795c;
+.design-analog .experiment-specimen {
+  background: var(--surface-inverse);
+  color: var(--ink-inverse);
+  --ink: var(--ink-inverse);
+  --muted-ink: var(--muted-inverse);
+  --line-color: var(--line-inverse);
+  border: 3px solid color-mix(in srgb, var(--line-inverse) 85%, transparent);
   box-shadow: inset 0 0 25px #0002;
 }
-.skin-analog .experiment-state-name > span {
+.design-analog .experiment-state-name > span {
   font-family: var(--mono);
   font-style: normal;
-  border-color: #c2995d;
+  border-color: var(--accent);
 }
-.skin-analog .experiment-state-name h2 {
+.design-analog .experiment-state-name h2 {
   font-family: var(--mono);
   font-size: 17px;
 }
-.skin-analog .experiment-state-price strong {
+.design-analog .experiment-state-price strong {
   font-family: var(--mono);
   font-size: 42px;
   letter-spacing: -3px;
-  color: #ffce7e;
+  color: var(--accent);
 }
-.skin-analog .experiment-state-note > p {
+.design-analog .experiment-state-note > p {
   font: 10px/1.8 var(--mono);
 }
-.skin-analog .experiment-rankings {
-  background: #cabd9d;
+.design-analog .experiment-rankings {
+  background: var(--surface-alt);
 }
-.skin-analog .experiment-timeline {
-  border: 2px solid #8f7b5b;
-  background: #c4b595;
-  box-shadow: inset 0 2px 4px #3c2e2118;
+.design-analog .experiment-timeline {
+  border: 2px solid var(--line-color);
+  background: var(--surface-alt);
+  box-shadow: inset 0 2px 4px color-mix(in srgb, var(--ink) 10%, transparent);
 }
-.skin-analog .experiment-play {
-  background: #b44d2e;
-  box-shadow: 1px 3px 4px #54402a44;
-  border: 2px solid #8f3c24;
-  color: #f6e1b8 !important;
+.design-analog .experiment-play {
+  background: var(--accent);
+  box-shadow: 1px 3px 4px color-mix(in srgb, var(--ink) 25%, transparent);
+  border: 2px solid color-mix(in srgb, var(--accent) 75%, var(--ink));
+  color: var(--accent-ink) !important;
 }
-.skin-analog .experiment-rankings h2 {
+.design-analog .experiment-rankings h2 {
   font: 23px var(--heading);
   letter-spacing: 0.7px;
 }
 /* 08 — Candy brutalism */
-.skin-candy {
-  --paper: #d4c2ff;
-  --ink: #2b2048;
-  --accent: #f9ff82;
-  --muted-ink: #695283;
-  --line-color: #2b2048;
-  --surface: #f3d3f4;
-  --heading: 'Fraunces', Georgia, serif;
-  --body: 'Space Grotesk', sans-serif;
-  --radius-exp: 18px;
-  background-image: radial-gradient(#684a7a1a 0.8px, transparent 0.8px);
-  background-size: 17px 17px;
-}
-.skin-candy .experiment-brand {
-  font:
-    italic 700 34px 'Fraunces',
-    serif;
+.design-candy .experiment-brand {
+  font: italic 700 34px var(--heading);
   letter-spacing: -2px;
 }
-.skin-candy .experiment-masthead {
-  border-bottom: 2px solid;
+.design-candy .experiment-masthead {
+  border-bottom: 2px solid var(--ink);
 }
-.skin-candy .experiment-hero {
+.design-candy .experiment-hero {
   position: relative;
   padding: 35px 0 33px;
 }
-.skin-candy .experiment-hero h1 {
-  line-height: 0.9;
+.design-candy .experiment-hero h1 {
+  line-height: 0.92;
   font-weight: 600;
   font-style: italic;
   letter-spacing: -0.045em;
-  text-shadow: 3px 3px #faff8255;
+  text-shadow: 3px 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
-.skin-candy .experiment-hero-emblem {
-  border: 2px solid;
-  background: #f9ff82;
+.design-candy .experiment-hero-emblem {
+  border: 2px solid var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
   width: 175px;
   height: 175px;
-  box-shadow: 6px 6px #2b2048;
+  box-shadow: 6px 6px var(--ink);
   transform: rotate(12deg);
   border-radius: 35% 50% 35% 50%;
 }
-.skin-candy .experiment-hero-emblem::before {
+.design-candy .experiment-hero-emblem::before {
   display: none;
 }
-.skin-candy .experiment-hero-emblem > small {
+.design-candy .experiment-hero-emblem > small {
   font-size: 9px;
   letter-spacing: 0;
 }
-.skin-candy .experiment-toolbar {
-  border: 2px solid;
-  background: #e7dbff;
+.design-candy .experiment-toolbar {
+  border: 2px solid var(--ink);
+  background: var(--surface-alt);
   padding: 12px 18px;
-  border-radius: 12px;
-  box-shadow: 4px 4px #2b2048;
+  border-radius: var(--radius-exp);
+  box-shadow: 4px 4px var(--ink);
   gap: 22px;
 }
-.skin-candy .experiment-metrics {
+.design-candy .experiment-metrics {
   gap: 20px;
 }
-.skin-candy .experiment-metric {
-  border: 2px solid;
-  box-shadow: 4px 4px #2b2048;
-  background: #b5dcca;
+.design-candy .experiment-metric {
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px var(--ink);
+  background: var(--surface-alt);
 }
-.skin-candy .metric-national {
-  background: #f9ff82;
+.design-candy .metric-national {
+  background: var(--accent);
+  color: var(--accent-ink);
+  --muted-ink: color-mix(in srgb, var(--accent-ink) 72%, transparent);
 }
-.skin-candy .metric-range {
-  background: #ffb4b4;
+.design-candy .metric-range {
+  background: var(--surface);
 }
-.skin-candy .experiment-metric strong {
+.design-candy .experiment-metric strong {
   font-size: 46px;
   font-style: italic;
   font-weight: 600;
 }
-.skin-candy .experiment-chart-panel {
-  border: 2px solid;
-  box-shadow: 5px 5px #2b2048;
-  background: #f5dcf5;
+.design-candy .experiment-chart-panel {
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px var(--ink);
+  background: var(--surface);
 }
-.skin-candy .experiment-chart-heading h2 {
+.design-candy .experiment-chart-heading h2 {
   font-size: 26px;
   font-style: italic;
   font-weight: 600;
 }
-.skin-candy .experiment-chart-stamp {
-  border: 1.5px solid;
+.design-candy .experiment-chart-stamp {
+  border: 1.5px solid var(--ink);
   border-radius: 30px;
-  background: #fff5b6;
+  background: var(--accent);
+  color: var(--accent-ink);
   transform: rotate(5deg);
 }
-.skin-candy .experiment-specimen {
-  border: 2px solid;
-  background: #faffae;
-  box-shadow: 4px 4px #2b2048;
+.design-candy .experiment-specimen {
+  border: 2px solid var(--ink);
+  background: var(--surface-alt);
+  box-shadow: 4px 4px var(--ink);
 }
-.skin-candy .experiment-state-name > span {
-  border: 1.5px solid;
-  background: #f7b4c9;
+.design-candy .experiment-state-name > span {
+  border: 1.5px solid var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 600;
 }
-.skin-candy .experiment-state-price strong {
+.design-candy .experiment-state-price strong {
   font-style: italic;
   font-weight: 600;
   font-size: 55px;
 }
-.skin-candy .experiment-state-note > p {
+.design-candy .experiment-state-note > p {
   font-size: 19px;
 }
-.skin-candy .experiment-rankings {
-  border: 2px solid;
-  box-shadow: 4px 4px #2b2048;
-  background: #accfdc;
+.design-candy .experiment-rankings {
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px var(--ink);
+  background: var(--surface);
 }
-.skin-candy .experiment-timeline {
-  border: 2px solid;
-  background: #e5dcff;
-  box-shadow: 4px 4px #2b2048;
+.design-candy .experiment-timeline {
+  border: 2px solid var(--ink);
+  background: var(--surface-alt);
+  box-shadow: 4px 4px var(--ink);
 }
-.skin-candy .experiment-play {
-  background: #f7a5bc;
-  color: #2b2048 !important;
-  border: 2px solid #2b2048;
+.design-candy .experiment-play {
+  background: var(--accent);
+  color: var(--accent-ink) !important;
+  border: 2px solid var(--ink);
 }
-.skin-candy .experiment-section-label {
+.design-candy .experiment-section-label {
   letter-spacing: 1px;
 }
-.skin-candy .experiment-rankings h2 {
+.design-candy .experiment-rankings h2 {
   font-style: italic;
   font-weight: 600;
 }
-.skin-candy .experiment-footer {
+.design-candy .experiment-footer {
   padding-top: 28px;
 }
 /* 09 — Tidal glass */
-.skin-tidal {
-  --paper: #0b303a;
-  --ink: #e0f5f2;
-  --accent: #99ead6;
-  --muted-ink: #97b9bc;
-  --line-color: #b8eeef30;
-  --surface: #a5e0dc08;
-  --heading: 'DM Sans', sans-serif;
-  --radius-exp: 20px;
-  color-scheme: dark;
-  background:
-    radial-gradient(ellipse at 75% 3%, #a3e9e923, transparent 40%),
-    radial-gradient(ellipse at 5% 70%, #5489a923, transparent 40%), #0b303a;
-}
-.skin-tidal .experiment-masthead {
+.design-tidal .experiment-masthead {
   height: 86px;
 }
-.skin-tidal .experiment-brand {
-  font:
-    400 39px 'Instrument Serif',
-    Georgia,
-    serif;
+.design-tidal .experiment-brand {
+  font: 400 39px var(--heading);
   font-style: italic;
   letter-spacing: -2px;
 }
-.skin-tidal .experiment-brand-icon {
+.design-tidal .experiment-brand-icon {
   display: block;
-  color: #a5e5df;
+  color: var(--accent);
 }
-.skin-tidal .experiment-hero h1 {
+.design-tidal .experiment-hero h1 {
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 0.98;
 }
-.skin-tidal .experiment-hero-emblem {
-  border: 1px solid #cdfaf948;
-  background: linear-gradient(145deg, #d8fffd13, #81babc05);
+.design-tidal .experiment-hero-emblem {
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent) 12%, transparent),
+    color-mix(in srgb, var(--surface) 40%, transparent)
+  );
   box-shadow:
-    inset 0 3px 13px #ccffff0a,
-    0 15px 50px #03171d44;
-  color: #bbefea;
+    inset 0 3px 13px color-mix(in srgb, var(--accent) 8%, transparent),
+    0 15px 50px color-mix(in srgb, var(--paper) 45%, transparent);
+  color: var(--accent);
   border-radius: 42% 58% 66% 34% / 45% 35% 65% 55%;
   transform: rotate(9deg);
   height: 190px;
   width: 200px;
 }
-.skin-tidal .experiment-hero-emblem::before {
-  border: 1px solid #cdfaf92b;
+.design-tidal .experiment-hero-emblem::before {
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
   inset: 14px;
   border-radius: inherit;
 }
-.skin-tidal .experiment-hero-emblem > svg {
+.design-tidal .experiment-hero-emblem > svg {
   width: 88px;
   opacity: 0.8;
   stroke-width: 0.8;
 }
-.skin-tidal .experiment-toolbar {
-  border: 1px solid #bee8e32b;
-  background: #d2fffa05;
+.design-tidal .experiment-toolbar {
+  border: 1px solid var(--line-color);
+  background: var(--surface);
   padding: 15px 20px;
-  border-radius: 14px;
+  border-radius: var(--radius-exp);
 }
-.skin-tidal .experiment-metrics {
+.design-tidal .experiment-metrics {
   gap: 18px;
 }
-.skin-tidal .experiment-metric {
-  background: linear-gradient(145deg, #d4fff810, #c4fff801);
-  border-color: #bde9e130;
-  box-shadow: inset 0 1px 0 #c5fff419;
+.design-tidal .experiment-metric {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent) 8%, var(--surface)),
+    var(--surface)
+  );
+  border-color: var(--line-color);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 12%, transparent);
 }
-.skin-tidal .experiment-metric strong {
-  font:
-    400 44px 'DM Sans',
-    sans-serif;
+.design-tidal .experiment-metric strong {
+  font: 400 44px var(--heading);
   letter-spacing: -2px;
 }
-.skin-tidal .experiment-chart-panel {
-  background: linear-gradient(140deg, #d2fff70b, #b1ebe803);
-  box-shadow: inset 0 1px 0 #c5fff416;
+.design-tidal .experiment-chart-panel {
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--accent) 6%, var(--surface)),
+    var(--surface)
+  );
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent);
 }
-.skin-tidal .experiment-chart-heading h2 {
+.design-tidal .experiment-chart-heading h2 {
   font-weight: 400;
   letter-spacing: -1px;
   font-size: 26px;
 }
-.skin-tidal .experiment-chart-stamp {
-  border-radius: 14px;
-  background: #d7fffa08;
+.design-tidal .experiment-chart-stamp {
+  border-radius: var(--radius-exp);
+  background: var(--surface-alt);
 }
-.skin-tidal .experiment-specimen {
-  background: linear-gradient(150deg, #d8fff20f, #b8d8e205);
+.design-tidal .experiment-specimen {
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--accent) 8%, var(--surface)),
+    var(--surface)
+  );
 }
-.skin-tidal .experiment-state-name > span {
-  font:
-    400 16px 'DM Sans',
-    sans-serif;
+.design-tidal .experiment-state-name > span {
+  font: 400 16px var(--body);
   font-style: normal;
-  background: #abf2e40a;
+  background: var(--surface-alt);
 }
-.skin-tidal .experiment-state-price strong {
+.design-tidal .experiment-state-price strong {
   font-weight: 400;
   font-size: 47px;
 }
-.skin-tidal .experiment-state-note > p {
-  font:
-    italic 21px/1.4 'Instrument Serif',
-    Georgia,
-    serif;
+.design-tidal .experiment-state-note > p {
+  font: italic 21px/1.4 var(--heading);
 }
-.skin-tidal .experiment-rankings {
-  background: #c1f9ef06;
+.design-tidal .experiment-rankings {
+  background: var(--surface);
 }
-.skin-tidal .experiment-rankings h2 {
+.design-tidal .experiment-rankings h2 {
   font-weight: 400;
   font-size: 21px;
 }
-.skin-tidal .experiment-timeline {
-  background: #cefff908;
-  border-color: #bde9e130;
+.design-tidal .experiment-timeline {
+  background: var(--surface);
+  border-color: var(--line-color);
 }
-.skin-tidal .experiment-play {
-  background: #a3ead9;
-  color: #153a3b !important;
+.design-tidal .experiment-play {
+  background: var(--accent);
+  color: var(--accent-ink) !important;
 }
-.skin-tidal .experiment-color-key > div {
+.design-tidal .experiment-color-key > div {
   border-radius: 10px;
 }
-.skin-tidal .chart-ridge-label {
+.design-tidal .chart-ridge-label {
   font-size: calc(13px * var(--svg-unit, 1));
 }
 /* 10 — Financial press */
-.skin-press {
-  --paper: #eee9dd;
-  --ink: #292823;
-  --accent: #bb462c;
-  --muted-ink: #777366;
-  --line-color: #29282355;
-  --surface: #eee9dd;
-  --heading: 'Instrument Serif', Georgia, serif;
-  --body: 'DM Sans', sans-serif;
-}
-.skin-press .experiment-main {
+.design-press .experiment-main {
   padding: 0 46px;
 }
-.skin-press .experiment-masthead {
+.design-press .experiment-masthead {
   height: 112px;
   position: relative;
   justify-content: center;
-  border-bottom: 4px double #292823;
+  border-bottom: 4px double var(--ink);
   padding-bottom: 10px;
 }
-.skin-press .experiment-brand {
-  font:
-    50px 'Instrument Serif',
-    Georgia,
-    serif;
+.design-press .experiment-brand {
+  font: 50px var(--heading);
   letter-spacing: -2px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
 }
-.skin-press .experiment-edition {
+.design-press .experiment-edition {
   margin-left: 0;
   margin-right: auto;
   max-width: 115px;
   font-size: 9px;
   line-height: 1.7;
 }
-.skin-press .experiment-masthead-actions {
+.design-press .experiment-masthead-actions {
   margin-left: auto;
   gap: 15px;
 }
-.skin-press .experiment-hero {
+.design-press .experiment-hero {
   padding: 35px 0 30px;
   align-items: flex-end;
 }
-.skin-press .experiment-hero h1 {
+.design-press .experiment-hero h1 {
   font-weight: 400;
   letter-spacing: -0.03em;
 }
-.skin-press .experiment-hero-copy > p {
-  font-family: Georgia, serif;
+.design-press .experiment-hero-copy > p {
   font-size: 13px;
   max-width: 520px;
   line-height: 1.7;
 }
-.skin-press .experiment-hero-emblem {
-  border-radius: 0;
+.design-press .experiment-hero-emblem {
+  border-radius: var(--radius-exp);
   border: 0;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
   width: 160px;
   height: 170px;
   margin-bottom: 5px;
 }
-.skin-press .experiment-hero-emblem::before {
+.design-press .experiment-hero-emblem::before {
   display: none;
 }
-.skin-press .experiment-hero-emblem > span {
-  font:
-    italic 92px 'Instrument Serif',
-    serif;
+.design-press .experiment-hero-emblem > span {
+  font: italic 92px var(--heading);
   margin: 0;
   letter-spacing: -6px;
 }
-.skin-press .experiment-hero-emblem > small {
+.design-press .experiment-hero-emblem > small {
   font-size: 9px;
   letter-spacing: 0;
 }
-.skin-press .experiment-toolbar {
-  border-top: 1px solid;
-  border-bottom: 1px solid;
+.design-press .experiment-toolbar {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
   padding: 11px 0;
   margin-bottom: 0;
 }
-.skin-press .experiment-metrics {
+.design-press .experiment-metrics {
   gap: 0;
-  border-bottom: 3px double #292823;
+  border-bottom: 3px double var(--ink);
   margin-bottom: 24px;
 }
-.skin-press .experiment-metric {
+.design-press .experiment-metric {
   border: 0;
+  border-radius: 0;
   padding: 23px 22px;
 }
-.skin-press .experiment-metric:first-child {
+.design-press .experiment-metric:first-child {
   padding-left: 0;
 }
-.skin-press .experiment-metric + .experiment-metric {
+.design-press .experiment-metric + .experiment-metric {
   border-left: 1px solid var(--line-color);
 }
-.skin-press .experiment-metric strong {
-  font:
-    400 51px 'Instrument Serif',
-    serif;
+.design-press .experiment-metric strong {
+  font: 400 51px var(--heading);
   letter-spacing: -1px;
 }
-.skin-press .experiment-content {
+.design-press .experiment-content {
   grid-template-columns: minmax(0, 1fr) 265px;
   gap: 24px;
 }
-.skin-press .experiment-chart-panel {
+.design-press .experiment-chart-panel {
   border: 0;
   border-right: 1px solid var(--line-color);
   padding-right: 23px;
 }
-.skin-press .experiment-chart-heading {
+.design-press .experiment-chart-heading {
   padding: 0 0 0;
   align-items: flex-start;
 }
-.skin-press .experiment-chart-heading h2 {
+.design-press .experiment-chart-heading h2 {
   font-size: 31px;
   letter-spacing: -0.5px;
 }
-.skin-press .experiment-chart-stamp {
+.design-press .experiment-chart-stamp {
   border: 0;
   border-left: 1px solid var(--line-color);
   font-size: 9px;
   padding-right: 0;
 }
-.skin-press .experiment-chart-caption {
+.design-press .experiment-chart-caption {
   padding: 0 0 19px;
 }
-.skin-press .experiment-chart-caption > p {
-  font-family: Georgia, serif;
+.design-press .experiment-chart-caption > p {
   font-size: 10px;
 }
-.skin-press .experiment-specimen {
+.design-press .experiment-specimen {
   border: 0;
   border-top: 3px double var(--ink);
   padding: 20px 0 0;
 }
-.skin-press .experiment-state-name > span {
+.design-press .experiment-state-name > span {
   border: 0;
-  font:
-    italic 38px 'Instrument Serif',
-    serif;
+  font: italic 38px var(--heading);
   width: auto;
   margin-right: 7px;
-  color: #a9402e;
+  color: var(--accent);
 }
-.skin-press .experiment-state-name h2 {
+.design-press .experiment-state-name h2 {
   font-size: 28px;
 }
-.skin-press .experiment-state-price strong {
-  font:
-    400 65px 'Instrument Serif',
-    serif;
+.design-press .experiment-state-price strong {
+  font: 400 65px var(--heading);
   letter-spacing: -2px;
 }
-.skin-press .experiment-state-note > p {
-  font:
-    16px/1.5 Georgia,
-    serif;
+.design-press .experiment-state-note > p {
+  font: 16px/1.5 var(--body);
 }
-.skin-press .experiment-rankings {
+.design-press .experiment-rankings {
   border: 0;
   border-top: 1px solid var(--ink);
   padding: 20px 0 0;
 }
-.skin-press .experiment-rankings h2 {
+.design-press .experiment-rankings h2 {
   font-size: 27px;
 }
-.skin-press .experiment-timeline {
+.design-press .experiment-timeline {
   border: 0;
-  border-top: 3px double #292823;
-  border-bottom: 1px solid #292823;
+  border-top: 3px double var(--ink);
+  border-bottom: 1px solid var(--ink);
   padding: 20px 0;
 }
-.skin-press .experiment-play {
-  border-radius: 0;
+.design-press .experiment-play {
+  border-radius: var(--radius-exp);
   background: var(--accent);
-  color: #fff7e6 !important;
+  color: var(--accent-ink) !important;
 }
-.skin-press .experiment-footer {
-  border-top: 2px solid;
+.design-press .experiment-footer {
+  border-top: 2px solid var(--ink);
   margin-top: 6px;
 }
-.skin-press .experiment-state-facts > div {
-  font-family: Georgia, serif;
+.design-press .experiment-state-facts > div {
   font-size: 10px;
 }
 
@@ -2340,8 +2256,8 @@ html[data-dashboard='original'] .app-shell {
   .experiment-rankings {
     padding: 23px 26px;
   }
-  .skin-blueprint .experiment-content,
-  .skin-thermal .experiment-content {
+  .design-blueprint .experiment-content,
+  .design-thermal .experiment-content {
     grid-template-columns: 295px minmax(0, 1fr);
   }
 }
@@ -2350,8 +2266,8 @@ html[data-dashboard='original'] .app-shell {
     display: none;
   }
   .experiment-main,
-  .skin-brutalist .experiment-main,
-  .skin-press .experiment-main {
+  .design-brutalist .experiment-main,
+  .design-press .experiment-main {
     padding: 0 32px;
   }
   .experiment-toolbar {
@@ -2423,43 +2339,43 @@ html[data-dashboard='original'] .app-shell {
   .design-chart {
     min-height: 385px;
   }
-  .skin-press .experiment-content {
+  .design-press .experiment-content {
     grid-template-columns: minmax(0, 1fr) 240px;
     gap: 20px;
   }
-  .skin-blueprint .experiment-content,
-  .skin-thermal .experiment-content {
+  .design-blueprint .experiment-content,
+  .design-thermal .experiment-content {
     grid-template-columns: 245px minmax(0, 1fr);
   }
-  .skin-blueprint .experiment-chart-heading h2 {
+  .design-blueprint .experiment-chart-heading h2 {
     font-size: 16px;
   }
-  .skin-brutalist .experiment-hero-emblem {
+  .design-brutalist .experiment-hero-emblem {
     width: 190px;
     height: 190px;
   }
-  .skin-brutalist .experiment-hero-emblem > span {
+  .design-brutalist .experiment-hero-emblem > span {
     font-size: 145px;
   }
-  .skin-arcade .experiment-metric strong {
+  .design-arcade .experiment-metric strong {
     font-size: 35px;
   }
-  .skin-candy .experiment-toolbar {
+  .design-candy .experiment-toolbar {
     gap: 15px;
   }
-  .skin-candy .experiment-metrics {
+  .design-candy .experiment-metrics {
     gap: 15px;
   }
-  .skin-candy .experiment-metric strong {
+  .design-candy .experiment-metric strong {
     font-size: 40px;
   }
-  .skin-candy .experiment-chart-heading h2 {
+  .design-candy .experiment-chart-heading h2 {
     font-size: 23px;
   }
-  .skin-thermal .experiment-chart-heading h2 {
+  .design-thermal .experiment-chart-heading h2 {
     font-size: 25px;
   }
-  .skin-press .experiment-masthead-actions a {
+  .design-press .experiment-masthead-actions a {
     display: none;
   }
   .experiment-footer {
@@ -2474,8 +2390,8 @@ html[data-dashboard='original'] .app-shell {
 }
 @media (max-width: 940px) {
   .experiment-main,
-  .skin-brutalist .experiment-main,
-  .skin-press .experiment-main {
+  .design-brutalist .experiment-main,
+  .design-press .experiment-main {
     padding: 0 25px;
   }
   .experiment-snapshot {
@@ -2594,113 +2510,113 @@ html[data-dashboard='original'] .app-shell {
   .experiment-data-notes > div {
     gap: 18px;
   }
-  .skin-blueprint .experiment-content,
-  .skin-thermal .experiment-content {
+  .design-blueprint .experiment-content,
+  .design-thermal .experiment-content {
     grid-template-columns: 225px minmax(0, 1fr);
   }
-  .skin-blueprint .experiment-hero-emblem {
+  .design-blueprint .experiment-hero-emblem {
     width: 145px;
     height: 145px;
   }
-  .skin-blueprint .experiment-chart-heading h2 {
+  .design-blueprint .experiment-chart-heading h2 {
     font-size: 14px;
   }
-  .skin-blueprint .experiment-metric strong {
+  .design-blueprint .experiment-metric strong {
     font-size: 34px;
   }
-  .skin-thermal .experiment-hero-emblem {
+  .design-thermal .experiment-hero-emblem {
     width: 150px;
     height: 150px;
   }
-  .skin-thermal .experiment-metric strong {
+  .design-thermal .experiment-metric strong {
     font-size: 57px;
   }
-  .skin-thermal .experiment-state-price strong {
+  .design-thermal .experiment-state-price strong {
     font-size: 55px;
   }
-  .skin-thermal .experiment-state-name h2 {
+  .design-thermal .experiment-state-name h2 {
     font-size: 23px;
   }
-  .skin-cosmic .experiment-metric strong {
+  .design-cosmic .experiment-metric strong {
     font-size: 38px;
   }
-  .skin-analog .experiment-metric strong {
+  .design-analog .experiment-metric strong {
     font-size: 34px;
   }
-  .skin-analog .experiment-chart-heading h2 {
+  .design-analog .experiment-chart-heading h2 {
     font-size: 14px;
   }
-  .skin-analog .experiment-state-price strong {
+  .design-analog .experiment-state-price strong {
     font-size: 35px;
   }
-  .skin-analog .experiment-content {
+  .design-analog .experiment-content {
     grid-template-columns: minmax(0, 1fr) 235px;
   }
-  .skin-analog .experiment-hero-emblem {
+  .design-analog .experiment-hero-emblem {
     width: 145px;
     height: 145px;
   }
-  .skin-analog .experiment-hero-emblem > svg {
+  .design-analog .experiment-hero-emblem > svg {
     width: 50px;
   }
-  .skin-candy .experiment-hero-emblem {
+  .design-candy .experiment-hero-emblem {
     width: 145px;
     height: 145px;
   }
-  .skin-candy .experiment-hero-emblem > svg {
+  .design-candy .experiment-hero-emblem > svg {
     width: 70px;
   }
-  .skin-candy .experiment-chart-heading h2 {
+  .design-candy .experiment-chart-heading h2 {
     font-size: 21px;
   }
-  .skin-candy .experiment-metric strong {
+  .design-candy .experiment-metric strong {
     font-size: 37px;
   }
-  .skin-candy .experiment-state-price strong {
+  .design-candy .experiment-state-price strong {
     font-size: 47px;
   }
-  .skin-tidal .experiment-hero-emblem {
+  .design-tidal .experiment-hero-emblem {
     width: 155px;
     height: 145px;
   }
-  .skin-press .experiment-content {
+  .design-press .experiment-content {
     grid-template-columns: minmax(0, 1fr) 225px;
   }
-  .skin-press .experiment-chart-heading h2 {
+  .design-press .experiment-chart-heading h2 {
     font-size: 25px;
   }
-  .skin-press .experiment-metric strong {
+  .design-press .experiment-metric strong {
     font-size: 44px;
   }
-  .skin-brutalist .experiment-hero-emblem {
+  .design-brutalist .experiment-hero-emblem {
     width: 165px;
     height: 165px;
   }
-  .skin-brutalist .experiment-hero-emblem > span {
+  .design-brutalist .experiment-hero-emblem > span {
     font-size: 125px;
   }
-  .skin-brutalist .experiment-metric strong {
+  .design-brutalist .experiment-metric strong {
     font-size: 59px;
   }
-  .skin-brutalist .experiment-content {
+  .design-brutalist .experiment-content {
     grid-template-columns: 1fr 1fr;
   }
-  .skin-brutalist .experiment-specimen {
+  .design-brutalist .experiment-specimen {
     gap: 10px 20px;
   }
-  .skin-brutalist .experiment-state-price strong {
+  .design-brutalist .experiment-state-price strong {
     font-size: 64px;
   }
-  .skin-brutalist .experiment-state-name h2 {
+  .design-brutalist .experiment-state-name h2 {
     font-size: 23px;
   }
-  .skin-arcade .experiment-metric strong {
+  .design-arcade .experiment-metric strong {
     font-size: 32px;
   }
-  .skin-arcade .experiment-chart-heading h2 {
+  .design-arcade .experiment-chart-heading h2 {
     font-size: 17px;
   }
-  .skin-arcade .experiment-state-price strong {
+  .design-arcade .experiment-state-price strong {
     font-size: 38px;
   }
   .gallery-grid {
@@ -2727,17 +2643,20 @@ html[data-dashboard='original'] .app-shell {
     font-size: 9px;
     padding: 2px 3px;
   }
-  .design-current {
+  .design-current,
+  .theme-current {
     padding-left: 10px;
     gap: 5px;
     min-width: 0;
     flex: 1;
   }
-  .design-current > span {
+  .design-current > span,
+  .theme-current > svg {
     display: none;
   }
   /* Layout exception: the phone design bar has no spare width, so the picker steps down to fit the name. */
-  .design-current select {
+  .design-current select,
+  .theme-current select {
     font-size: 10px;
     width: 100%;
     max-width: 220px;
@@ -2758,8 +2677,8 @@ html[data-dashboard='original'] .app-shell {
     top: 0;
   }
   .experiment-main,
-  .skin-brutalist .experiment-main,
-  .skin-press .experiment-main {
+  .design-brutalist .experiment-main,
+  .design-press .experiment-main {
     padding: 0 20px;
   }
   .experiment-masthead {
@@ -2908,10 +2827,10 @@ html[data-dashboard='original'] .app-shell {
     margin: 0 2px;
   }
   .experiment-content,
-  .skin-blueprint .experiment-content,
-  .skin-thermal .experiment-content,
-  .skin-analog .experiment-content,
-  .skin-press .experiment-content {
+  .design-blueprint .experiment-content,
+  .design-thermal .experiment-content,
+  .design-analog .experiment-content,
+  .design-press .experiment-content {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: 'chart' 'specimen' 'ranking';
@@ -3133,24 +3052,24 @@ html[data-dashboard='original'] .app-shell {
   .experiment-masthead-actions a {
     display: none;
   }
-  .skin-solar .experiment-hero-emblem {
+  .design-solar .experiment-hero-emblem {
     top: 58px;
     right: 0;
     width: 70px;
     height: 70px;
     opacity: 0.75;
   }
-  .skin-solar .chart-editorial {
+  .design-solar .chart-editorial {
     font-size: 30px;
   }
-  .skin-brutalist .experiment-brand {
+  .design-brutalist .experiment-brand {
     font-size: 18px;
   }
-  .skin-brutalist .experiment-hero h1 {
+  .design-brutalist .experiment-hero h1 {
     margin-top: 22px;
     max-width: 300px;
   }
-  .skin-brutalist .experiment-hero-emblem {
+  .design-brutalist .experiment-hero-emblem {
     top: 43px;
     right: 0;
     width: 70px;
@@ -3158,289 +3077,289 @@ html[data-dashboard='original'] .app-shell {
     opacity: 0.65;
     border-width: 2px;
   }
-  .skin-brutalist .experiment-hero-emblem > span {
+  .design-brutalist .experiment-hero-emblem > span {
     font-size: 53px;
   }
-  .skin-brutalist .experiment-hero-copy > p {
+  .design-brutalist .experiment-hero-copy > p {
     max-width: 280px;
   }
-  .skin-brutalist .experiment-toolbar {
+  .design-brutalist .experiment-toolbar {
     border-width: 2px;
   }
-  .skin-brutalist .experiment-metrics {
+  .design-brutalist .experiment-metrics {
     border-width: 2px;
   }
-  .skin-brutalist .experiment-metric {
+  .design-brutalist .experiment-metric {
     padding: 13px 10px;
   }
-  .skin-brutalist .experiment-metric + .experiment-metric {
+  .design-brutalist .experiment-metric + .experiment-metric {
     border-left-width: 1px;
   }
-  .skin-brutalist .experiment-metric strong {
+  .design-brutalist .experiment-metric strong {
     font-size: 43px;
   }
-  .skin-brutalist .experiment-content {
+  .design-brutalist .experiment-content {
     grid-template-columns: 1fr;
     grid-template-areas: 'chart' 'specimen' 'ranking';
     gap: 0;
   }
-  .skin-brutalist .experiment-chart-heading h2 {
+  .design-brutalist .experiment-chart-heading h2 {
     font-size: 27px;
   }
-  .skin-brutalist .design-chart {
+  .design-brutalist .design-chart {
     min-height: 260px;
   }
-  .skin-brutalist .experiment-specimen {
+  .design-brutalist .experiment-specimen {
     border-right: 0;
     border-bottom: 2px solid;
     gap: 0 18px;
     padding: 21px 17px;
   }
-  .skin-brutalist .experiment-specimen-top {
+  .design-brutalist .experiment-specimen-top {
     grid-column: 1/-1;
     margin-bottom: 17px;
   }
-  .skin-brutalist .experiment-state-name {
+  .design-brutalist .experiment-state-name {
     grid-column: 1;
     grid-row: 2;
   }
-  .skin-brutalist .experiment-state-price {
+  .design-brutalist .experiment-state-price {
     grid-column: 1;
     grid-row: 3;
     margin: 13px 0 6px;
   }
-  .skin-brutalist .experiment-state-price strong {
+  .design-brutalist .experiment-state-price strong {
     font-size: 59px;
   }
-  .skin-brutalist .experiment-comparison {
+  .design-brutalist .experiment-comparison {
     grid-column: 1;
     grid-row: 4;
   }
-  .skin-brutalist .experiment-state-facts {
+  .design-brutalist .experiment-state-facts {
     grid-column: 2;
     grid-row: 2/5;
   }
-  .skin-brutalist .experiment-state-note {
+  .design-brutalist .experiment-state-note {
     grid-column: 1/-1;
     grid-row: 5;
   }
-  .skin-brutalist .experiment-rankings {
+  .design-brutalist .experiment-rankings {
     padding: 22px 18px;
   }
-  .skin-brutalist .experiment-ranking-row {
+  .design-brutalist .experiment-ranking-row {
     padding: 10px 0;
   }
-  .skin-brutalist .experiment-metric > div > span {
+  .design-brutalist .experiment-metric > div > span {
     max-width: none;
   }
-  .skin-brutalist .experiment-state-name h2 {
+  .design-brutalist .experiment-state-name h2 {
     font-size: 25px;
   }
-  .skin-arcade .experiment-brand {
+  .design-arcade .experiment-brand {
     font-size: 16px;
   }
-  .skin-arcade .experiment-hero h1 {
+  .design-arcade .experiment-hero h1 {
     text-shadow: 3px 3px #a82f9b;
     margin-left: 4px;
   }
-  .skin-arcade .experiment-hero-emblem {
+  .design-arcade .experiment-hero-emblem {
     width: 67px;
     height: 67px;
     right: 1px;
     top: 65px;
   }
-  .skin-arcade .experiment-hero-emblem > span {
+  .design-arcade .experiment-hero-emblem > span {
     font-size: 37px;
     letter-spacing: -4px;
   }
-  .skin-arcade .experiment-metric strong {
+  .design-arcade .experiment-metric strong {
     font-size: 28px;
   }
-  .skin-arcade .experiment-metrics {
+  .design-arcade .experiment-metrics {
     gap: 8px;
   }
-  .skin-arcade .experiment-chart-heading h2 {
+  .design-arcade .experiment-chart-heading h2 {
     font-size: 17px;
     line-height: 1.4;
   }
-  .skin-arcade .experiment-state-price strong {
+  .design-arcade .experiment-state-price strong {
     font-size: 37px;
   }
-  .skin-blueprint .experiment-brand {
+  .design-blueprint .experiment-brand {
     letter-spacing: 0.2px;
   }
-  .skin-blueprint .experiment-hero h1 {
+  .design-blueprint .experiment-hero h1 {
     line-height: 1;
   }
-  .skin-blueprint .experiment-hero-emblem {
+  .design-blueprint .experiment-hero-emblem {
     width: 72px;
     height: 72px;
     top: 45px;
     right: -2px;
   }
-  .skin-blueprint .experiment-hero-emblem > span {
+  .design-blueprint .experiment-hero-emblem > span {
     font-size: 34px;
     margin: 0;
   }
-  .skin-blueprint .experiment-hero-emblem::after {
+  .design-blueprint .experiment-hero-emblem::after {
     display: none;
   }
-  .skin-blueprint .experiment-hero-copy > p {
+  .design-blueprint .experiment-hero-copy > p {
     max-width: 270px;
   }
-  .skin-blueprint .experiment-metric strong {
+  .design-blueprint .experiment-metric strong {
     font-size: 28px;
     letter-spacing: -2px;
   }
-  .skin-blueprint .experiment-metric {
+  .design-blueprint .experiment-metric {
     padding: 12px 10px;
   }
-  .skin-blueprint .experiment-chart-heading h2 {
+  .design-blueprint .experiment-chart-heading h2 {
     font-size: 16px;
     line-height: 1.4;
   }
-  .skin-blueprint .experiment-state-price strong {
+  .design-blueprint .experiment-state-price strong {
     font-size: 36px;
   }
-  .skin-blueprint .experiment-rankings h2 {
+  .design-blueprint .experiment-rankings h2 {
     font-size: 19px;
   }
-  .skin-thermal .experiment-brand {
+  .design-thermal .experiment-brand {
     font-size: 22px;
   }
-  .skin-thermal .experiment-hero h1 {
+  .design-thermal .experiment-hero h1 {
     line-height: 0.85;
   }
-  .skin-thermal .experiment-hero-emblem {
+  .design-thermal .experiment-hero-emblem {
     width: 72px;
     height: 72px;
     top: 56px;
     opacity: 0.7;
   }
-  .skin-thermal .experiment-hero-emblem > span {
+  .design-thermal .experiment-hero-emblem > span {
     font-size: 46px;
   }
-  .skin-thermal .experiment-metric strong {
+  .design-thermal .experiment-metric strong {
     font-size: 44px;
   }
-  .skin-thermal .experiment-metric {
+  .design-thermal .experiment-metric {
     padding: 13px 10px;
   }
-  .skin-thermal .chart-thermal {
+  .design-thermal .chart-thermal {
     min-height: 300px;
   }
-  .skin-thermal .experiment-chart-heading h2 {
+  .design-thermal .experiment-chart-heading h2 {
     font-size: 27px;
   }
-  .skin-thermal .experiment-state-price strong {
+  .design-thermal .experiment-state-price strong {
     font-size: 57px;
   }
-  .skin-thermal .experiment-state-name h2 {
+  .design-thermal .experiment-state-name h2 {
     font-size: 25px;
   }
-  .skin-thermal .experiment-state-note > p {
+  .design-thermal .experiment-state-note > p {
     font-size: 19px;
   }
-  .skin-cosmic .experiment-brand {
+  .design-cosmic .experiment-brand {
     letter-spacing: 2px;
   }
-  .skin-cosmic .experiment-masthead {
+  .design-cosmic .experiment-masthead {
     height: 75px;
   }
-  .skin-cosmic .experiment-hero {
+  .design-cosmic .experiment-hero {
     padding: 32px 0 27px;
   }
-  .skin-cosmic .experiment-hero h1 {
+  .design-cosmic .experiment-hero h1 {
     line-height: 1.05;
   }
-  .skin-cosmic .experiment-hero-emblem {
+  .design-cosmic .experiment-hero-emblem {
     width: 68px;
     height: 68px;
     right: 0;
     top: 54px;
     opacity: 0.45;
   }
-  .skin-cosmic .experiment-hero-emblem > span {
+  .design-cosmic .experiment-hero-emblem > span {
     font-size: 34px;
     letter-spacing: -3px;
   }
-  .skin-cosmic .experiment-hero-emblem::before {
+  .design-cosmic .experiment-hero-emblem::before {
     inset: -7px;
   }
-  .skin-cosmic .experiment-metrics {
+  .design-cosmic .experiment-metrics {
     gap: 8px;
   }
-  .skin-cosmic .experiment-metric strong {
+  .design-cosmic .experiment-metric strong {
     font-size: 30px;
   }
-  .skin-cosmic .experiment-metric {
+  .design-cosmic .experiment-metric {
     border-radius: 12px;
   }
-  .skin-cosmic .experiment-chart-heading h2 {
+  .design-cosmic .experiment-chart-heading h2 {
     font-size: 20px;
   }
-  .skin-cosmic .experiment-state-name h2 {
+  .design-cosmic .experiment-state-name h2 {
     font-size: 18px;
   }
-  .skin-analog .experiment-masthead {
+  .design-analog .experiment-masthead {
     height: 68px;
   }
-  .skin-analog .experiment-hero {
+  .design-analog .experiment-hero {
     padding: 30px 0;
   }
-  .skin-analog .experiment-hero-emblem {
+  .design-analog .experiment-hero-emblem {
     width: 70px;
     height: 70px;
     top: 55px;
     right: 0;
     opacity: 0.7;
   }
-  .skin-analog .experiment-hero-emblem::before {
+  .design-analog .experiment-hero-emblem::before {
     inset: 9px;
   }
-  .skin-analog .experiment-hero-emblem > svg {
+  .design-analog .experiment-hero-emblem > svg {
     width: 29px;
   }
-  .skin-analog .experiment-hero-copy > p {
+  .design-analog .experiment-hero-copy > p {
     max-width: 270px;
   }
-  .skin-analog .experiment-metrics {
+  .design-analog .experiment-metrics {
     gap: 8px;
   }
-  .skin-analog .experiment-metric strong {
+  .design-analog .experiment-metric strong {
     font-size: 28px;
     letter-spacing: -2px;
   }
-  .skin-analog .experiment-chart-panel {
+  .design-analog .experiment-chart-panel {
     border-width: 6px;
   }
-  .skin-analog .experiment-chart-heading {
+  .design-analog .experiment-chart-heading {
     padding: 18px 13px 0;
   }
-  .skin-analog .experiment-chart-heading h2 {
+  .design-analog .experiment-chart-heading h2 {
     font-size: 13px;
     line-height: 1.5;
   }
-  .skin-analog .experiment-chart-heading p {
+  .design-analog .experiment-chart-heading p {
     font-size: 9px;
   }
-  .skin-analog .experiment-chart-caption {
+  .design-analog .experiment-chart-caption {
     padding: 0 13px 16px;
     gap: 12px;
   }
-  .skin-analog .experiment-state-name h2 {
+  .design-analog .experiment-state-name h2 {
     font-size: 16px;
   }
-  .skin-analog .experiment-state-price strong {
+  .design-analog .experiment-state-price strong {
     font-size: 36px;
   }
-  .skin-analog .experiment-rankings h2 {
+  .design-analog .experiment-rankings h2 {
     font-size: 23px;
   }
-  .skin-candy .experiment-brand {
+  .design-candy .experiment-brand {
     font-size: 31px;
   }
-  .skin-candy .experiment-hero-emblem {
+  .design-candy .experiment-hero-emblem {
     height: 70px;
     width: 70px;
     top: 66px;
@@ -3448,144 +3367,144 @@ html[data-dashboard='original'] .app-shell {
     opacity: 0.65;
     box-shadow: 3px 3px #2b2048;
   }
-  .skin-candy .experiment-hero-emblem > svg {
+  .design-candy .experiment-hero-emblem > svg {
     width: 34px;
   }
-  .skin-candy .experiment-toolbar {
+  .design-candy .experiment-toolbar {
     padding: 15px;
     gap: 14px 15px;
   }
-  .skin-candy .experiment-metrics {
+  .design-candy .experiment-metrics {
     gap: 10px;
   }
-  .skin-candy .experiment-metric {
+  .design-candy .experiment-metric {
     border-radius: 12px;
     box-shadow: 3px 3px #2b2048;
   }
-  .skin-candy .experiment-metric strong {
+  .design-candy .experiment-metric strong {
     font-size: 31px;
   }
-  .skin-candy .experiment-metric > div > span {
+  .design-candy .experiment-metric > div > span {
     font-size: 9px;
   }
-  .skin-candy .experiment-chart-heading h2 {
+  .design-candy .experiment-chart-heading h2 {
     font-size: 23px;
   }
-  .skin-candy .experiment-state-price strong {
+  .design-candy .experiment-state-price strong {
     font-size: 45px;
   }
-  .skin-candy .experiment-state-note > p {
+  .design-candy .experiment-state-note > p {
     font-size: 18px;
   }
-  .skin-tidal .experiment-brand {
+  .design-tidal .experiment-brand {
     font-size: 35px;
   }
-  .skin-tidal .experiment-masthead {
+  .design-tidal .experiment-masthead {
     height: 70px;
   }
-  .skin-tidal .experiment-hero-emblem {
+  .design-tidal .experiment-hero-emblem {
     width: 71px;
     height: 68px;
     right: 0;
     top: 65px;
     opacity: 0.6;
   }
-  .skin-tidal .experiment-hero-emblem > svg {
+  .design-tidal .experiment-hero-emblem > svg {
     width: 35px;
   }
-  .skin-tidal .experiment-toolbar {
+  .design-tidal .experiment-toolbar {
     padding: 15px;
   }
-  .skin-tidal .experiment-metrics {
+  .design-tidal .experiment-metrics {
     gap: 8px;
   }
-  .skin-tidal .experiment-metric {
+  .design-tidal .experiment-metric {
     border-radius: 13px;
   }
-  .skin-tidal .experiment-metric strong {
+  .design-tidal .experiment-metric strong {
     font-size: 31px;
     letter-spacing: -1.5px;
   }
-  .skin-tidal .experiment-chart-heading h2 {
+  .design-tidal .experiment-chart-heading h2 {
     font-size: 23px;
   }
-  .skin-tidal .experiment-state-price strong {
+  .design-tidal .experiment-state-price strong {
     font-size: 41px;
   }
-  .skin-tidal .experiment-state-note > p {
+  .design-tidal .experiment-state-note > p {
     font-size: 20px;
   }
-  .skin-press .experiment-masthead {
+  .design-press .experiment-masthead {
     height: 92px;
     justify-content: space-between;
   }
-  .skin-press .experiment-brand {
+  .design-press .experiment-brand {
     font-size: 44px;
     left: 0;
     transform: none;
     position: relative;
   }
-  .skin-press .experiment-masthead-actions {
+  .design-press .experiment-masthead-actions {
     margin-left: 0;
   }
-  .skin-press .experiment-masthead-actions span {
+  .design-press .experiment-masthead-actions span {
     display: none;
   }
-  .skin-press .experiment-hero {
+  .design-press .experiment-hero {
     padding: 30px 0 23px;
   }
-  .skin-press .experiment-hero h1 {
+  .design-press .experiment-hero h1 {
     line-height: 0.92;
   }
-  .skin-press .experiment-hero-emblem {
+  .design-press .experiment-hero-emblem {
     display: none;
   }
-  .skin-press .experiment-hero-copy > p {
+  .design-press .experiment-hero-copy > p {
     max-width: 300px;
   }
-  .skin-press .experiment-toolbar {
+  .design-press .experiment-toolbar {
     padding: 13px 0;
     margin-bottom: 0;
   }
-  .skin-press .experiment-metric {
+  .design-press .experiment-metric {
     padding: 15px 11px;
   }
-  .skin-press .experiment-metric strong {
+  .design-press .experiment-metric strong {
     font-size: 38px;
   }
-  .skin-press .experiment-content {
+  .design-press .experiment-content {
     gap: 22px;
   }
-  .skin-press .experiment-chart-panel {
+  .design-press .experiment-chart-panel {
     border-right: 0;
     border-bottom: 1px solid;
     padding-right: 0;
   }
-  .skin-press .experiment-chart-heading {
+  .design-press .experiment-chart-heading {
     padding: 0;
   }
-  .skin-press .experiment-chart-heading h2 {
+  .design-press .experiment-chart-heading h2 {
     font-size: 30px;
   }
-  .skin-press .experiment-chart-caption {
+  .design-press .experiment-chart-caption {
     padding: 0 0 20px;
   }
-  .skin-press .experiment-specimen {
+  .design-press .experiment-specimen {
     padding: 21px 0 0;
   }
-  .skin-press .experiment-state-name > span {
+  .design-press .experiment-state-name > span {
     font-size: 28px;
   }
-  .skin-press .experiment-state-name h2 {
+  .design-press .experiment-state-name h2 {
     font-size: 25px;
   }
-  .skin-press .experiment-state-price strong {
+  .design-press .experiment-state-price strong {
     font-size: 57px;
   }
-  .skin-press .experiment-rankings {
+  .design-press .experiment-rankings {
     padding: 20px 0 0;
   }
-  .skin-press .experiment-rankings h2 {
+  .design-press .experiment-rankings h2 {
     font-size: 28px;
   }
   .gallery-grid {
@@ -3623,7 +3542,8 @@ html[data-dashboard='original'] .app-shell {
   .design-dashboard {
     --hero-title-size: 30px;
   }
-  .design-current select {
+  .design-current select,
+  .theme-current select {
     font-size: 9px;
   }
   .design-switcher {
@@ -3636,12 +3556,13 @@ html[data-dashboard='original'] .app-shell {
   .design-lab-button > b {
     display: none;
   }
-  .design-current {
+  .design-current,
+  .theme-current {
     padding-left: 8px;
   }
   .experiment-main,
-  .skin-brutalist .experiment-main,
-  .skin-press .experiment-main {
+  .design-brutalist .experiment-main,
+  .design-press .experiment-main {
     padding: 0 15px;
   }
   .experiment-hero-emblem {
@@ -3710,34 +3631,34 @@ html[data-dashboard='original'] .app-shell {
   .experiment-hero-copy > p {
     max-width: 260px;
   }
-  .skin-brutalist .experiment-metric strong {
+  .design-brutalist .experiment-metric strong {
     font-size: 39px;
   }
-  .skin-arcade .experiment-metric strong {
+  .design-arcade .experiment-metric strong {
     font-size: 25px;
   }
-  .skin-blueprint .experiment-metric strong {
+  .design-blueprint .experiment-metric strong {
     font-size: 25px;
   }
-  .skin-blueprint .experiment-chart-heading h2 {
+  .design-blueprint .experiment-chart-heading h2 {
     font-size: 14px;
   }
-  .skin-thermal .experiment-metric strong {
+  .design-thermal .experiment-metric strong {
     font-size: 41px;
   }
-  .skin-cosmic .experiment-metric strong {
+  .design-cosmic .experiment-metric strong {
     font-size: 27px;
   }
-  .skin-analog .experiment-metric strong {
+  .design-analog .experiment-metric strong {
     font-size: 25px;
   }
-  .skin-candy .experiment-metric strong {
+  .design-candy .experiment-metric strong {
     font-size: 28px;
   }
-  .skin-tidal .experiment-metric strong {
+  .design-tidal .experiment-metric strong {
     font-size: 28px;
   }
-  .skin-press .experiment-metric strong {
+  .design-press .experiment-metric strong {
     font-size: 35px;
   }
   .experiment-timeline {
@@ -3816,43 +3737,36 @@ html[data-dashboard='original'] .app-shell {
   flex-wrap: wrap;
   row-gap: 10px;
 }
-.skin-press .experiment-edition {
+.design-press .experiment-edition {
   letter-spacing: 1px;
 }
-.skin-blueprint .experiment-hero-copy > p,
-.skin-analog .experiment-hero-copy > p {
+.design-blueprint .experiment-hero-copy > p,
+.design-analog .experiment-hero-copy > p {
   font-size: 11px;
 }
 .design-dashboard .experiment-hero-emblem {
   margin-right: var(--emblem-bleed);
 }
-.skin-brutalist {
+.design-brutalist {
   --emblem-bleed: 8px;
 }
-.skin-arcade {
+.design-arcade {
   --emblem-bleed: 16px;
 }
-.skin-blueprint {
+.design-blueprint {
   --emblem-bleed: 10px;
 }
-.skin-cosmic {
+.design-cosmic {
   --emblem-bleed: 14px;
 }
-.skin-tidal,
-.skin-candy {
+.design-tidal,
+.design-candy {
   --emblem-bleed: 6px;
 }
 
 /* Labels that cross marks get a halo in the panel color. */
 .design-chart {
-  --chart-halo: var(--paper);
-}
-.skin-solar .design-chart {
   --chart-halo: var(--surface);
-}
-.skin-candy .design-chart {
-  /* Candy chart panel background. */
-  --chart-halo: #f5dcf5;
 }
 .chart-state-label,
 .chart-axis,
@@ -3868,7 +3782,7 @@ html[data-dashboard='original'] .app-shell {
 }
 
 /* Brutalist chart spans the full panel instead of a capped, centered strip. */
-.skin-brutalist .design-chart {
+.design-brutalist .design-chart {
   max-height: none;
   min-height: 0;
   flex: none;
@@ -3880,19 +3794,16 @@ html[data-dashboard='original'] .app-shell {
   height: 4px;
 }
 /* Dark-panel meters: outlined fill keeps price colour and reads as the bar. */
-.skin-brutalist .experiment-ranking-meter > i {
-  box-shadow: inset 0 0 0 1px var(--paper);
+.design-brutalist .experiment-ranking-meter > i,
+.design-thermal .experiment-ranking-meter > i {
+  box-shadow: inset 0 0 0 1px var(--ink-inverse);
 }
-.skin-thermal .experiment-ranking-meter > i {
-  /* Thermal specimen cream. */
-  box-shadow: inset 0 0 0 1px #ffe7c2;
-}
-.skin-analog .experiment-ranking-meter > i {
+.design-analog .experiment-ranking-meter > i {
   box-shadow: inset 0 0 0 1px var(--ink);
 }
-.skin-brutalist .experiment-ranking-meter,
-.skin-thermal .experiment-ranking-meter,
-.skin-analog .experiment-ranking-meter {
+.design-brutalist .experiment-ranking-meter,
+.design-thermal .experiment-ranking-meter,
+.design-analog .experiment-ranking-meter {
   height: 6px;
 }
 
@@ -3963,25 +3874,25 @@ html[data-dashboard='original'] .app-shell {
   .design-dashboard .metric-national > div > span {
     text-align: right;
   }
-  .skin-brutalist .experiment-metric.metric-sales,
-  .skin-blueprint .experiment-metric.metric-sales,
-  .skin-thermal .experiment-metric.metric-sales,
-  .skin-press .experiment-metric.metric-sales {
+  .design-brutalist .experiment-metric.metric-sales,
+  .design-blueprint .experiment-metric.metric-sales,
+  .design-thermal .experiment-metric.metric-sales,
+  .design-press .experiment-metric.metric-sales {
     border-left: 0;
   }
-  .skin-brutalist .metric-sales,
-  .skin-brutalist .metric-range,
-  .skin-thermal .metric-sales,
-  .skin-thermal .metric-range {
+  .design-brutalist .metric-sales,
+  .design-brutalist .metric-range,
+  .design-thermal .metric-sales,
+  .design-thermal .metric-range {
     border-top: 1px solid var(--ink);
   }
-  .skin-blueprint .metric-sales,
-  .skin-blueprint .metric-range,
-  .skin-press .metric-sales,
-  .skin-press .metric-range {
+  .design-blueprint .metric-sales,
+  .design-blueprint .metric-range,
+  .design-press .metric-sales,
+  .design-press .metric-range {
     border-top: 1px solid var(--line-color);
   }
-  .skin-press .experiment-metric.metric-sales {
+  .design-press .experiment-metric.metric-sales {
     padding-left: 0;
   }
 
@@ -3994,12 +3905,12 @@ html[data-dashboard='original'] .app-shell {
 }
 
 /* Chart geometry refinements following the Opus visual review. */
-.skin-solar .design-chart:not(.portrait-chart) {
+.design-solar .design-chart:not(.portrait-chart) {
   flex: none;
   min-height: 0;
   aspect-ratio: 720 / 540;
 }
-.skin-press .design-chart:not(.portrait-chart) {
+.design-press .design-chart:not(.portrait-chart) {
   flex: none;
   min-height: 0;
   aspect-ratio: 900 / 435;

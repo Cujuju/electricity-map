@@ -116,7 +116,7 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     await app.evaluate(({ app }, uri) => {
       app.emit('open-url', { preventDefault() {} }, uri);
     }, 'electricity-map://open?design=cosmic&lab=changes&state=TX&sector=RES&month=2026-08');
-    await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
+    await expect(page.getByTestId('analysis-studio')).toHaveClass(/theme-cosmic/);
     await expect(page.getByLabel('Analysis state', { exact: true })).toHaveValue('TX');
     await page.getByRole('button', { name: 'Share analysis' }).click();
     await expect
@@ -148,7 +148,7 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     await page.getByRole('button', { name: 'Purple app icon', exact: true }).click();
     await expect(page.locator('.desktop-titlebar > img')).toHaveAttribute('src', '/icons/purple.png');
     await page.getByRole('button', { name: 'Close icon settings' }).click();
-    await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
+    await expect(page.getByTestId('analysis-studio')).toHaveClass(/theme-cosmic/);
     await expect(page.getByLabel('Analysis state', { exact: true })).toHaveValue('TX');
     await expect(page.getByLabel('Compare to', { exact: true })).toHaveValue('2026-08');
     await page.getByRole('button', { name: 'Local Utilities', exact: true }).click();

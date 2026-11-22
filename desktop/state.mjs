@@ -7,6 +7,7 @@ const PARAMETERS = new Set([
   'state',
   'period',
   'design',
+  'theme',
   'lab',
   'month',
   'compare',

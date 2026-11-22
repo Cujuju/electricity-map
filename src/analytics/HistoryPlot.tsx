@@ -117,7 +117,7 @@ export function HistoryPlot(props: {
   to: ComparedWindow;
   state: string;
   /** Theme key; colors are re-read from CSS when it changes. */
-  design: string;
+  theme: string;
   onMonth: (month: string) => void;
 }) {
   let host!: HTMLDivElement;
@@ -162,7 +162,7 @@ export function HistoryPlot(props: {
     onCleanup(() => chart.remove());
 
     createEffect(() => {
-      void props.design;
+      void props.theme;
       setColors(palette(host));
     });
     createEffect(() => {
