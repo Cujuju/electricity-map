@@ -571,16 +571,8 @@ html[data-dashboard='original'] .sidebar {
 }
 .analysis-history {
   width: 100%;
-  height: auto;
+  height: 300px;
   display: block;
-  max-height: 330px;
-}
-.analysis-axis {
-  font: 11px var(--mono);
-  fill: var(--lab-muted);
-}
-.analysis-history circle {
-  cursor: pointer;
 }
 .lab-records {
   display: grid;
@@ -1384,18 +1376,7 @@ html[data-dashboard='original'] .sidebar {
     margin: 0;
   }
   .analysis-history {
-    min-width: 560px;
-    width: 560px;
-    max-height: none;
-  }
-  .lab-history-panel {
-    overflow-x: auto;
-  }
-  .lab-history-panel .lab-panel-title {
-    position: sticky;
-    left: 0;
-    min-width: 0;
-    max-width: 100%;
+    height: 240px;
   }
   .lab-records {
     gap: 10px;

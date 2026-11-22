@@ -44,7 +44,8 @@ import {
   spendingDrivers,
   downloadAnalysis,
 } from './math';
-import { ChangeMap, HistoryPlot, TimeGrid, dataColor } from './AnalysisCharts';
+import { ChangeMap, TimeGrid, dataColor } from './AnalysisCharts';
+import { HistoryPlot } from './HistoryPlot';
 import UtilityExplorer from './UtilityExplorer';
 import PeriodControls from './PeriodControls';
 import type { Grain } from './periods';
@@ -630,12 +631,13 @@ export default function AnalysisStudio(props: {
                     {stateName()} <em>through time.</em>
                   </h2>
                 </div>
-                <p>Solid: {props.state} · dashed: U.S.</p>
+                <p>Solid: {props.state} · dashed: U.S. · nominal ¢ per kWh</p>
               </header>
               <HistoryPlot
                 rows={history()}
                 national={usHistory()}
                 state={props.state}
+                design={props.design}
                 selectedMonth={month()}
                 baseline={baseline()}
                 onMonth={(date) => (grain() === 'month' ? selectTo(date) : selectMonth(date))}
