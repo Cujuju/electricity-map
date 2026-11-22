@@ -30,6 +30,25 @@ export const offsetPeriod = (period: string, offset: number) =>
   grainOf(period) === 'year' ? String(Number(period) + offset) : offsetMonth(period, offset);
 export const periodDistance = (to: string, from: string) =>
   grainOf(to) === 'year' ? Number(to) - Number(from) : monthNumber(to) - monthNumber(from);
+/** Unbroken runs of reported months, oldest first. A missing price or skipped month ends a run. */
+export function reportedRuns(rows: MonthlyObservation[]) {
+  const runs: (MonthlyObservation & { price: number })[][] = [];
+  let previous: string | undefined;
+  for (const row of rows) {
+    if (row.price === null) {
+      previous = undefined;
+      continue;
+    }
+    if (!previous || monthNumber(row.period) - monthNumber(previous) !== 1) runs.push([]);
+    runs.at(-1)!.push({ ...row, price: row.price });
+    previous = row.period;
+  }
+  return runs;
+}
+
+/** First month inside a period. */
+export const periodStart = (period: string) =>
+  grainOf(period) === 'year' ? `${period}-01` : period;
 /** Last reported month inside a period. */
 export const periodEnd = (period: string, through: number) =>
   grainOf(period) === 'year' ? `${period}-${pad(through)}` : period;

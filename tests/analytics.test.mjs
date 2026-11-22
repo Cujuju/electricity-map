@@ -17,6 +17,7 @@ import {
   comparisonThrough,
   initialRange,
   periodLabel,
+  reportedRuns,
 } from '../src/analytics/periods.ts';
 import { indexMonthly } from '../src/analytics/math.ts';
 import { validateMonthlyDataset } from '../server/eia.mjs';
@@ -196,4 +197,21 @@ test('range links read from/to and still honor legacy compare links', () => {
     to: '2026',
     gap: 1,
   });
+});
+
+test('history runs break at missing prices and skipped months, never bridging them', () => {
+  const row = (period, price) => ({ ...base, period, price });
+  const runs = reportedRuns([
+    row('2016-06', 20),
+    row('2016-07', 21),
+    row('2016-08', null),
+    row('2016-09', null),
+    row('2016-10', 22),
+    row('2016-12', 23),
+  ]);
+  assert.deepEqual(
+    runs.map((run) => run.map((item) => item.period)),
+    [['2016-06', '2016-07'], ['2016-10'], ['2016-12']],
+  );
+  assert.deepEqual(reportedRuns([row('2016-01', null)]), []);
 });
