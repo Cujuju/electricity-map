@@ -1,0 +1,14 @@
+{
+  "name": "Electricity Map",
+  "short_name": "Electricity Map",
+  "description": "An experimental atlas of American electricity prices from EIA data.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111916",
+  "theme_color": "#111916",
+  "icons": [
+    { "src": "/icons/purple-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/purple.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
