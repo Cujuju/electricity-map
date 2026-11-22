@@ -57,6 +57,8 @@ $desktopLargeSize = 1024
 $faviconSizes = 16, 32, 48
 # iOS home-screen size; iOS applies its own corner mask.
 $appleTouchSize = 180
+# Web app manifest sizes Chrome requires: 192 for home screen; 512 reuses the picker icon.
+$manifestSmallSize = 192
 foreach ($color in 'blue', 'purple') {
   $sourcePath = Join-Path $projectRoot "output/imagegen/round-3-icons/$($sources[$color])"
   $source = [System.Drawing.Image]::FromFile($sourcePath)
@@ -68,6 +70,7 @@ foreach ($color in 'blue', 'purple') {
       Write-Ico (Join-Path $resourceDir 'icon.ico') $source $desktopIcoSizes
       Write-Ico (Join-Path $webRoot 'favicon.ico') $source $faviconSizes
       [System.IO.File]::WriteAllBytes((Join-Path $webRoot 'apple-touch-icon.png'), (Get-IconPng $source $appleTouchSize))
+      [System.IO.File]::WriteAllBytes((Join-Path $publicDir "purple-$manifestSmallSize.png"), (Get-IconPng $source $manifestSmallSize))
     }
   } finally { $source.Dispose() }
 }
