@@ -5,6 +5,25 @@ import { DESIGNS } from '../src/designs/catalog';
 const data: MonthlyDataset = JSON.parse(
   await readFile(new URL('../data/monthly.json', import.meta.url), 'utf8'),
 );
+
+test('the DC map callout selects the district by pointer and keyboard', async ({ page }) => {
+  await page.goto('/?lab=changes&design=original&state=VA');
+  const map = page.locator('.change-map');
+  const dc = map.getByRole('button', { name: /^District of Columbia:/ });
+  const state = page.getByLabel('Analysis state', { exact: true });
+
+  await expect(dc.getByText('DC', { exact: true })).toBeVisible();
+  await dc.locator('rect').click();
+  await expect(dc).toHaveAttribute('aria-pressed', 'true');
+  await expect(state).toHaveValue('DC');
+  await expect(page).toHaveURL(/state=DC/);
+
+  await map.getByRole('button', { name: /^Maryland:/ }).press('Enter');
+  await expect(state).toHaveValue('MD');
+  await dc.press('Space');
+  await expect(state).toHaveValue('DC');
+});
+
 test('change lab computes real monthly changes, customer metrics, scenarios and share state', async ({
   page,
 }, info) => {

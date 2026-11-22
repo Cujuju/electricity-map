@@ -9,12 +9,16 @@ import { display, monthLabel, offsetMonth, pct, signedValue } from './math';
 
 const topo = topology as unknown as Topology<{ states: GeometryCollection }>;
 const path = geoPath().digits(1);
-const shapes = feature(topo, topo.objects.states).features.map((shape) => ({
-  id: String(shape.id).padStart(2, '0'),
-  d: path(shape) ?? '',
-  center: path.centroid(shape),
-  area: path.area(shape),
-}));
+const dcFips = STATES.find((state) => state.id === 'DC')!.fips;
+const shapes = feature(topo, topo.objects.states)
+  .features.map((shape) => ({
+    id: String(shape.id).padStart(2, '0'),
+    d: path(shape) ?? '',
+    center: path.centroid(shape),
+    area: path.area(shape),
+  }))
+  // Draw the DC leader line above the neighboring states.
+  .sort((a, b) => Number(a.id === dcFips) - Number(b.id === dcFips));
 export function dataColor(value: number | null, limit: number, diverging = true) {
   if (value === null) return 'var(--lab-missing)';
   const t = Math.max(0, Math.min(1, Math.abs(value) / Math.max(0.001, limit)));
@@ -34,7 +38,7 @@ export function ChangeMap(props: {
       class="change-map"
       viewBox="0 0 975 610"
       role="group"
-      aria-label="United States monthly electricity metrics by state. Alaska and Hawaii are repositioned."
+      aria-label="United States monthly electricity metrics by state. Alaska and Hawaii are repositioned. DC has a callout."
     >
       <defs>
         <pattern id="lab-map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -45,36 +49,69 @@ export function ChangeMap(props: {
       <For each={shapes}>
         {(shape) => {
           const state = STATES.find((state) => state.fips === shape.id);
+          const isDc = shape.id === dcFips;
+          const selected = () => props.selected === state?.id;
+          const fill = () =>
+            dataColor(props.values.get(state!.id) ?? null, props.limit, props.diverging);
           return (
             <Show when={state}>
-              <g>
+              <g
+                data-analysis-state={state!.id}
+                role="button"
+                tabindex="0"
+                aria-label={`${state!.name}: ${display(props.values.get(state!.id))} ${props.unit}`}
+                aria-pressed={selected()}
+                onClick={() => props.onSelect(state!.id)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    props.onSelect(state!.id);
+                  }
+                }}
+              >
+                <title>
+                  {state!.name}: {display(props.values.get(state!.id))} {props.unit}
+                </title>
                 <path
-                  data-analysis-state={state!.id}
+                  class="analysis-map-shape"
                   d={shape.d}
-                  fill={dataColor(
-                    props.values.get(state!.id) ?? null,
-                    props.limit,
-                    props.diverging,
-                  )}
-                  stroke={props.selected === state!.id ? 'var(--lab-ink)' : 'var(--lab-bg)'}
-                  stroke-width={props.selected === state!.id ? 3 : 1}
-                  role="button"
-                  tabindex="0"
-                  aria-label={`${state!.name}: ${display(props.values.get(state!.id))} ${props.unit}`}
-                  aria-pressed={props.selected === state!.id}
-                  onClick={() => props.onSelect(state!.id)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault();
-                      props.onSelect(state!.id);
-                    }
-                  }}
-                >
-                  <title>
-                    {state!.name}: {display(props.values.get(state!.id))} {props.unit}
-                  </title>
-                </path>
-                <Show when={shape.area > 600 || props.selected === state!.id}>
+                  fill={fill()}
+                  stroke={selected() ? 'var(--lab-ink)' : 'var(--lab-bg)'}
+                  stroke-width={selected() ? 3 : 1}
+                />
+                <Show when={isDc}>
+                  <path
+                    class="analysis-map-leader"
+                    d={`M${shape.center.join(' ')} L868 300 H885`}
+                    fill="none"
+                    stroke="var(--lab-ink)"
+                    stroke-width="2"
+                    vector-effect="non-scaling-stroke"
+                  />
+                  <rect
+                    class="analysis-map-callout"
+                    x="884"
+                    y="264"
+                    width="82"
+                    height="72"
+                    rx="10"
+                    fill={fill()}
+                    stroke={selected() ? 'var(--lab-ink)' : 'var(--lab-muted)'}
+                    stroke-width={selected() ? 3 : 1}
+                    vector-effect="non-scaling-stroke"
+                  />
+                  <text
+                    x="925"
+                    y="300"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    class="analysis-map-label analysis-map-callout-label"
+                    aria-hidden="true"
+                  >
+                    DC
+                  </text>
+                </Show>
+                <Show when={!isDc && (shape.area > 600 || selected())}>
                   <text
                     x={shape.center[0]}
                     y={shape.center[1] + 4}
