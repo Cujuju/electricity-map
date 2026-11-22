@@ -1,10 +1,22 @@
+html[data-desktop] {
+  --desktop-titlebar-height: 36px;
+}
+/* The document never scrolls in the desktop shell; content scrolls beneath the title bar. */
+html[data-desktop],
+html[data-desktop] body {
+  height: 100%;
+  overflow: hidden;
+}
+html[data-desktop] .app-content {
+  height: calc(100vh - var(--desktop-titlebar-height));
+  overflow-y: auto;
+}
 .desktop-titlebar {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   display: flex;
   align-items: center;
-  height: 36px;
+  height: var(--desktop-titlebar-height);
   padding-left: 8px;
   gap: 10px;
   background: var(--desktop-chrome-bg);
@@ -81,13 +93,9 @@
 html[data-desktop='darwin'] .desktop-titlebar {
   padding-left: 80px;
 }
-html[data-desktop] .design-switcher {
-  top: 36px;
-}
 @media (min-width: 761px) {
   html[data-desktop][data-dashboard='original'] .sidebar {
-    top: calc(36px + var(--studio-header-height, 52px));
-    height: calc(100vh - 36px - var(--studio-header-height, 52px));
+    height: calc(100vh - var(--desktop-titlebar-height) - var(--studio-header-height, 52px));
     min-height: 0;
     overflow-y: auto;
   }
