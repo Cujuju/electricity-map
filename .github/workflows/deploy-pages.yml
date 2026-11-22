@@ -3,13 +3,10 @@ name: Deploy to Cloudflare Pages
 # Every deploy refreshes the EIA snapshots first, validates them, and publishes the
 # result straight to Cloudflare Pages. Nothing is committed or pushed; the refreshed
 # snapshots are kept as a workflow artifact for anyone who wants to commit them via a PR.
+#
+# Manual only: releases run on a local launchd agent instead (scripts/local-deploy/, README
+# "Local CI and release"), because GitHub Actions minutes are not used for this private repo.
 on:
-  push:
-    branches: [main]
-  schedule:
-    # Mondays 14:17 UTC. EIA publishes monthly retail sales late in the month,
-    # so a weekly run picks up new data within a few days.
-    - cron: '17 14 * * 1'
   workflow_dispatch:
     inputs:
       refresh:

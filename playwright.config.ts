@@ -12,7 +12,8 @@ export default defineConfig({
   use: {
     baseURL: externalBaseURL ?? 'http://127.0.0.1:3187',
     trace: 'retain-on-failure',
-    launchOptions: { channel: 'chrome' },
+    // PLAYWRIGHT_BUNDLED_CHROMIUM=1 uses Playwright's Chromium where Google Chrome is not installed.
+    launchOptions: process.env.PLAYWRIGHT_BUNDLED_CHROMIUM ? {} : { channel: 'chrome' },
   },
   projects: [
     {

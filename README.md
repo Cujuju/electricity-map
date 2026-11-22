@@ -101,25 +101,35 @@ npm run pages:dev                                      # http://127.0.0.1:8788
 PLAYWRIGHT_BASE_URL=http://127.0.0.1:8788 npm run test:ui
 ```
 
-### Automatic deploy and data refresh
+### Local CI and release (no GitHub Actions)
 
-`.github/workflows/deploy-pages.yml` runs on every push to `main`, every Monday at 14:17 UTC, and on demand (**Actions → Deploy to Cloudflare Pages → Run workflow**; untick *refresh* to deploy the committed snapshots as-is). Each run:
+GitHub Actions minutes are not used for this private repository, so CI and releases run on our own machines. `.github/workflows/` stays available for manual runs only (`workflow_dispatch`).
 
-1. `npm ci`, then `npm run data:refresh` with the `EIA_API_KEY` secret (`DEMO_KEY` if unset, with a warning; EIA rate-limits DEMO_KEY on shared runners).
-2. `npm run check`, `npm test`, `npm run build:pages`, and the Playwright UI suite against `wrangler pages dev dist-pages`.
-3. `wrangler pages deploy dist-pages --project-name electricity-map --branch main` (production).
-
-A failed refresh, validation or test stops the run, so the live site keeps its last good deployment. The workflow never commits or pushes. The step summary shows each snapshot's `fetchedAt` and whether it differs from the commit, and the refreshed `data/*.json` files are uploaded as a 30-day artifact named `eia-snapshots-<run id>`.
-
-**Why deploy directly instead of opening a data PR:** EIA revises data monthly, and a weekly bot PR would need a manual merge every time. Pull requests opened with `GITHUB_TOKEN` also do not trigger CI without a separate PAT or GitHub App. Every run, including pushes to `main`, refreshes before it deploys, so merging older committed snapshots never rolls the site back. The tradeoff is that the repository's `data/` lags the live site, and refreshed data is checked by validators and tests, not human review. To bring `data/` up to date, run `npm run data:refresh` locally (or download the artifact) and open a PR. Committed snapshots still determine the desktop app's bundled data.
-
-Repository secrets (**Settings → Secrets and variables → Actions → Repository secrets**):
-
-| Secret | Value |
+| Command | What it does |
 | --- | --- |
-| `CLOUDFLARE_API_TOKEN` | Custom API token: Account · Cloudflare Pages · Edit, Account · Account Settings · Read, Zone · DNS · Edit (`cujuju.foo`; only needed to manage the custom domain) |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID (dashboard sidebar, or `wrangler whoami`) |
-| `EIA_API_KEY` | Free key from [EIA registration](https://www.eia.gov/opendata/register.php); optional but recommended |
+| `npm run ci:local` | Run before merging a PR: `check`, unit tests, `build:pages`, then the Playwright UI suite against the Node server **and** against `wrangler pages dev dist-pages` |
+| `npm run release` | `data:refresh`, the same checks and tests, then `wrangler pages deploy dist-pages --project-name electricity-map --branch main` |
+| `npm run release:weekly` | The scheduled release below; `-- --force` ignores the freshness check |
+
+Flags for `scripts/release-pages.mjs`: `--no-refresh`, `--no-deploy`, `--no-ui`. Without Google Chrome installed, UI tests use Playwright's bundled Chromium (`PLAYWRIGHT_BUNDLED_CHROMIUM=1`). Merges to `main` are not deployed automatically: run `npm run release` on an up-to-date `main` after merging, or wait for the weekly release.
+
+### Weekly release (T3 Code scheduled tasks)
+
+Weekly **T3 Code scheduled tasks** on two machines run `scripts/local-deploy/runner.mjs` straight from `origin/main`: the Mac on Mondays at 09:00 and the AMD Windows box on Mondays at 13:00. Each run is an agent session that reports in its own T3 thread.
+
+The runner first reads `https://map.cujuju.foo/api/health`. If the live data is less than six days old, it does nothing. Whichever machine is on first does the week's release, and the other skips. Otherwise it updates its own clone of `origin/main` and runs `scripts/release-pages.mjs` there: refresh, checks, tests and deploy. It never touches a working checkout. A failed refresh, validation or test stops the release, and the live site keeps its last good deployment. Nothing is committed or pushed, so the repository's `data/` lags the live site. Refresh locally and open a PR when you want the committed (and desktop-bundled) snapshots updated.
+
+The clone and state live in `~/Library/Application Support/Electricity Map Deploy` (macOS) or `%LOCALAPPDATA%\Electricity Map Deploy` (Windows).
+
+Secrets are read from environment variables, then `secrets.env` (`KEY=value` lines) in that folder, then, on macOS, the login Keychain under service `electricity-map-deploy`:
+
+```sh
+security add-generic-password -U -s electricity-map-deploy -a CLOUDFLARE_API_TOKEN -w
+security add-generic-password -U -s electricity-map-deploy -a CLOUDFLARE_ACCOUNT_ID -w
+security add-generic-password -U -s electricity-map-deploy -a EIA_API_KEY -w
+```
+
+`CLOUDFLARE_API_TOKEN` is a custom token with Account · Cloudflare Pages · Edit, Account · Account Settings · Read, and Zone · DNS · Edit for `cujuju.foo` (DNS is only needed to manage the custom domain). `EIA_API_KEY` is a free [EIA key](https://www.eia.gov/opendata/register.php); without it, `DEMO_KEY` is used and EIA rate-limits it (HTTP 429). The same names are also repository secrets for the manual GitHub workflow.
 
 One-time Cloudflare setup (already done for this repository): `wrangler pages project create electricity-map --production-branch main`; add `map.cujuju.foo` under **Workers & Pages → electricity-map → Custom domains**; the `cujuju.foo` zone is on Cloudflare, so its DNS record is a proxied `CNAME map → electricity-map.pages.dev`.
 
