@@ -3,6 +3,7 @@ import {
   createMemo,
   createSignal,
   createEffect,
+  batch,
   onCleanup,
   For,
   Show,
@@ -29,7 +30,6 @@ import {
   METRICS,
   indexMonthly,
   getMonth,
-  offsetMonth,
   monthLabel,
   display,
   signedValue,
@@ -46,6 +46,19 @@ import {
 } from './math';
 import { ChangeMap, HistoryPlot, TimeGrid, dataColor } from './AnalysisCharts';
 import UtilityExplorer from './UtilityExplorer';
+import PeriodControls from './PeriodControls';
+import type { Grain } from './periods';
+import {
+  DEFAULT_GAP,
+  aggregateYear,
+  comparisonThrough,
+  grainOf,
+  initialRange,
+  offsetPeriod,
+  periodEnd,
+  periodLabel,
+  yearsOf,
+} from './periods';
 import { shareURL } from '../desktop/links';
 
 async function snapshot<T>(url: string): Promise<T> {
@@ -88,13 +101,10 @@ export default function AnalysisStudio(props: {
       }
     },
   );
-  const [month, setMonth] = createSignal('');
-  const [custom, setCustom] = createSignal(q.get('since') ?? '');
-  const [comparison, setComparison] = createSignal(
-    ['year', 'month', 'custom', 'start'].includes(q.get('compare') ?? '')
-      ? q.get('compare')!
-      : 'year',
-  );
+  const [grain, setGrain] = createSignal<Grain>(q.get('grain') === 'year' ? 'year' : 'month');
+  const [to, setTo] = createSignal('');
+  /** Periods between From and To; kept when To moves so playback stays like-for-like. */
+  const [gap, setGap] = createSignal(DEFAULT_GAP[grain()]);
   const [metric, setMetric] = createSignal<Metric>(
     METRICS.some((item) => item.id === q.get('metric')) ? (q.get('metric') as Metric) : 'change',
   );
@@ -105,20 +115,21 @@ export default function AnalysisStudio(props: {
   const [playing, setPlaying] = createSignal(false);
   const [copied, setCopied] = createSignal(false);
   const months = createMemo(() => [...new Set(data()?.rows.map((row) => row.period) ?? [])].sort());
+  const periods = createMemo(() => (grain() === 'year' ? yearsOf(months()) : months()));
   const index = createMemo(() => indexMonthly(data()?.rows ?? []));
-  const baseline = createMemo(() =>
-    comparison() === 'year'
-      ? offsetMonth(month(), -12)
-      : comparison() === 'month'
-        ? offsetMonth(month(), -1)
-        : comparison() === 'start'
-          ? months()[0]
-          : custom(),
-  );
-  const get = (date: string, state = props.state) => getMonth(index(), props.sector, date, state);
-  const now = createMemo(() => get(month()));
-  const before = createMemo(() => get(baseline()));
-  const national = createMemo(() => get(month(), 'US'));
+  const through = createMemo(() => comparisonThrough(to(), months()));
+  const from = createMemo(() => (to() ? offsetPeriod(to(), -gap()) : ''));
+  // Last month of each endpoint; anchors the month-only history, records and chronicle.
+  const month = createMemo(() => (to() ? periodEnd(to(), through()) : ''));
+  const baseline = createMemo(() => (from() ? periodEnd(from(), through()) : ''));
+  const label = (period: string) => periodLabel(period, through());
+  const get = (period: string, state = props.state) =>
+    grainOf(period) === 'year'
+      ? aggregateYear(index(), props.sector, state, period, through())
+      : getMonth(index(), props.sector, period, state);
+  const now = createMemo(() => get(to()));
+  const before = createMemo(() => get(from()));
+  const national = createMemo(() => get(to(), 'US'));
   const info = createMemo(() => METRICS.find((item) => item.id === metric())!);
   const stateName = () => STATES.find((state) => state.id === props.state)?.name ?? props.state;
   const values = createMemo(
@@ -128,8 +139,8 @@ export default function AnalysisStudio(props: {
           state.id,
           metricValue(
             metric(),
-            get(month(), state.id),
-            get(baseline(), state.id),
+            get(to(), state.id),
+            get(from(), state.id),
             national(),
             kwh(),
           ),
@@ -142,9 +153,9 @@ export default function AnalysisStudio(props: {
       ...[...values().values()].filter((value): value is number => value !== null).map(Math.abs),
     ),
   );
-  const currentRows = createMemo(() => STATES.map((state) => get(month(), state.id)));
-  const baseRows = createMemo(() => STATES.map((state) => get(baseline(), state.id)));
-  const nationalDelta = createMemo(() => pct(national()?.price, get(baseline(), 'US')?.price));
+  const currentRows = createMemo(() => STATES.map((state) => get(to(), state.id)));
+  const baseRows = createMemo(() => STATES.map((state) => get(from(), state.id)));
+  const nationalDelta = createMemo(() => pct(national()?.price, get(from(), 'US')?.price));
   const history = createMemo(() =>
     months()
       .map((date) => get(date))
@@ -160,8 +171,8 @@ export default function AnalysisStudio(props: {
   const changes = createMemo(() =>
     STATES.map((state) => ({
       ...state,
-      delta: delta(get(month(), state.id)?.price, get(baseline(), state.id)?.price),
-      pct: pct(get(month(), state.id)?.price, get(baseline(), state.id)?.price),
+      delta: delta(get(to(), state.id)?.price, get(from(), state.id)?.price),
+      pct: pct(get(to(), state.id)?.price, get(from(), state.id)?.price),
     })),
   );
   const movers = createMemo(() =>
@@ -177,25 +188,21 @@ export default function AnalysisStudio(props: {
   const rankChange = () =>
     delta(priceRank(baseRows(), props.state), priceRank(currentRows(), props.state));
   createEffect(() => {
-    const all = months();
-    if (all.length && !month()) {
-      setMonth(all.includes(q.get('month') ?? '') ? q.get('month')! : all.at(-1)!);
-    }
+    const all = periods();
+    if (!all.length || to()) return;
+    const range = initialRange(q, grain(), all);
+    batch(() => {
+      setTo(range.to);
+      setGap(range.gap);
+    });
   });
   createEffect(() => {
-    if (!month()) return;
-    const eligible = months().filter((date) => date < month());
-    if (!eligible.includes(custom())) {
-      const yearAgo = offsetMonth(month(), -12);
-      setCustom(eligible.includes(yearAgo) ? yearAgo : (eligible.at(-1) ?? ''));
-    }
-  });
-  createEffect(() => {
-    if (!month()) return;
+    if (!to()) return;
     const params = new URLSearchParams(window.location.search);
-    params.set('month', month());
-    params.set('compare', comparison());
-    params.set('since', custom());
+    for (const legacy of ['month', 'compare', 'since']) params.delete(legacy);
+    params.set('grain', grain());
+    params.set('from', from());
+    params.set('to', to());
     params.set('metric', metric());
     params.set('kwh', String(kwh()));
     window.history.replaceState(null, '', `${window.location.pathname}?${params}`);
@@ -207,53 +214,72 @@ export default function AnalysisStudio(props: {
     }
     if (!playing()) return;
     const timer = setInterval(() => {
-      const next = months().indexOf(month()) + 1;
-      if (next >= months().length) {
+      const next = periods().indexOf(to()) + 1;
+      if (next >= periods().length) {
         setPlaying(false);
         return;
       }
-      setMonth(months()[next]);
+      setTo(periods()[next]);
     }, 750);
     onCleanup(() => clearInterval(timer));
   });
-  function selectMonth(date: string) {
+  function selectTo(period: string) {
     setPlaying(false);
-    setMonth(date);
+    setTo(period);
+  }
+  /** Picks a single month with a same-month-last-year baseline (map and chronicle clicks). */
+  function selectMonth(date: string) {
+    batch(() => {
+      setPlaying(false);
+      setGrain('month');
+      setTo(date);
+      setGap(DEFAULT_GAP.month);
+    });
+  }
+  function selectGrain(next: Grain) {
+    if (next === grain()) return;
+    const end = month();
+    batch(() => {
+      setPlaying(false);
+      setGrain(next);
+      setTo(next === 'year' ? end.slice(0, 4) : end);
+      setGap(DEFAULT_GAP[next]);
+    });
   }
   function toggle() {
-    if (!playing() && month() === months().at(-1))
-      setMonth(months()[Math.min(12, months().length - 1)]);
+    // Restart at the first period that has a baseline.
+    if (!playing() && to() === periods().at(-1))
+      setTo(periods()[Math.min(gap(), periods().length - 1)]);
     setPlaying(!playing());
   }
   function exportRows() {
     downloadAnalysis(
       STATES.map((state) => ({
-        month: month(),
-        baseline: baseline(),
+        grain: grain(),
+        from: from(),
+        to: to(),
+        months_per_period: grain() === 'year' ? through() : 1,
         state: state.id,
         state_name: state.name,
         sector: props.sector,
-        price_cents_kwh: get(month(), state.id)?.price ?? null,
-        baseline_price_cents_kwh: get(baseline(), state.id)?.price ?? null,
-        change_percent: pct(get(month(), state.id)?.price, get(baseline(), state.id)?.price),
-        change_cents_kwh: delta(get(month(), state.id)?.price, get(baseline(), state.id)?.price),
-        customers: get(month(), state.id)?.customers ?? null,
-        sales_million_kwh: get(month(), state.id)?.sales ?? null,
-        revenue_million_usd: get(month(), state.id)?.revenue ?? null,
-        kwh_per_customer: perCustomer(
-          get(month(), state.id)?.sales,
-          get(month(), state.id)?.customers,
-        ),
+        price_cents_kwh: get(to(), state.id)?.price ?? null,
+        baseline_price_cents_kwh: get(from(), state.id)?.price ?? null,
+        change_percent: pct(get(to(), state.id)?.price, get(from(), state.id)?.price),
+        change_cents_kwh: delta(get(to(), state.id)?.price, get(from(), state.id)?.price),
+        customers: get(to(), state.id)?.customers ?? null,
+        sales_million_kwh: get(to(), state.id)?.sales ?? null,
+        revenue_million_usd: get(to(), state.id)?.revenue ?? null,
+        kwh_per_customer: perCustomer(get(to(), state.id)?.sales, get(to(), state.id)?.customers),
         revenue_per_customer_usd: perCustomer(
-          get(month(), state.id)?.revenue,
-          get(month(), state.id)?.customers,
+          get(to(), state.id)?.revenue,
+          get(to(), state.id)?.customers,
         ),
         scenario_kwh: kwh(),
         metric: info().name,
         metric_unit: info().unit,
         value: values().get(state.id) ?? null,
       })),
-      `electricity-analysis-${props.sector}-${month()}.csv`,
+      `electricity-analysis-${props.sector}-${from()}-to-${to()}.csv`,
     );
   }
   async function share() {
@@ -361,52 +387,16 @@ export default function AnalysisStudio(props: {
               </select>
             </label>
             <Show when={props.mode === 'changes'}>
-              <label>
-                OBSERVED MONTH
-                <select
-                  aria-label="Analysis month"
-                  value={month()}
-                  onChange={(e) => selectMonth(e.currentTarget.value)}
-                >
-                  <For each={months()}>
-                    {(date) => <option value={date}>{monthLabel(date)}</option>}
-                  </For>
-                </select>
-              </label>
-              <label>
-                COMPARE WITH
-                <select
-                  aria-label="Comparison period"
-                  value={comparison()}
-                  onChange={(e) => setComparison(e.currentTarget.value)}
-                >
-                  <option value="year">Same month last year</option>
-                  <option value="month">Previous month</option>
-                  <option value="start">Start of history</option>
-                  <option value="custom">Choose a month</option>
-                </select>
-              </label>
-              <Show when={comparison() === 'custom'}>
-                <label>
-                  BASELINE MONTH
-                  <select
-                    aria-label="Baseline month"
-                    value={custom()}
-                    onChange={(e) => setCustom(e.currentTarget.value)}
-                  >
-                    <For each={months().filter((date) => date < month())}>
-                      {(date) => (
-                        <option value={date} selected={date === custom()}>
-                          {monthLabel(date)}
-                        </option>
-                      )}
-                    </For>
-                    <Show when={!custom()}>
-                      <option value="">No earlier month available</option>
-                    </Show>
-                  </select>
-                </label>
-              </Show>
+              <PeriodControls
+                grain={grain()}
+                periods={periods()}
+                from={from()}
+                to={to()}
+                through={through()}
+                onGrain={selectGrain}
+                onTo={selectTo}
+                onGap={setGap}
+              />
             </Show>
           </section>
           <Show
@@ -433,13 +423,13 @@ export default function AnalysisStudio(props: {
           >
             <section class="lab-kpis">
               <div>
-                <span>U.S. AVERAGE / {monthLabel(month())}</span>
+                <span>U.S. AVERAGE / {label(to())}</span>
                 <strong data-testid="monthly-national-price">
                   {display(national()?.price, 2)}
                   <small>¢/kWh</small>
                 </strong>
                 <p>
-                  {signedValue(nationalDelta())}% since {monthLabel(baseline())}
+                  {signedValue(nationalDelta())}% since {label(from())}
                 </p>
               </div>
               <div>
@@ -464,7 +454,7 @@ export default function AnalysisStudio(props: {
                 </strong>
                 <p>
                   {signedValue(delta(now()?.price, before()?.price), 2)}¢/kWh ·{' '}
-                  {monthLabel(baseline())} → {monthLabel(month())}
+                  {label(from())} → {label(to())}
                 </p>
               </div>
             </section>
@@ -543,7 +533,7 @@ export default function AnalysisStudio(props: {
                   <small>{info().unit}</small>
                 </div>
                 <p>
-                  {info().name} / {monthLabel(month())}
+                  {info().name} / {label(to())}
                 </p>
                 <div class="lab-mini-facts">
                   <div>
@@ -572,8 +562,10 @@ export default function AnalysisStudio(props: {
                   </div>
                 </div>
                 <p class="lab-note">
-                  Positive rank movement means moving toward the more expensive end. Customer
-                  metrics are monthly account averages.
+                  Positive rank movement means moving toward the more expensive end.{' '}
+                  {grain() === 'year'
+                    ? 'Per-customer values are period totals over the average monthly account count.'
+                    : 'Customer metrics are monthly account averages.'}
                 </p>
                 <label class="lab-usage">
                   CHOSEN MONTHLY USAGE
@@ -606,24 +598,24 @@ export default function AnalysisStudio(props: {
             </div>
             <section class="lab-timeline">
               <button
-                aria-label={playing() ? 'Pause monthly timeline' : 'Play monthly timeline'}
+                aria-label={`${playing() ? 'Pause' : 'Play'} ${grain() === 'year' ? 'yearly' : 'monthly'} timeline`}
                 onClick={toggle}
               >
                 {playing() ? <Pause size={18} /> : <Play size={18} />}
               </button>
-              <strong>{monthLabel(month())}</strong>
+              <strong>{label(to())}</strong>
               <div>
                 <input
-                  aria-label="Monthly timeline"
+                  aria-label="Comparison timeline"
                   type="range"
                   min="0"
-                  max={months().length - 1}
-                  value={Math.max(0, months().indexOf(month()))}
-                  onInput={(e) => selectMonth(months()[Number(e.currentTarget.value)])}
+                  max={periods().length - 1}
+                  value={Math.max(0, periods().indexOf(to()))}
+                  onInput={(e) => selectTo(periods()[Number(e.currentTarget.value)])}
                 />
                 <span>
-                  <i>{months()[0]}</i>
-                  <i>{months().at(-1)}</i>
+                  <i>{periods()[0]}</i>
+                  <i>{periods().at(-1)}</i>
                 </span>
               </div>
               <button class="lab-action" onClick={exportRows}>
@@ -646,7 +638,7 @@ export default function AnalysisStudio(props: {
                 state={props.state}
                 selectedMonth={month()}
                 baseline={baseline()}
-                onMonth={selectMonth}
+                onMonth={(date) => (grain() === 'month' ? selectTo(date) : selectMonth(date))}
               />
             </section>
             <p class="lab-note">
@@ -841,7 +833,6 @@ export default function AnalysisStudio(props: {
                 onPick={(state, date) => {
                   props.onState(state);
                   selectMonth(date);
-                  setComparison('year');
                 }}
               />
               <p class="lab-heat-note">

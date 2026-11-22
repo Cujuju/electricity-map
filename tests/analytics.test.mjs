@@ -12,6 +12,13 @@ import {
   cagr,
   spendingDrivers,
 } from '../src/analytics/math.ts';
+import {
+  aggregateYear,
+  comparisonThrough,
+  initialRange,
+  periodLabel,
+} from '../src/analytics/periods.ts';
+import { indexMonthly } from '../src/analytics/math.ts';
 import { validateMonthlyDataset } from '../server/eia.mjs';
 import { validateUtilities } from '../server/utilities.mjs';
 const base = {
@@ -127,4 +134,66 @@ test('utility snapshot is annual, preserves service boundaries and reconciles ca
       }),
     /duplicate/,
   );
+});
+
+const months = (year, count, row) =>
+  Array.from({ length: count }, (_, i) => ({
+    ...base,
+    period: `${year}-${String(i + 1).padStart(2, '0')}`,
+    ...row(i),
+  }));
+test('calendar years weight price by sales, average accounts and require every month', () => {
+  // Jan: 10 cents on 100 million kWh; Feb: 20 cents on 300. Weighted 17.5, not the 15 mean.
+  const rows = months(2025, 2, (i) => ({
+    price: [10, 20][i],
+    sales: [100, 300][i],
+    revenue: [10, 60][i],
+    customers: [1000, 3000][i],
+  }));
+  const year = aggregateYear(indexMonthly(rows), 'RES', 'CA', '2025', 2);
+  assert.equal(year.price, 17.5);
+  assert.equal(year.sales, 400);
+  assert.equal(year.revenue, 70);
+  assert.equal(year.customers, 2000);
+  const gap = aggregateYear(indexMonthly(rows.slice(1)), 'RES', 'CA', '2025', 2);
+  assert.equal(gap.price, null);
+  assert.equal(gap.sales, null);
+  const withheld = aggregateYear(
+    indexMonthly(rows.map((row, i) => (i ? { ...row, revenue: null } : row))),
+    'RES',
+    'CA',
+    '2025',
+    2,
+  );
+  assert.equal(withheld.price, null);
+  assert.equal(withheld.sales, 400);
+  assert.equal(aggregateYear(indexMonthly(rows), 'RES', 'TX', '2025', 2), undefined);
+});
+test('a partial final year compares year-to-date windows of equal length', () => {
+  const data = ['2024-12', '2025-01', '2025-08'];
+  assert.equal(comparisonThrough('2025', data), 8);
+  assert.equal(comparisonThrough('2024', data), 12);
+  assert.equal(comparisonThrough('2025-08', data), 12);
+  assert.equal(periodLabel('2025', 8), 'Jan–Aug 2025');
+  assert.equal(periodLabel('2024', 12), '2024');
+});
+test('range links read from/to and still honor legacy compare links', () => {
+  const all = ['2025-06', '2025-07', '2025-08', '2026-07', '2026-08'];
+  const range = (search, grain = 'month', periods = all) =>
+    initialRange(new URLSearchParams(search), grain, periods);
+  assert.deepEqual(range(''), { to: '2026-08', gap: 12 });
+  assert.deepEqual(range('to=2026-07&from=2025-06'), { to: '2026-07', gap: 13 });
+  assert.deepEqual(range('month=2026-07&compare=month'), { to: '2026-07', gap: 1 });
+  assert.deepEqual(range('month=2026-08&compare=custom&since=2025-07'), { to: '2026-08', gap: 13 });
+  assert.deepEqual(range('compare=start'), { to: '2026-08', gap: 14 });
+  // A From that is not earlier, or of the other grain, falls back to one year back.
+  assert.deepEqual(range('from=2026-08'), { to: '2026-08', gap: 12 });
+  assert.deepEqual(range('grain=year&from=2025', 'year', ['2024', '2025', '2026']), {
+    to: '2026',
+    gap: 1,
+  });
+  assert.deepEqual(range('month=2026-07&from=2015-01', 'year', ['2015', '2026']), {
+    to: '2026',
+    gap: 1,
+  });
 });

@@ -211,6 +211,26 @@ html[data-dashboard='original'] .sidebar {
   color: var(--lab-ink);
   height: 38px;
 }
+.lab-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.lab-presets .lab-action {
+  height: 38px;
+}
+.lab-presets .lab-action[aria-pressed='true'] {
+  border-color: var(--lab-accent);
+  color: var(--lab-accent);
+}
+.lab-presets .lab-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.lab-range-note {
+  flex-basis: 100%;
+  margin: 0;
+}
 .analysis-studio select option {
   color: #233329;
   background: #eef1e5;
@@ -1205,6 +1225,11 @@ html[data-dashboard='original'] .sidebar {
   .lab-controls > label {
     min-width: 0;
     font-size: 7px;
+  }
+  .lab-controls > .lab-grain,
+  .lab-presets,
+  .lab-range-note {
+    grid-column: 1 / -1;
   }
   .lab-controls select {
     height: 38px;
