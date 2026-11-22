@@ -219,7 +219,8 @@ export function TimeGrid(props: {
       <table class="time-grid">
         <thead>
           <tr>
-            <th>STATE / YoY %</th>
+            {/* Non-breaking spaces keep "/ YoY %" on one line when the phone layout wraps it. */}
+            <th>STATE /{' '}YoY{' '}%</th>
             <For each={props.months}>
               {(month) => (
                 <th>

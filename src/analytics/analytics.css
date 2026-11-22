@@ -758,43 +758,39 @@ html[data-dashboard='original'] .sidebar {
   line-height: 1.8;
   margin: 15px 0 0;
 }
-/* Change Chronicle type scale: every size is its base × scale, so the smallest (8px) lands on 9px. */
-.lab-time-panel {
-  --chronicle-scale: calc(9 / 8);
-  --chronicle-cell-width: calc(39px * var(--chronicle-scale));
-}
+/* Change Chronicle type: one whole-pixel set for desktop and phone; 9px minimum. */
 .lab-time-panel .lab-panel-title span,
 .lab-time-panel .lab-panel-title label {
-  font-size: calc(8px * var(--chronicle-scale));
+  font-size: 9px;
 }
 .lab-time-panel .lab-panel-title h2 {
-  font-size: calc(25px * var(--chronicle-scale));
+  font-size: 28px;
+}
+/* Whole-pixel equivalent of the shared 1.18em serif accent. */
+.lab-time-panel .lab-panel-title h2 em {
+  font-size: 33px;
 }
 .lab-time-panel .lab-panel-title p,
-.lab-time-panel .lab-panel-title label select {
-  font-size: calc(10px * var(--chronicle-scale));
+.lab-time-panel .lab-panel-title label select,
+.lab-time-panel .time-grid th,
+.lab-time-panel .time-grid th > span {
+  font-size: 11px;
 }
 .lab-time-panel .time-grid th {
-  font-size: calc(10px * var(--chronicle-scale));
-  min-width: calc(143px * var(--chronicle-scale));
-}
-.lab-time-panel .time-grid th > span {
-  font-size: calc(10px * var(--chronicle-scale));
+  min-width: 160px;
 }
 .lab-time-panel .time-grid thead th:not(:first-child) {
-  font-size: calc(12px * var(--chronicle-scale));
-  min-width: var(--chronicle-cell-width);
+  font-size: 14px;
+  min-width: 44px;
 }
-.lab-time-panel .time-grid thead th small {
-  font-size: calc(9px * var(--chronicle-scale));
+.lab-time-panel .time-grid thead th small,
+.lab-time-panel .time-grid td button,
+.lab-time-panel .lab-heat-note {
+  font-size: 10px;
 }
 .lab-time-panel .time-grid td button {
-  font-size: calc(9px * var(--chronicle-scale));
-  width: var(--chronicle-cell-width);
-  height: calc(25px * var(--chronicle-scale));
-}
-.lab-time-panel .lab-heat-note {
-  font-size: calc(9px * var(--chronicle-scale));
+  width: 44px;
+  height: 28px;
 }
 .analysis-footer {
   display: flex;
@@ -1507,33 +1503,17 @@ html[data-dashboard='original'] .sidebar {
   .lab-heat-note {
     font-size: 10px;
   }
-  /* Phone bases differ; the smallest (7px) lands on 9px. */
-  .lab-time-panel {
-    --chronicle-scale: calc(9 / 7);
-    --chronicle-cell-width: calc(43px * var(--chronicle-scale));
-  }
-  .lab-time-panel .lab-panel-title span {
-    font-size: calc(7px * var(--chronicle-scale));
-  }
-  .lab-time-panel .lab-panel-title h2 {
-    font-size: calc(23px * var(--chronicle-scale));
-  }
-  .lab-time-panel .lab-panel-title label select {
-    font-size: calc(11px * var(--chronicle-scale));
-  }
+  /* Phone keeps the desktop type; only layout changes. Names are hidden, so the code column fits "AL". */
   .lab-time-panel .time-grid th {
-    min-width: calc(110px * var(--chronicle-scale));
+    min-width: 0;
   }
-  .lab-time-panel .time-grid thead th:not(:first-child) {
-    font-size: calc(13px * var(--chronicle-scale));
+  .lab-time-panel .time-grid thead th:first-child {
+    white-space: normal;
+    width: 0;
   }
-  .lab-time-panel .time-grid thead th small,
-  .lab-time-panel .lab-heat-note {
-    font-size: calc(10px * var(--chronicle-scale));
-  }
+  /* Taller cells for touch. */
   .lab-time-panel .time-grid td button {
-    font-size: calc(11px * var(--chronicle-scale));
-    height: calc(32px * var(--chronicle-scale));
+    height: 32px;
   }
   .analysis-footer {
     font-size: 7px;
