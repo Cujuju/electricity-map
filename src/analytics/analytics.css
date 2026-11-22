@@ -665,10 +665,9 @@ html[data-dashboard='original'] .sidebar {
 }
 .time-grid {
   --time-grid-gap: 3px;
+  /* Gaps are cell padding, not border-spacing: sticky cell backgrounds then cover them. */
   border-collapse: separate;
-  border-spacing: var(--time-grid-gap);
-  /* Cancel the leading spacing so sticky headers rest where they stick. */
-  margin: calc(-1 * var(--time-grid-gap)) 0 0 calc(-1 * var(--time-grid-gap));
+  border-spacing: 0;
   width: max-content;
   min-width: 100%;
   font: 10px var(--mono);
@@ -681,7 +680,7 @@ html[data-dashboard='original'] .sidebar {
   z-index: 2;
   text-align: left;
   min-width: 143px;
-  padding: 7px 5px;
+  padding: 7px calc(5px + var(--time-grid-gap)) calc(7px + var(--time-grid-gap)) 5px;
   color: var(--lab-ink);
 }
 .time-grid th > span {
@@ -711,7 +710,7 @@ html[data-dashboard='original'] .sidebar {
   color: var(--lab-accent);
 }
 .time-grid td {
-  padding: 0;
+  padding: 0 var(--time-grid-gap) var(--time-grid-gap) 0;
 }
 .time-grid td button {
   display: block;

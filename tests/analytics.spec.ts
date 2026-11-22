@@ -46,6 +46,33 @@ test('change chronicle sticky headers do not shift when scrolling', async ({ pag
   expect(await offsets({ top: 40, left: 40 })).toEqual(resting);
 });
 
+test('change chronicle sticky headers hide the cells scrolled beneath them', async ({ page }) => {
+  await page.goto('/?lab=changes&design=original&state=VA');
+  await page.getByLabel('Heatmap window').selectOption('240');
+  const leaks = await page.locator('.time-grid-scroll').evaluate((el) => {
+    el.scrollIntoView({ block: 'center' });
+    el.scrollTo({ top: 200, left: 200 });
+    // Sample the seam between each pair of adjacent sticky cells; it must hit sticky cells too.
+    const seams = (cells: Element[], axis: 'x' | 'y') =>
+      cells.slice(1).map((cell, i) => {
+        const a = cells[i].getBoundingClientRect();
+        const b = cell.getBoundingClientRect();
+        return axis === 'x'
+          ? { x: (a.right + b.left) / 2, y: (a.top + a.bottom) / 2 }
+          : { x: (a.left + a.right) / 2, y: (a.bottom + b.top) / 2 };
+      });
+    const box = el.getBoundingClientRect();
+    const inView = (p: { x: number; y: number }) =>
+      p.x > box.left && p.x < box.right && p.y > box.top && p.y < box.bottom;
+    const head = seams([...el.querySelectorAll('thead th')], 'x');
+    const rows = seams([...el.querySelectorAll('tbody th')], 'y');
+    return [...head, ...rows]
+      .filter(inView)
+      .filter((p) => !document.elementFromPoint(p.x, p.y)?.closest('th')).length;
+  });
+  expect(leaks).toBe(0);
+});
+
 test('change lab computes real monthly changes, customer metrics, scenarios and share state', async ({
   page,
 }, info) => {
