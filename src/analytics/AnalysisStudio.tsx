@@ -811,8 +811,8 @@ export default function AnalysisStudio(props: {
                     Every state. <em>Every turning point.</em>
                   </h2>
                   <p>
-                    For the selected sector, +24 means the average electricity price per kWh was
-                    about 24% higher than in the same month a year earlier. Select a cell to inspect
+                    For the selected sector, +23.9 means the average electricity price per kWh was
+                    about 23.9% higher than in the same month a year earlier. Select a cell to inspect
                     that state and month.
                   </p>
                 </div>
@@ -843,8 +843,8 @@ export default function AnalysisStudio(props: {
                 }}
               />
               <p class="lab-heat-note">
-                Colors: teal = lower, orange = higher; saturation caps at ±30%. Exact values remain
-                available on each cell. Gray = missing comparison. Scroll to explore all 51
+                Colors: teal = lower, orange = higher; saturation caps at ±30%. Cell details include
+                the average price per kWh. Gray = missing comparison. Scroll to explore all 51
                 jurisdictions.
               </p>
             </section>
