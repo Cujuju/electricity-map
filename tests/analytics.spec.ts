@@ -19,6 +19,9 @@ test('the DC map inset selects the district by pointer and keyboard', async ({ p
   await expect(dc).toHaveAttribute('aria-pressed', 'true');
   await expect(state).toHaveValue('DC');
   await expect(page).toHaveURL(/state=DC/);
+  // Selection is shown by the shape outline, not the browser's rectangular focus ring.
+  await expect(dc).toHaveCSS('outline-style', 'none');
+  await expect(map.locator('.analysis-map-leader path')).toHaveCount(1);
 
   await map.getByRole('button', { name: /^Maryland:/ }).press('Enter');
   await expect(state).toHaveValue('MD');

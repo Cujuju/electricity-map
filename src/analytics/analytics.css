@@ -336,17 +336,40 @@ html[data-dashboard='original'] .sidebar {
   margin: 7px 0 13px;
   min-height: 280px;
 }
+.change-map {
+  /* Strokes are clipped to each shape, so only half of each width shows. */
+  --lab-map-border: 2px;
+  --lab-map-hover: 3px;
+  --lab-map-selected: 5px;
+}
 .change-map [data-analysis-state] {
   cursor: pointer;
 }
+/* The shape outline is the focus indicator. Chrome's default focus ring draws the group's bounding box, even after a click. */
+.change-map g[data-analysis-state]:focus {
+  outline: none;
+}
 .analysis-map-shape {
+  stroke: var(--lab-bg);
+  stroke-width: var(--lab-map-border);
+  stroke-linejoin: round;
   transition: fill 0.25s;
 }
 .analysis-map-shape:hover,
 .change-map [data-analysis-state]:focus-visible .analysis-map-shape {
   filter: brightness(1.15);
   stroke: var(--lab-ink);
-  stroke-width: 2;
+  stroke-width: var(--lab-map-hover);
+}
+.change-map [data-analysis-state].is-selected .analysis-map-shape {
+  stroke: var(--lab-ink);
+  stroke-width: var(--lab-map-selected);
+}
+.analysis-map-leader {
+  pointer-events: none;
+  stroke: var(--lab-ink);
+  stroke-opacity: 0.55;
+  fill: var(--lab-ink);
 }
 .analysis-map-label {
   font: 10px var(--mono);

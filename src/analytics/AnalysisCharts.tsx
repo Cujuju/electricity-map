@@ -1,4 +1,4 @@
-import { createMemo, For, Show } from 'solid-js';
+import { createMemo, createUniqueId, For, Show } from 'solid-js';
 import { geoIdentity, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
@@ -10,16 +10,50 @@ import { display, monthLabel, offsetMonth, pct, signedValue } from './math';
 const topo = topology as unknown as Topology<{ states: GeometryCollection }>;
 const path = geoPath().digits(1);
 const dcFips = STATES.find((state) => state.id === 'DC')!.fips;
+// DC is too small to see or click at map scale; draw it enlarged offshore, east of MD and VA.
+const DC_INSET_SCALE = 16;
+const DC_INSET_CENTER: [number, number] = [925, 300];
+// Space between the leader's end and the enlarged DC shape, in map units.
+const DC_LEADER_GAP = 6;
+
+type Point = [number, number];
+
+/** Point where the segment from `from` toward the box centre first meets the box edge. */
+function boxEntry(from: Point, [[x0, y0], [x1, y1]]: [Point, Point]): Point {
+  const to: Point = [(x0 + x1) / 2, (y0 + y1) / 2];
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const tx = dx > 0 ? (x0 - from[0]) / dx : dx < 0 ? (x1 - from[0]) / dx : 0;
+  const ty = dy > 0 ? (y0 - from[1]) / dy : dy < 0 ? (y1 - from[1]) / dy : 0;
+  const t = Math.max(0, Math.min(1, Math.max(tx, ty)));
+  return [from[0] + dx * t, from[1] + dy * t];
+}
+
 const shapes = feature(topo, topo.objects.states).features.map((shape) => {
   const id = String(shape.id).padStart(2, '0');
   let shapePath = path;
+  let leader: { from: Point; to: Point } | undefined;
 
   if (id === dcFips) {
-    // Enlarge the district about its centroid and move it offshore beside MD and VA.
     const [x, y] = path.centroid(shape);
-    const scale = 16;
-    const projection = geoIdentity().scale(scale).translate([925 - x * scale, 300 - y * scale]);
+    const projection = geoIdentity()
+      .scale(DC_INSET_SCALE)
+      .translate([
+        DC_INSET_CENTER[0] - x * DC_INSET_SCALE,
+        DC_INSET_CENTER[1] - y * DC_INSET_SCALE,
+      ]);
     shapePath = geoPath(projection).digits(1);
+    const [[bx0, by0], [bx1, by1]] = shapePath.bounds(shape);
+    leader = {
+      from: [x, y],
+      to: boxEntry(
+        [x, y],
+        [
+          [bx0 - DC_LEADER_GAP, by0 - DC_LEADER_GAP],
+          [bx1 + DC_LEADER_GAP, by1 + DC_LEADER_GAP],
+        ],
+      ),
+    };
   }
 
   return {
@@ -27,8 +61,10 @@ const shapes = feature(topo, topo.objects.states).features.map((shape) => {
     d: shapePath(shape) ?? '',
     center: shapePath.centroid(shape),
     area: shapePath.area(shape),
+    leader,
   };
 });
+const dcLeader = shapes.find((shape) => shape.leader)?.leader;
 
 export function dataColor(value: number | null, limit: number, diverging = true) {
   if (value === null) return 'var(--lab-missing)';
@@ -44,17 +80,26 @@ export function ChangeMap(props: {
   unit: string;
   onSelect: (id: string) => void;
 }) {
+  const clipPrefix = `lab-clip-${createUniqueId()}-`;
   return (
     <svg
       class="change-map"
       viewBox="0 0 975 610"
       role="group"
-      aria-label="United States monthly electricity metrics by state. Alaska, Hawaii, and DC are repositioned. DC is enlarged."
+      aria-label="United States monthly electricity metrics by state. Alaska, Hawaii, and DC are repositioned. DC is enlarged; a line marks its location."
     >
       <defs>
         <pattern id="lab-map-grid" width="32" height="32" patternUnits="userSpaceOnUse">
           <path d="M32 0H0V32" fill="none" stroke="currentColor" stroke-opacity=".05" />
         </pattern>
+        {/* Each shape clips its own stroke, so outlines sit inside and neighbours never cover them. */}
+        <For each={shapes}>
+          {(shape) => (
+            <clipPath id={clipPrefix + shape.id}>
+              <path d={shape.d} />
+            </clipPath>
+          )}
+        </For>
       </defs>
       <rect width="975" height="610" fill="url(#lab-map-grid)" />
       <For each={shapes}>
@@ -67,6 +112,7 @@ export function ChangeMap(props: {
             <Show when={state}>
               <g
                 data-analysis-state={state!.id}
+                classList={{ 'is-selected': selected() }}
                 role="button"
                 tabindex="0"
                 aria-label={`${state!.name}: ${display(props.values.get(state!.id))} ${props.unit}`}
@@ -86,8 +132,7 @@ export function ChangeMap(props: {
                   class="analysis-map-shape"
                   d={shape.d}
                   fill={fill()}
-                  stroke={selected() ? 'var(--lab-ink)' : 'var(--lab-bg)'}
-                  stroke-width={selected() ? 3 : 1}
+                  clip-path={`url(#${clipPrefix}${shape.id})`}
                 />
                 <Show when={shape.area > 600 || selected()}>
                   <text
@@ -104,6 +149,14 @@ export function ChangeMap(props: {
           );
         }}
       </For>
+      <Show when={dcLeader}>
+        {(leader) => (
+          <g class="analysis-map-leader" aria-hidden="true">
+            <path d={`M${leader().from.join(',')}L${leader().to.join(',')}`} />
+            <circle cx={leader().from[0]} cy={leader().from[1]} r="2" />
+          </g>
+        )}
+      </Show>
     </svg>
   );
 }
