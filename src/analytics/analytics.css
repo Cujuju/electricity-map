@@ -337,10 +337,10 @@ html[data-dashboard='original'] .sidebar {
   min-height: 280px;
 }
 .change-map {
-  /* Strokes are clipped to each shape, so only half of each width shows. */
+  /* Screen pixels. Strokes are clipped to each shape, so half of each width shows. */
   --lab-map-border: 2px;
   --lab-map-hover: 3px;
-  --lab-map-selected: 5px;
+  --lab-map-selected: 4px;
 }
 .change-map [data-analysis-state] {
   cursor: pointer;
@@ -353,6 +353,8 @@ html[data-dashboard='original'] .sidebar {
   stroke: var(--lab-bg);
   stroke-width: var(--lab-map-border);
   stroke-linejoin: round;
+  /* Keep outline thickness constant however large the map is drawn. */
+  vector-effect: non-scaling-stroke;
   transition: fill 0.25s;
 }
 .analysis-map-shape:hover,
