@@ -6,11 +6,13 @@ import { interpolateColor } from './catalog';
 import { StateMark, quarterEvents } from './ChartMark';
 
 const CITY_COLUMNS = 6;
+const CITY_COLUMN_PITCH = 56;
 const CITY_FIRST_BASELINE = 98;
 const CITY_ROW_PITCH = 84;
 const CITY_ROOF_FRONT_WIDTH = 23;
+const CITY_ROOF_FRONT_DROP = 14;
 const CITY_ROOF_SIDE_WIDTH = 13;
-const CITY_ROOF_BACK_RISE = 8;
+const CITY_ROOF_BACK_RISE = 14;
 const CITY_FOOTER_GAP = 30;
 const CITY_BOTTOM_MARGIN = 16;
 
@@ -197,36 +199,37 @@ export default function PortraitCharts(props: ChartProps) {
           </text>
           <For each={props.states}>
             {(state, i) => {
-              const x = () => 24 + (i() % CITY_COLUMNS) * 52;
+              const x = () => 24 + (i() % CITY_COLUMNS) * CITY_COLUMN_PITCH;
               const y = () => CITY_FIRST_BASELINE + Math.floor(i() / CITY_COLUMNS) * CITY_ROW_PITCH;
               const h = () => 10 + ratio(state.observation?.price) * 45;
               const roofY = () => y() - h();
               return (
                 <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
                   <path
-                    d={`M${x()},${y()}v${-h()}l${CITY_ROOF_FRONT_WIDTH} 9v${h()}Z`}
+                    d={`M${x()},${y()}v${-h()}l${CITY_ROOF_FRONT_WIDTH} ${CITY_ROOF_FRONT_DROP}v${h()}Z`}
                     fill={color(state.observation?.price)}
                     fill-opacity=".8"
                     stroke="var(--ink)"
                     stroke-width=".6"
                   />
                   <path
-                    d={`M${x() + CITY_ROOF_FRONT_WIDTH},${y() + 9}v${-h()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE}v${h()}Z`}
+                    d={`M${x() + CITY_ROOF_FRONT_WIDTH},${y() + CITY_ROOF_FRONT_DROP}v${-h()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE}v${h()}Z`}
                     fill={color(state.observation?.price)}
                     fill-opacity=".4"
                   />
                   <path
                     class="data-mark"
-                    d={`M${x()},${roofY()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE} ${CITY_ROOF_FRONT_WIDTH} 9 ${-CITY_ROOF_SIDE_WIDTH} ${CITY_ROOF_BACK_RISE}Z`}
+                    d={`M${x()},${roofY()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE} ${CITY_ROOF_FRONT_WIDTH} ${CITY_ROOF_FRONT_DROP} ${-CITY_ROOF_SIDE_WIDTH} ${CITY_ROOF_BACK_RISE}Z`}
                     fill={color(state.observation?.price)}
                     stroke="var(--ink)"
                     stroke-width=".8"
                   />
                   <text
                     x={x() + (CITY_ROOF_FRONT_WIDTH + CITY_ROOF_SIDE_WIDTH) / 2}
-                    y={roofY() - CITY_ROOF_BACK_RISE}
+                    y={roofY() + (CITY_ROOF_FRONT_DROP - CITY_ROOF_BACK_RISE) / 2}
                     text-anchor="middle"
-                    class="portrait-state-code"
+                    dominant-baseline="central"
+                    class="chart-city-label"
                     data-readable="true"
                   >
                     {state.id}
