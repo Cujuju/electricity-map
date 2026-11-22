@@ -1300,6 +1300,10 @@ html[data-dashboard='original'] .app-shell {
   border: 1px solid #c364e75c;
   box-shadow: inset 0 0 70px #9c35d309;
 }
+.skin-arcade .chart-city .design-state-mark:hover .data-mark,
+.skin-arcade .chart-city .design-state-mark.is-picked .data-mark {
+  stroke-width: 1.2;
+}
 .skin-arcade .experiment-chart-heading h2 {
   font:
     20px 'DotGothic16',
