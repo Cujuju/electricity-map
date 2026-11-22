@@ -92,6 +92,43 @@ for (const design of DESIGNS) {
   });
 }
 
+test('Power City rooftop labels track tower heights', async ({ page }) => {
+  await page.goto('/?design=arcade&state=HI');
+  const chart = page.locator('.chart-city');
+  const labels = chart.locator('.chart-city-label, .portrait-state-code');
+  await expect(labels).toHaveCount(51);
+
+  const checkLabelPositions = async () => {
+    const offsets = await labels.evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const label = node as SVGTextElement;
+        const roof = label.ownerSVGElement!.querySelector<SVGPathElement>(
+          `[data-chart-state="${label.textContent}"] .data-mark`,
+        )!.getBBox();
+        return {
+          x: label.x.baseVal.getItem(0).value - (roof.x + roof.width / 2),
+          y: label.y.baseVal.getItem(0).value - roof.y,
+        };
+      }),
+    );
+    for (const offset of offsets) {
+      expect(offset.x).toBeCloseTo(0);
+      expect(offset.y).toBeCloseTo(0);
+    }
+  };
+
+  await checkLabelPositions();
+  const hawaiiLabel = labels.getByText('HI', { exact: true });
+  const initialY = await hawaiiLabel.getAttribute('y');
+  await page.getByLabel('Selected quarter', { exact: true }).selectOption('2020-Q1');
+  await expect(hawaiiLabel).not.toHaveAttribute('y', initialY!);
+  await checkLabelPositions();
+  await expect(chart.locator('[data-chart-state="HI"] .data-mark')).toHaveCSS(
+    'stroke-width',
+    '1.2px',
+  );
+});
+
 test('design collection switches dashboards without losing data selections or original lenses', async ({
   page,
 }) => {

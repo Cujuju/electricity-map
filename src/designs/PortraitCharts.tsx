@@ -5,6 +5,15 @@ import type { ChartProps } from './DesignCharts';
 import { interpolateColor } from './catalog';
 import { StateMark, quarterEvents } from './ChartMark';
 
+const CITY_COLUMNS = 6;
+const CITY_FIRST_BASELINE = 98;
+const CITY_ROW_PITCH = 84;
+const CITY_ROOF_FRONT_WIDTH = 23;
+const CITY_ROOF_SIDE_WIDTH = 13;
+const CITY_ROOF_BACK_RISE = 8;
+const CITY_FOOTER_GAP = 30;
+const CITY_BOTTOM_MARGIN = 16;
+
 export default function PortraitCharts(props: ChartProps) {
   const ratio = (value: number | null | undefined) =>
     Math.min(1, Math.max(0, (value ?? 0) / props.ceiling));
@@ -13,11 +22,15 @@ export default function PortraitCharts(props: ChartProps) {
   const ranked = createMemo(() =>
     [...props.states].sort((a, b) => (b.observation?.price ?? -1) - (a.observation?.price ?? -1)),
   );
+  const cityFooterY = () =>
+    CITY_FIRST_BASELINE +
+    (Math.ceil(props.states.length / CITY_COLUMNS) - 1) * CITY_ROW_PITCH +
+    CITY_FOOTER_GAP;
   const height = () =>
     props.design.chart === 'bars'
       ? 590
       : props.design.chart === 'city'
-        ? 670
+        ? cityFooterY() + CITY_BOTTOM_MARGIN
         : props.design.chart === 'circuit'
           ? 520
           : props.design.chart === 'calendar'
@@ -184,33 +197,34 @@ export default function PortraitCharts(props: ChartProps) {
           </text>
           <For each={props.states}>
             {(state, i) => {
-              const x = () => 24 + (i() % 6) * 52;
-              const y = () => 88 + Math.floor(i() / 6) * 65;
+              const x = () => 24 + (i() % CITY_COLUMNS) * 52;
+              const y = () => CITY_FIRST_BASELINE + Math.floor(i() / CITY_COLUMNS) * CITY_ROW_PITCH;
               const h = () => 10 + ratio(state.observation?.price) * 45;
+              const roofY = () => y() - h();
               return (
                 <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
                   <path
-                    d={`M${x()},${y()}v${-h()}l23 9v${h()}Z`}
+                    d={`M${x()},${y()}v${-h()}l${CITY_ROOF_FRONT_WIDTH} 9v${h()}Z`}
                     fill={color(state.observation?.price)}
                     fill-opacity=".8"
                     stroke="var(--ink)"
                     stroke-width=".6"
                   />
                   <path
-                    d={`M${x() + 23},${y() + 9}v${-h()}l13-8v${h()}Z`}
+                    d={`M${x() + CITY_ROOF_FRONT_WIDTH},${y() + 9}v${-h()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE}v${h()}Z`}
                     fill={color(state.observation?.price)}
                     fill-opacity=".4"
                   />
                   <path
                     class="data-mark"
-                    d={`M${x()},${y() - h()}l13-8 23 9-13 8Z`}
+                    d={`M${x()},${roofY()}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE} ${CITY_ROOF_FRONT_WIDTH} 9 ${-CITY_ROOF_SIDE_WIDTH} ${CITY_ROOF_BACK_RISE}Z`}
                     fill={color(state.observation?.price)}
                     stroke="var(--ink)"
                     stroke-width=".8"
                   />
                   <text
-                    x={x() + 17}
-                    y={y() + 27}
+                    x={x() + (CITY_ROOF_FRONT_WIDTH + CITY_ROOF_SIDE_WIDTH) / 2}
+                    y={roofY() - CITY_ROOF_BACK_RISE}
                     text-anchor="middle"
                     class="portrait-state-code"
                     data-readable="true"
@@ -221,7 +235,7 @@ export default function PortraitCharts(props: ChartProps) {
               );
             }}
           </For>
-          <text x="24" y="654" class="portrait-note">
+          <text x="24" y={cityFooterY()} class="portrait-note">
             ALPHABETICAL / HEIGHT = PRICE
           </text>
         </Match>

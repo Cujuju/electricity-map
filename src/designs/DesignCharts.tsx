@@ -73,6 +73,10 @@ const grid: Record<string, [number, number]> = {
   FL: [9, 7],
 };
 
+const CITY_ROOF_FRONT_WIDTH = 32;
+const CITY_ROOF_SIDE_WIDTH = 21;
+const CITY_ROOF_BACK_RISE = 12;
+
 export default function DesignCharts(props: ChartProps) {
   const media = window.matchMedia('(max-width: 700px)');
   const [compact, setCompact] = createSignal(media.matches);
@@ -90,6 +94,18 @@ export default function DesignCharts(props: ChartProps) {
   };
   const ratio = (value: number | null | undefined) =>
     Math.min(1, Math.max(0, (value ?? 0) / props.ceiling));
+  const cityTowers = createMemo(() =>
+    props.design.chart === 'city' && !compact()
+      ? props.states.map((state, index) => {
+          const row = Math.floor(index / 9);
+          const col = index % 9;
+          const x = 164 + col * 62 + row * 34;
+          const baseY = 205 + row * 46 - col * 5;
+          const height = 15 + ratio(state.observation?.price) * 190;
+          return { state, x, baseY, height, roofY: baseY - height };
+        })
+      : [],
+  );
   const nationalPrice = () =>
     props.nationalHistory.find((row) => row.period === props.period)?.price;
   const historyPath = (
@@ -281,51 +297,44 @@ export default function DesignCharts(props: ChartProps) {
                 stroke="var(--accent)"
                 stroke-opacity=".13"
               />
-              <For each={props.states}>
-                {(state, i) => {
-                  const row = () => Math.floor(i() / 9);
-                  const col = () => i() % 9;
-                  const x = () => 164 + col() * 62 + row() * 34;
-                  const y = () => 205 + row() * 46 - col() * 5;
-                  const height = () => 15 + ratio(state.observation?.price) * 190;
-                  return (
-                    <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
-                      <path
-                        d={`M${x()},${y()}v${-height()}l32 16v${height()}Z`}
-                        fill={color(state.observation?.price)}
-                        opacity=".65"
-                        stroke="var(--ink)"
-                        stroke-opacity=".4"
-                      />
-                      <path
-                        d={`M${x() + 32},${y() + 16}v${-height()}l21-12v${height()}Z`}
-                        fill={color(state.observation?.price)}
-                        opacity=".3"
-                        stroke="var(--ink)"
-                        stroke-opacity=".35"
-                      />
-                      <path
-                        class="data-mark"
-                        d={`M${x()},${y() - height()}l21-12 32 16-21 12Z`}
-                        fill={color(state.observation?.price)}
-                        stroke="var(--ink)"
-                        stroke-width=".8"
-                      />
-                      <path
-                        d={`M${x() + 7} ${y() - height() + 20}l17 8M${x() + 7} ${y() - height() + 29}l17 8`}
-                        stroke="var(--accent)"
-                        stroke-opacity=".7"
-                      />
-                    </StateMark>
-                  );
-                }}
+              <For each={cityTowers()}>
+                {({ state, x, baseY, height, roofY }) => (
+                  <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
+                    <path
+                      d={`M${x},${baseY}v${-height}l${CITY_ROOF_FRONT_WIDTH} 16v${height}Z`}
+                      fill={color(state.observation?.price)}
+                      opacity=".65"
+                      stroke="var(--ink)"
+                      stroke-opacity=".4"
+                    />
+                    <path
+                      d={`M${x + CITY_ROOF_FRONT_WIDTH},${baseY + 16}v${-height}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE}v${height}Z`}
+                      fill={color(state.observation?.price)}
+                      opacity=".3"
+                      stroke="var(--ink)"
+                      stroke-opacity=".35"
+                    />
+                    <path
+                      class="data-mark"
+                      d={`M${x},${roofY}l${CITY_ROOF_SIDE_WIDTH} ${-CITY_ROOF_BACK_RISE} ${CITY_ROOF_FRONT_WIDTH} 16 ${-CITY_ROOF_SIDE_WIDTH} ${CITY_ROOF_BACK_RISE}Z`}
+                      fill={color(state.observation?.price)}
+                      stroke="var(--ink)"
+                      stroke-width=".8"
+                    />
+                    <path
+                      d={`M${x + 7} ${roofY + 20}l17 8M${x + 7} ${roofY + 29}l17 8`}
+                      stroke="var(--accent)"
+                      stroke-opacity=".7"
+                    />
+                  </StateMark>
+                )}
               </For>
               <g pointer-events="none">
-                <For each={props.states}>
-                  {(state, i) => (
+                <For each={cityTowers()}>
+                  {({ state, x, roofY }) => (
                     <text
-                      x={189 + (i() % 9) * 62 + Math.floor(i() / 9) * 34}
-                      y={237 + Math.floor(i() / 9) * 46 - (i() % 9) * 5}
+                      x={x + (CITY_ROOF_FRONT_WIDTH + CITY_ROOF_SIDE_WIDTH) / 2}
+                      y={roofY - CITY_ROOF_BACK_RISE}
                       text-anchor="middle"
                       class="chart-city-label"
                     >
