@@ -24,10 +24,9 @@ for (const design of DESIGNS) {
       'data-design',
       design.id,
     );
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      design.title.replace('\n', ' '),
-      { useInnerText: true },
-    );
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(design.title, {
+      useInnerText: true,
+    });
     const us = dataset.rows.find(
       (row) => row.state === 'US' && row.sector === 'RES' && row.period === latest,
     )!;
@@ -54,6 +53,14 @@ for (const design of DESIGNS) {
       expect(Math.min(...sizes)).toBeGreaterThanOrEqual(9);
     }
     await page.evaluate(() => document.fonts.ready);
+    if ((page.viewportSize()?.width ?? 1440) > 700) {
+      const headlineLines = await page.locator('.experiment-hero h1').evaluate((node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
+      });
+      expect(headlineLines).toBe(1);
+    }
     await page.screenshot({ path: testInfo.outputPath(`${design.id}.png`), fullPage: true });
     const marks = page.locator('[data-chart-state]');
     const quarterMarks = page.locator('[data-chart-period]');
