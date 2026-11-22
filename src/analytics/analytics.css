@@ -171,7 +171,7 @@ html[data-dashboard='original'] .sidebar {
 }
 .analysis-orbit small {
   display: block;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1.2px;
   color: var(--lab-muted);
   margin-top: 7px;
@@ -190,7 +190,7 @@ html[data-dashboard='original'] .sidebar {
 .lab-controls > label,
 .lab-utility-controls > label,
 .lab-usage {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: var(--lab-muted);
   display: block;
@@ -249,7 +249,7 @@ html[data-dashboard='original'] .sidebar {
 }
 .lab-kpis > div > span,
 .lab-records > div > span {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: var(--lab-muted);
 }
@@ -308,7 +308,7 @@ html[data-dashboard='original'] .sidebar {
   margin-bottom: 16px;
 }
 .lab-panel-title span {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1.3px;
   color: var(--lab-muted);
 }
@@ -341,7 +341,7 @@ html[data-dashboard='original'] .sidebar {
   max-width: 210px;
 }
 .lab-panel-title label {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: var(--lab-muted);
   letter-spacing: 0.5px;
 }
@@ -414,7 +414,7 @@ html[data-dashboard='original'] .sidebar {
   justify-content: space-between;
   gap: 17px;
   align-items: flex-start;
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: var(--lab-muted);
 }
 .lab-map-legend > div {
@@ -435,7 +435,7 @@ html[data-dashboard='original'] .sidebar {
   font-weight: 400;
 }
 .lab-map-legend p {
-  font: 8px/1.7 var(--body);
+  font: 9px/1.7 var(--body);
   max-width: 160px;
   text-align: right;
   margin: 0;
@@ -505,7 +505,7 @@ html[data-dashboard='original'] .sidebar {
   letter-spacing: 0;
 }
 .lab-usage > span {
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.5px;
 }
 .lab-scenario {
@@ -559,7 +559,7 @@ html[data-dashboard='original'] .sidebar {
 .lab-timeline span {
   display: flex;
   justify-content: space-between;
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: var(--lab-muted);
   margin-top: 10px;
 }
@@ -595,7 +595,7 @@ html[data-dashboard='original'] .sidebar {
   margin: 14px 0 8px;
 }
 .lab-records small {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 0;
 }
 .lab-records p {
@@ -800,7 +800,7 @@ html[data-dashboard='original'] .sidebar {
   gap: 15px;
   padding: 24px 0;
   color: var(--lab-muted);
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 0.3px;
 }
 .analysis-footer a {
@@ -916,7 +916,7 @@ html[data-dashboard='original'] .sidebar {
   display: block;
 }
 .utility-result span {
-  font: 8px/1.6 var(--mono);
+  font: 9px/1.6 var(--mono);
   color: var(--lab-muted);
   margin-top: 6px;
   display: block;
@@ -928,7 +928,7 @@ html[data-dashboard='original'] .sidebar {
 .utility-result small {
   display: block;
   text-align: right;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   color: var(--lab-muted);
   margin-top: 5px;
 }
@@ -1069,7 +1069,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 19px;
   }
   .analysis-orbit small {
-    font-size: 6px;
+    font-size: 9px;
     letter-spacing: 0.5px;
   }
   .lab-map-layout {
@@ -1083,7 +1083,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 33px;
   }
   .lab-kpis > div > span {
-    font-size: 7px;
+    font-size: 9px;
   }
   .lab-kpis p {
     font-size: 9px;
@@ -1152,7 +1152,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 11px;
   }
   .utility-result span {
-    font-size: 7px;
+    font-size: 9px;
   }
   .utility-profile h2 {
     font-size: 24px;
@@ -1164,7 +1164,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 10px;
   }
   .analysis-masthead > span {
-    font-size: 7px;
+    font-size: 9px;
   }
   .lab-controls {
     gap: 13px;
@@ -1231,7 +1231,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 1.09em;
   }
   .analysis-hero .lab-kicker {
-    font-size: 7px;
+    font-size: 9px;
     letter-spacing: 1px;
     max-width: 245px;
     display: block;
@@ -1253,7 +1253,7 @@ html[data-dashboard='original'] .sidebar {
   }
   .lab-controls > label {
     min-width: 0;
-    font-size: 7px;
+    font-size: 9px;
   }
   .lab-controls > .lab-grain,
   .lab-presets,
@@ -1299,14 +1299,14 @@ html[data-dashboard='original'] .sidebar {
     line-height: 1.4;
   }
   .lab-kpis strong small {
-    font-size: 8px;
+    font-size: 9px;
   }
   .lab-kpis strong b {
     font-size: 20px;
     margin: 0 2px;
   }
   .lab-kpis > div > span {
-    font-size: 7px;
+    font-size: 9px;
     line-height: 1.6;
     display: block;
     letter-spacing: 0.6px;
@@ -1332,7 +1332,7 @@ html[data-dashboard='original'] .sidebar {
     margin-top: 9px;
   }
   .lab-panel-title span {
-    font-size: 7px;
+    font-size: 9px;
     letter-spacing: 1px;
   }
   .lab-panel-title p {
@@ -1352,7 +1352,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 17px;
   }
   .lab-map-legend {
-    font-size: 8px;
+    font-size: 9px;
   }
   .lab-map-legend p {
     font-size: 9px;
@@ -1379,7 +1379,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 10px !important;
   }
   .lab-usage {
-    font-size: 8px;
+    font-size: 9px;
   }
   .lab-scenario > b {
     font-size: 35px;
@@ -1424,7 +1424,7 @@ html[data-dashboard='original'] .sidebar {
     padding: 15px 12px;
   }
   .lab-records > div > span {
-    font-size: 7px;
+    font-size: 9px;
     letter-spacing: 0.5px;
     line-height: 1.7;
     display: block;
@@ -1435,7 +1435,7 @@ html[data-dashboard='original'] .sidebar {
     flex-wrap: wrap;
   }
   .lab-records small {
-    font-size: 8px;
+    font-size: 9px;
   }
   .lab-records p {
     font-size: 9px;
@@ -1516,7 +1516,7 @@ html[data-dashboard='original'] .sidebar {
     height: 32px;
   }
   .analysis-footer {
-    font-size: 7px;
+    font-size: 9px;
     line-height: 1.9;
     gap: 13px;
     padding: 22px 0;
@@ -1554,7 +1554,7 @@ html[data-dashboard='original'] .sidebar {
   }
   .lab-utility-controls > label {
     min-width: 0;
-    font-size: 7px;
+    font-size: 9px;
   }
   .lab-utility-controls .utility-search {
     grid-column: 1/-1;
@@ -1582,7 +1582,7 @@ html[data-dashboard='original'] .sidebar {
     font-size: 12px;
   }
   .utility-result span {
-    font-size: 8px;
+    font-size: 9px;
   }
   .utility-result b {
     font-size: 21px;

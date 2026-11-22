@@ -122,7 +122,7 @@ select {
   color: #9aaa96;
 }
 .sidebar-intro > .eyebrow {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 1.1px;
 }
 .sidebar-intro p {
@@ -140,7 +140,7 @@ select {
   justify-content: space-between;
   padding: 0 8px;
   margin-bottom: 14px;
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: #71806e;
 }
@@ -192,7 +192,7 @@ select {
   white-space: nowrap;
 }
 .lens-nav small {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: #7f9175;
   display: block;
@@ -223,7 +223,7 @@ select {
   margin: 10px 0 29px;
 }
 .sidebar-source {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 0.55px;
   color: #9eb28e;
   display: flex;
@@ -262,7 +262,7 @@ select {
   gap: 12px;
 }
 .breadcrumb {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1.35px;
   color: #71816f;
   display: flex;
@@ -285,7 +285,7 @@ select {
   display: flex;
   align-items: center;
   gap: 7px;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: #91a181;
 }
@@ -320,7 +320,7 @@ select {
   padding: 35px 0 29px;
 }
 .page-heading .eyebrow {
-  font-size: 8px;
+  font-size: 9px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -352,7 +352,7 @@ select {
   padding-bottom: 1px;
 }
 .data-controls label {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: #879b7b;
   display: block;
@@ -388,7 +388,7 @@ select {
   border-left: 1px solid var(--line);
 }
 .metric-label {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: #99a78b;
   letter-spacing: 1px;
   display: flex;
@@ -432,13 +432,13 @@ select {
   display: block;
   color: #6d8266;
   font:
-    8px 'DM Sans',
+    9px 'DM Sans',
     sans-serif;
   margin-top: 5px;
 }
 .metric-note {
   font:
-    8px/1.5 'DM Sans',
+    9px/1.5 'DM Sans',
     sans-serif;
   color: #7a8e71;
   margin-left: auto;
@@ -476,7 +476,7 @@ select {
   gap: 10px;
 }
 .visualization-header .eyebrow {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 1.3px;
 }
 .panel-number {
@@ -492,7 +492,7 @@ select {
   gap: 9px;
 }
 .quarter-badge {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: #b3c2a1;
 }
 .relief-button {
@@ -552,7 +552,7 @@ select {
   stroke-width: 2px;
 }
 .map-coordinates {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   fill: #79956e;
 }
@@ -561,7 +561,7 @@ select {
   stroke-width: 0.8;
 }
 .map-inset-label {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 0.7px;
   fill: #647c5d;
 }
@@ -617,7 +617,7 @@ select {
   font: 13px var(--mono);
 }
 .hover-readout small {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: #829576;
   margin-left: 5px;
 }
@@ -634,7 +634,7 @@ select {
   flex-shrink: 0;
 }
 .legend-label {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 1px;
   color: #8ba078;
   margin-bottom: 8px;
@@ -648,17 +648,17 @@ select {
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   color: #778e6c;
 }
 .encoding-note {
-  font: 8px/1.6 var(--mono);
+  font: 9px/1.6 var(--mono);
   text-align: right;
   color: #9fb28c;
 }
 .encoding-note small {
   font:
-    8px 'DM Sans',
+    9px 'DM Sans',
     sans-serif;
   color: #657e59;
 }
@@ -676,11 +676,11 @@ select {
   gap: 6px;
 }
 .detail-topline .eyebrow {
-  font-size: 6.5px;
+  font-size: 9px;
   letter-spacing: 1px;
 }
 .selection-indicator {
-  font: 6px var(--mono);
+  font: 9px var(--mono);
   letter-spacing: 0.5px;
   color: #a5c183;
   padding: 3px 5px;
@@ -711,7 +711,7 @@ select {
   font-weight: 500;
 }
 .state-heading > div > span {
-  font-size: 8px;
+  font-size: 9px;
   color: #7e9272;
 }
 .dot-divider {
@@ -764,7 +764,7 @@ select {
   color: #b8c9a3;
 }
 .state-facts small {
-  font-size: 8px;
+  font-size: 9px;
   color: #6e8560;
 }
 .history-heading {
@@ -775,11 +775,11 @@ select {
   padding-top: 17px;
 }
 .history-heading .eyebrow {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 1px;
 }
 .history-heading > span:last-child {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   color: #657e58;
 }
 .sparkline {
@@ -794,7 +794,7 @@ select {
 .history-range {
   display: flex;
   justify-content: space-between;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   color: #708560;
   margin-top: 0;
 }
@@ -816,7 +816,7 @@ select {
   align-items: center;
   gap: 5px;
   padding: 2px 0;
-  font-size: 8px;
+  font-size: 9px;
   color: #8ca37b;
 }
 .state-search {
@@ -853,7 +853,7 @@ select {
   align-items: center;
   width: 100%;
   padding: 7px 0;
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   color: #8fa57c;
 }
 .ranking-row:hover,
@@ -914,7 +914,7 @@ select {
 }
 .timeline-current .eyebrow {
   display: block;
-  font-size: 6px;
+  font-size: 9px;
   letter-spacing: 1px;
 }
 .timeline-current strong {
@@ -955,7 +955,7 @@ select {
 .timeline-years {
   display: flex;
   justify-content: space-between;
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   color: #6d855d;
   margin-top: 11px;
 }
@@ -972,7 +972,7 @@ select {
   color: #718567;
 }
 .workspace-footer > p {
-  font: 7px var(--mono);
+  font: 9px var(--mono);
   margin: 0;
   display: flex;
   align-items: center;
@@ -990,7 +990,7 @@ select {
 }
 .workspace-footer button,
 .workspace-footer a {
-  font-size: 8px;
+  font-size: 9px;
   display: flex;
   gap: 6px;
   align-items: center;
@@ -1002,7 +1002,7 @@ select {
   color: var(--accent);
 }
 .orbit-axis {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   fill: #7b9568;
 }
 .orbit-label {
@@ -1019,12 +1019,12 @@ select {
   stroke-width: 2;
 }
 .region-label {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   fill: #657d5c;
   letter-spacing: 2px;
 }
 .spiral-year {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   fill: #a9bd90;
   pointer-events: none;
 }
@@ -1036,11 +1036,11 @@ select {
   stroke-width: 3;
 }
 .spiral-origin {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   fill: #80996b;
 }
 .spiral-key {
-  font: 8px var(--mono);
+  font: 9px var(--mono);
   fill: #a9bf92;
   letter-spacing: 1px;
 }
@@ -1251,16 +1251,16 @@ select {
     font-size: 27px;
   }
   .metric-change small {
-    font-size: 7px;
+    font-size: 9px;
   }
   .metric-change {
-    font-size: 8px;
+    font-size: 9px;
   }
   .metric-note {
-    font-size: 7px;
+    font-size: 9px;
   }
   .metric-label {
-    font-size: 7px;
+    font-size: 9px;
   }
   .exploration-layout {
     grid-template-columns: minmax(0, 1fr) 230px;
@@ -1290,13 +1290,13 @@ select {
     width: 145px;
   }
   .encoding-note {
-    font-size: 7px;
+    font-size: 9px;
   }
   .encoding-note small {
-    font-size: 7px;
+    font-size: 9px;
   }
   .workspace-footer > p {
-    font-size: 6px;
+    font-size: 9px;
   }
   .workspace-footer > div {
     gap: 10px;
@@ -1327,10 +1327,10 @@ select {
     max-height: 145px;
   }
   .detail-topline .eyebrow {
-    font-size: 6px;
+    font-size: 9px;
   }
   .selection-indicator {
-    font-size: 5px;
+    font-size: 9px;
   }
 }
 @media (max-width: 980px) {
@@ -1387,7 +1387,7 @@ select {
     margin-bottom: 17px;
   }
   .breadcrumb {
-    font-size: 7px;
+    font-size: 9px;
     gap: 9px;
   }
   .page-heading h1 {
@@ -1406,10 +1406,10 @@ select {
     gap: 7px;
   }
   .quarter-badge {
-    font-size: 7px;
+    font-size: 9px;
   }
   .relief-button {
-    font-size: 8px;
+    font-size: 9px;
     padding: 5px;
   }
   .metric-change {
@@ -1432,11 +1432,11 @@ select {
     min-height: 380px;
   }
   .visualization-header .eyebrow {
-    font-size: 6px;
+    font-size: 9px;
     letter-spacing: 0.8px;
   }
   .panel-number {
-    font-size: 8px;
+    font-size: 9px;
   }
   .visualization-footer {
     gap: 10px;
@@ -1528,7 +1528,7 @@ select {
     height: 49px;
   }
   .breadcrumb {
-    font-size: 6px;
+    font-size: 9px;
     letter-spacing: 0.6px;
     gap: 7px;
   }
@@ -1537,7 +1537,7 @@ select {
   }
   .share-button {
     padding: 6px 7px;
-    font-size: 8px;
+    font-size: 9px;
     gap: 5px;
   }
   .share-button svg {
@@ -1571,7 +1571,7 @@ select {
     font-size: 11px;
   }
   .data-controls label {
-    font-size: 7px;
+    font-size: 9px;
   }
   .metrics {
     margin-bottom: 15px;
@@ -1583,14 +1583,14 @@ select {
     font-size: 26px;
   }
   .metric-label {
-    font-size: 6px;
+    font-size: 9px;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
     min-height: 14px;
     line-height: 1.4;
   }
   .metric-unit {
-    font-size: 7px;
+    font-size: 9px;
   }
   .metric > div {
     display: flex;
@@ -1617,10 +1617,10 @@ select {
     left: 17px;
   }
   .stage-annotation p {
-    font-size: 8px;
+    font-size: 9px;
   }
   .visualization-header .eyebrow {
-    font-size: 6px;
+    font-size: 9px;
   }
   .visualization-header {
     padding: 14px 16px;
@@ -1647,10 +1647,10 @@ select {
     margin-bottom: 1px;
   }
   .detail-topline .eyebrow {
-    font-size: 7px;
+    font-size: 9px;
   }
   .selection-indicator {
-    font-size: 6px;
+    font-size: 9px;
   }
   .state-heading {
     grid-column: 1;
@@ -1672,7 +1672,7 @@ select {
   .state-comparison {
     grid-column: 1;
     grid-row: 4;
-    font-size: 8px;
+    font-size: 9px;
     margin-top: 8px;
   }
   .state-facts {
@@ -1709,7 +1709,7 @@ select {
     font-size: 9px;
   }
   .ranking-heading button {
-    font-size: 7px;
+    font-size: 9px;
   }
   .state-search {
     grid-column: 2;
@@ -1755,7 +1755,7 @@ select {
     width: 30px;
   }
   .timeline-years {
-    font-size: 8px;
+    font-size: 9px;
   }
   .workspace-footer {
     padding: 18px 0 22px;
@@ -1763,7 +1763,7 @@ select {
     display: block;
   }
   .workspace-footer > p {
-    font-size: 7px;
+    font-size: 9px;
     max-width: none;
   }
   .workspace-footer > div {
@@ -1805,7 +1805,7 @@ select {
     font-size: 11px;
   }
   .map-inset-label {
-    font-size: 8px;
+    font-size: 9px;
   }
   .orbit-label,
   .spiral-year {
@@ -1832,7 +1832,7 @@ select {
     padding: 14px;
   }
   .breadcrumb {
-    font-size: 5.5px;
+    font-size: 9px;
     gap: 5px;
   }
   .share-button span {
@@ -1848,10 +1848,10 @@ select {
     font-size: 23px;
   }
   .metric-unit {
-    font-size: 6px;
+    font-size: 9px;
   }
   .metric-label {
-    font-size: 5.5px;
+    font-size: 9px;
   }
   .visualization-stage {
     min-height: 300px;
@@ -1872,32 +1872,32 @@ select {
     font-size: 17px;
   }
   .state-heading > div > span {
-    font-size: 7px;
+    font-size: 9px;
   }
   .ranking-heading button {
-    font-size: 6px;
+    font-size: 9px;
   }
   .legend {
     width: 125px;
   }
   .encoding-note {
-    font-size: 6px;
+    font-size: 9px;
     max-width: 123px;
   }
   .encoding-note small {
-    font-size: 6px;
+    font-size: 9px;
   }
   .visualization-header .eyebrow {
-    font-size: 5.5px;
+    font-size: 9px;
   }
   .visualization-tools {
     gap: 5px;
   }
   .quarter-badge {
-    font-size: 6px;
+    font-size: 9px;
   }
   .relief-button {
-    font-size: 7px;
+    font-size: 9px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
