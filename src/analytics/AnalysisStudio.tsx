@@ -520,7 +520,9 @@ export default function AnalysisStudio(props: {
                     </b>
                     <i /> Unavailable
                   </div>
-                  <p>Scale for the selected comparison. Alaska and Hawaii are inset.</p>
+                  <p>Scale for the selected comparison. 
+                    Alaska and Hawaii are inset. DC is enlarged; the line marks its location.
+                  </p>
                 </footer>
               </section>
               <aside class="lab-panel lab-state-panel">
