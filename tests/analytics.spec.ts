@@ -30,13 +30,13 @@ test('the DC map inset selects the district by pointer and keyboard', async ({ p
 });
 
 test('follow the signal chart selects the clicked month', async ({ page }) => {
-  await page.goto('/?lab=changes&design=original&state=CA&sector=RES&month=2026-08');
+  await page.goto('/?lab=changes&design=original&state=CA&sector=RES&to=2026-08');
   const chart = page.getByTestId('history-chart');
   await expect(chart.locator('canvas').first()).toBeVisible();
   const box = (await chart.boundingBox())!;
   await chart.click({ position: { x: box.width * 0.3, y: box.height / 2 } });
-  await expect(page).not.toHaveURL(/month=2026-08/);
-  await expect(page).toHaveURL(/month=20\d\d-\d\d/);
+  await expect(page).not.toHaveURL(/to=2026-08/);
+  await expect(page).toHaveURL(/to=20\d\d-\d\d/);
 });
 
 test('change chronicle sticky headers do not shift when scrolling', async ({ page }) => {
