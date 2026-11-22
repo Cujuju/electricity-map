@@ -142,7 +142,7 @@ npm run package       # Windows x64 installer and portable executable under rele
 
 Windows output names are `Electricity-Map-Setup-1.1.0-x64.exe` and `Electricity-Map-Portable-1.1.0-x64.exe`. The packaged app includes Electron/Node and all three snapshots; users do not need Node or npm installed. Build outputs are ignored by Git. These local packages are unsigned, and automatic application updates are not configured. This app has its own identity and protocol; it does not use Spillway's update feed or credentials.
 
-Windows x64 packaging is tested. macOS DMG and Linux AppImage targets are configured but unverified on their native platforms. Rebuild the app after refreshing source snapshots. `npm run icons` regenerates the desktop icons from the existing favicon geometry using PowerShell/System.Drawing on Windows. Spillway's MIT notice ships in `licenses/Spillway.txt`.
+Windows x64 packaging is tested. macOS DMG and Linux AppImage targets are configured but unverified on their native platforms. Rebuild the app after refreshing source snapshots. `npm run icons` regenerates the desktop icons, `favicon.ico` and `apple-touch-icon.png` from the purple Midnight Grid artwork using PowerShell/System.Drawing on Windows. Spillway's MIT notice ships in `licenses/Spillway.txt`.
 
 Vite generates bundled renderer dependency notices at `dist/licenses/npm-renderer.txt`. Packaging requires these notices and ships them beside the app under `resources/licenses/`, following Spillway's build convention. The production dependency audit is clean; npm currently reports moderate minimatch-related advisories in the development-only electron-builder toolchain.
 
