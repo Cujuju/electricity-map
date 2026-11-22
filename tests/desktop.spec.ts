@@ -31,6 +31,25 @@ test('desktop shell isolates Node, controls its window, exports, shares and rest
     page.on('pageerror', (error) => errors.push(error.message));
     await expect(page.getByRole('heading', { name: 'Electric atlas.' })).toBeVisible();
     await expect(page.getByRole('banner', { name: 'Application title bar' })).toBeVisible();
+    // The scrollbar belongs to the content under the title bar, not the whole window.
+    const scrolling = await page.evaluate(() => {
+      const bar = document.querySelector('.desktop-titlebar')!.getBoundingClientRect();
+      const content = document.querySelector('.app-content')!;
+      return {
+        documentScrolls: document.documentElement.scrollHeight > innerHeight,
+        contentTop: content.getBoundingClientRect().top,
+        barBottom: bar.bottom,
+        contentScrolls: content.scrollHeight > content.clientHeight,
+        contentOverflow: getComputedStyle(content).overflowY,
+      };
+    });
+    expect(scrolling).toEqual({
+      documentScrolls: false,
+      contentTop: scrolling.barBottom,
+      barBottom: scrolling.barBottom,
+      contentScrolls: true,
+      contentOverflow: 'auto',
+    });
     expect(
       await page.evaluate(() => ({
         require: typeof Reflect.get(window, 'require'),
