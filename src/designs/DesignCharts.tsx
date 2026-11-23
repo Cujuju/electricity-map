@@ -75,13 +75,13 @@ const grid: Record<string, [number, number]> = {
 };
 
 const CITY_COLUMNS = 9;
-const CITY_FIRST_COLUMN_X = 128;
-const CITY_COLUMN_PITCH = 68;
-const CITY_ROW_PITCH = 54;
-const CITY_ROOF_FRONT_WIDTH = 32;
-const CITY_ROOF_FRONT_DROP = 16;
-const CITY_ROOF_SIDE_WIDTH = 21;
-const CITY_ROOF_BACK_RISE = 12;
+const CITY_FIRST_COLUMN_X = 104;
+const CITY_COLUMN_PITCH = 72;
+const CITY_ROW_PITCH = 56;
+const CITY_ROOF_FRONT_WIDTH = 26;
+const CITY_ROOF_FRONT_DROP = 13;
+const CITY_ROOF_SIDE_WIDTH = 17;
+const CITY_ROOF_BACK_RISE = 10;
 
 export default function DesignCharts(props: ChartProps) {
   const media = window.matchMedia('(max-width: 700px)');
@@ -297,7 +297,7 @@ export default function DesignCharts(props: ChartProps) {
                   const col = () => i() % CITY_COLUMNS;
                   const x = () => CITY_FIRST_COLUMN_X + (col() + row() / 2) * CITY_COLUMN_PITCH;
                   const baseY = () => 205 + row() * CITY_ROW_PITCH - col() * 5;
-                  const height = () => 15 + ratio(state.observation?.price) * 190;
+                  const height = () => 15 + ratio(state.observation?.price) * 155;
                   const roofY = () => baseY() - height();
                   return (
                     <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
