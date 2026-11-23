@@ -3808,9 +3808,6 @@ html[data-dashboard='original'] .app-shell {
   .design-dashboard .experiment-metric {
     padding: 14px 18px;
   }
-  .design-dashboard .design-chart {
-    max-height: 450px;
-  }
   .design-dashboard .experiment-timeline {
     margin-top: 14px;
     padding: 12px 18px;

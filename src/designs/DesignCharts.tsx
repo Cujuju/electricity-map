@@ -291,13 +291,13 @@ export default function DesignCharts(props: ChartProps) {
                 stroke="var(--accent)"
                 stroke-opacity=".13"
               />
-              <For each={props.states}>
+              <For each={ranked()}>
                 {(state, i) => {
                   const row = () => Math.floor(i() / CITY_COLUMNS);
                   const col = () => i() % CITY_COLUMNS;
                   const x = () => CITY_FIRST_COLUMN_X + (col() + row() / 2) * CITY_COLUMN_PITCH;
                   const baseY = () => 205 + row() * CITY_ROW_PITCH - col() * 5;
-                  const height = () => 15 + ratio(state.observation?.price) * 155;
+                  const height = () => 15 + ratio(state.observation?.price) * 190;
                   const roofY = () => baseY() - height();
                   return (
                     <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
@@ -340,7 +340,7 @@ export default function DesignCharts(props: ChartProps) {
                   );
                 }}
               </For>
-              <text x="54" y="60" class="chart-micro">
+              <text x="54" y="32" class="chart-micro">
                 BUILD 051 / QUARTERLY EDITION
               </text>
               <text x="56" y="494" class="chart-city-message">
