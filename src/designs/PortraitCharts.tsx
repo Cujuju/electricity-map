@@ -2,7 +2,7 @@ import { createMemo, For, Match, Show, Switch } from 'solid-js';
 import { price, quarter } from '../data';
 import type { Observation } from '../types';
 import type { ChartProps } from './DesignCharts';
-import { interpolateColor } from './catalog';
+import { contrastInk, interpolateColor } from './catalog';
 import { StateMark, quarterEvents } from './ChartMark';
 
 const CITY_COLUMNS = 6;
@@ -20,7 +20,7 @@ export default function PortraitCharts(props: ChartProps) {
   const ratio = (value: number | null | undefined) =>
     Math.min(1, Math.max(0, (value ?? 0) / props.ceiling));
   const color = (value: number | null | undefined) =>
-    interpolateColor(value, props.design, props.ceiling);
+    interpolateColor(value, props.theme, props.ceiling);
   const ranked = createMemo(() =>
     [...props.states].sort((a, b) => (b.observation?.price ?? -1) - (a.observation?.price ?? -1)),
   );
@@ -250,7 +250,7 @@ export default function PortraitCharts(props: ChartProps) {
             {(state, i) => {
               const x = () => 20 + (i() % 6) * 54;
               const y = () => 40 + Math.floor(i() / 6) * 51;
-              const ink = () => (ratio(state.observation?.price) > 0.5 ? '#102c47' : '#effaff');
+              const ink = () => contrastInk(color(state.observation?.price));
               return (
                 <StateMark state={state} selected={props.selected} onSelect={props.onSelect}>
                   <rect
@@ -663,7 +663,7 @@ export default function PortraitCharts(props: ChartProps) {
                             y={y + 18}
                             text-anchor="middle"
                             class="portrait-value"
-                            style={{ fill: ratio(row()?.price) > 0.65 ? '#fff9ec' : '#211f1a' }}
+                            style={{ fill: contrastInk(color(row()?.price)) }}
                             data-readable="true"
                           >
                             {price(row()?.price)}

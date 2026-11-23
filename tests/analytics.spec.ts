@@ -160,8 +160,8 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
     '"Price change (%)"',
     '"%"',
   ]);
-  await page.getByLabel('Dashboard design', { exact: true }).selectOption('cosmic');
-  await expect(page.getByTestId('analysis-studio')).toHaveClass(/skin-cosmic/);
+  await page.getByLabel('Theme', { exact: true }).selectOption('cosmic');
+  await expect(page.getByTestId('analysis-studio')).toHaveClass(/theme-cosmic/);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
@@ -185,9 +185,9 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
   await expect(page.getByTestId('comparison-note')).toContainText('seasonal');
   await page.getByLabel('Analysis sector', { exact: true }).selectOption('IND');
   await page.getByLabel('Map metric', { exact: true }).selectOption('usage');
-  for (const design of ['original', ...DESIGNS.map((item) => item.id)]) {
-    await page.getByLabel('Dashboard design', { exact: true }).selectOption(design);
-    await expect(page.getByTestId('analysis-studio')).toHaveClass(new RegExp(`skin-${design}`));
+  for (const theme of ['original', ...DESIGNS.map((item) => item.id)]) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    await expect(page.getByTestId('analysis-studio')).toHaveClass(new RegExp(`theme-${theme}`));
     await page.evaluate(() => document.fonts.ready);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

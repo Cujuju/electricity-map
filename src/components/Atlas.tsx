@@ -4,7 +4,8 @@ import { feature } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import type { Feature, Geometry } from 'geojson';
 import topology from '../assets/states.json';
-import { priceColor, price } from '../data';
+import { price } from '../data';
+import { contrastInk } from '../designs/catalog';
 import type { StateDatum } from '../types';
 
 const shapes = feature(
@@ -54,6 +55,7 @@ export default function Atlas(props: {
   states: StateDatum[];
   selected: string;
   relief: boolean;
+  color: (value: number | null | undefined) => string;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
 }) {
@@ -77,14 +79,14 @@ export default function Atlas(props: {
           <path
             d="M44 0H0V44"
             fill="none"
-            stroke="#a0bba3"
+            stroke="var(--ink)"
             stroke-opacity=".10"
             stroke-width=".6"
           />
         </pattern>
         <radialGradient id="atlas-light">
-          <stop stop-color="#c5e78d" stop-opacity=".09" />
-          <stop offset="1" stop-color="#c5e78d" stop-opacity="0" />
+          <stop stop-color="var(--accent)" stop-opacity=".09" />
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
         </radialGradient>
         <filter id="map-shadow" x="-20%" y="-50%" width="150%" height="200%">
           <feDropShadow dx="0" dy="18" stdDeviation="16" flood-opacity=".28" />
@@ -97,8 +99,8 @@ export default function Atlas(props: {
           {(shape) => (
             <path
               d={shape.d}
-              fill="#1b2922"
-              stroke="#6e876f"
+              fill="var(--surface)"
+              stroke="var(--muted-ink)"
               stroke-opacity=".23"
               stroke-width="1"
             />
@@ -109,6 +111,7 @@ export default function Atlas(props: {
             {(tile) => {
               const datum = () => tile.datum!;
               const elevation = () => height(datum().observation?.price);
+              const fill = () => props.color(datum().observation?.price);
               return (
                 <g class="state-tile" classList={{ 'is-selected': props.selected === datum().id }}>
                   <For each={[0.22, 0.44, 0.66, 0.88]}>
@@ -117,8 +120,8 @@ export default function Atlas(props: {
                         class="map-side"
                         d={tile.d}
                         transform={`translate(0 ${-elevation() * level})`}
-                        fill={priceColor(datum().observation?.price)}
-                        stroke="#15231c"
+                        fill={fill()}
+                        stroke="var(--paper)"
                         stroke-width="1.2"
                       />
                     )}
@@ -128,8 +131,8 @@ export default function Atlas(props: {
                     class="state-face"
                     d={tile.d}
                     transform={`translate(0 ${-elevation()})`}
-                    fill={priceColor(datum().observation?.price)}
-                    stroke={props.selected === datum().id ? '#f5ffd9' : '#182c21'}
+                    fill={fill()}
+                    stroke={props.selected === datum().id ? 'var(--ink)' : 'var(--paper)'}
                     stroke-width={props.selected === datum().id ? 3 : 1.2}
                     tabindex="0"
                     role="button"
@@ -157,6 +160,7 @@ export default function Atlas(props: {
                     x={tile.center[0]}
                     y={tile.center[1] - elevation() + 4}
                     text-anchor="middle"
+                    style={{ fill: contrastInk(fill()) }}
                     transform={upright(tile.center[0], tile.center[1] - elevation())}
                   >
                     {datum().id}

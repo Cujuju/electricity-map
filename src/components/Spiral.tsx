@@ -1,5 +1,5 @@
 import { createMemo, For } from 'solid-js';
-import { price, priceColor, quarter } from '../data';
+import { price, quarter } from '../data';
 import type { Observation } from '../types';
 
 export default function Spiral(props: {
@@ -7,6 +7,7 @@ export default function Spiral(props: {
   national: Observation[];
   period: string;
   name: string;
+  color: (value: number | null | undefined) => string;
   onPeriod: (period: string) => void;
   onHoverPeriod: (period: string | null) => void;
 }) {
@@ -34,8 +35,8 @@ export default function Spiral(props: {
     >
       <defs>
         <radialGradient id="spiral-glow">
-          <stop stop-color="#d4fa66" stop-opacity=".10" />
-          <stop offset="1" stop-color="#d4fa66" stop-opacity="0" />
+          <stop stop-color="var(--accent)" stop-opacity=".10" />
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
         </radialGradient>
       </defs>
       <ellipse cx="525" cy="326" rx="390" ry="290" fill="url(#spiral-glow)" />
@@ -47,8 +48,8 @@ export default function Spiral(props: {
             rx={radius * 1.3}
             ry={radius}
             fill="none"
-            stroke="#8aa374"
-            stroke-opacity=".1"
+            stroke="var(--muted-ink)"
+            stroke-opacity=".14"
             stroke-dasharray="2 6"
           />
         )}
@@ -58,7 +59,7 @@ export default function Spiral(props: {
           .map((point) => `${point.nx},${point.ny}`)
           .join(' ')}
         fill="none"
-        stroke="#dbe2d1"
+        stroke="var(--ink)"
         stroke-opacity=".24"
         stroke-width="1"
         stroke-dasharray="3 4"
@@ -71,7 +72,7 @@ export default function Spiral(props: {
             <g>
               <path
                 d={next() ? `M${point.x} ${point.y}L${next().x} ${next().y}` : ''}
-                stroke={priceColor(point.row.price)}
+                stroke={props.color(point.row.price)}
                 stroke-opacity=".55"
                 stroke-width="1.5"
               />
@@ -79,8 +80,8 @@ export default function Spiral(props: {
                 cx={point.nx}
                 cy={point.ny}
                 r={point.us?.price == null ? 2 : 2 + Math.sqrt(point.us.price) * 0.65}
-                fill="#142019"
-                stroke={priceColor(point.us?.price)}
+                fill="var(--paper)"
+                stroke={props.color(point.us?.price)}
                 stroke-opacity=".7"
               >
                 <title>
@@ -111,7 +112,7 @@ export default function Spiral(props: {
                   cy={point.y}
                   r={selected() ? 16 : 0}
                   fill="none"
-                  stroke="#e6f7c6"
+                  stroke="var(--ink)"
                   stroke-width="1"
                   stroke-dasharray="3 3"
                 />
@@ -119,8 +120,8 @@ export default function Spiral(props: {
                   cx={point.x}
                   cy={point.y}
                   r={point.row.price == null ? 2 : 2 + Math.sqrt(point.row.price) * 1.1}
-                  fill={priceColor(point.row.price)}
-                  stroke={selected() ? '#f8ffe9' : '#18261c'}
+                  fill={props.color(point.row.price)}
+                  stroke={selected() ? 'var(--ink)' : 'var(--paper)'}
                   stroke-width={selected() ? 2 : 1}
                 />
                 <title>
@@ -143,11 +144,11 @@ export default function Spiral(props: {
         </tspan>
       </text>
       <g class="spiral-key">
-        <circle cx="49" cy="613" r="4" fill="#d4fa66" />
+        <circle cx="49" cy="613" r="4" fill="var(--accent)" />
         <text x="62" y="617">
           {props.name.toUpperCase()}
         </text>
-        <circle cx="255" cy="613" r="4" fill="none" stroke="#c0c9b5" />
+        <circle cx="255" cy="613" r="4" fill="none" stroke="var(--muted-ink)" />
         <text x="268" y="617">
           U.S. TOTAL
         </text>

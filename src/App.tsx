@@ -37,7 +37,16 @@ import DesignDashboard from './designs/DesignDashboard';
 import AnalysisStudio from './analytics/AnalysisStudio';
 import TitleBar from './desktop/TitleBar';
 import { shareURL } from './desktop/links';
-import { DESIGNS, isDesign, type DashboardId, type DesignId } from './designs/catalog';
+import {
+  DESIGNS,
+  isDesign,
+  isTheme,
+  observatoryPriceColor,
+  themeGradient,
+  type DashboardId,
+  type DesignId,
+  type ThemeId,
+} from './designs/catalog';
 import {
   downloadCSV,
   indexDataset,
@@ -45,7 +54,6 @@ import {
   percentage,
   previousYear,
   price,
-  priceColor,
   quarter,
   sales,
   SECTORS,
@@ -113,9 +121,16 @@ export default function App() {
       ? (params.get('lab') as 'changes' | 'utilities')
       : 'overview',
   );
-  const [design, setDesign] = createSignal<DashboardId>(
-    isDesign(params.get('design')) ? (params.get('design') as DesignId) : 'original',
+  const initialDesign: DashboardId = isDesign(params.get('design'))
+    ? (params.get('design') as DesignId)
+    : 'original';
+  const initialThemeParam = params.get('theme');
+  const [design, setDesign] = createSignal<DashboardId>(initialDesign);
+  const [theme, setTheme] = createSignal<ThemeId>(
+    isTheme(initialThemeParam) ? initialThemeParam : initialDesign,
   );
+  const observatoryColor = (value: number | null | undefined) =>
+    observatoryPriceColor(value, theme());
   const [dataError, setDataError] = createSignal<string | null>(null);
   const [dataset, { refetch }] = createResource(async () => {
     setDataError(null);
@@ -226,6 +241,8 @@ export default function App() {
     query.set('state', selected());
     if (design() !== 'original') query.set('design', design());
     else query.delete('design');
+    if (theme() !== design()) query.set('theme', theme());
+    else query.delete('theme');
     if (workspace() === 'overview') query.delete('lab');
     else query.set('lab', workspace());
     window.history.replaceState(null, '', `${window.location.pathname}?${query}`);
@@ -290,11 +307,13 @@ export default function App() {
 
   return (
     <>
-      <TitleBar design={design()} />
+      <TitleBar theme={theme()} />
       <div class="app-content">
         <DesignSwitcher
           selected={design()}
           onChange={setDesign}
+          theme={theme()}
+          onTheme={setTheme}
           mode={workspace()}
           onMode={setWorkspace}
         />
@@ -302,7 +321,7 @@ export default function App() {
           when={workspace() === 'overview'}
           fallback={
             <AnalysisStudio
-              design={design()}
+              theme={theme()}
               mode={workspace() as 'changes' | 'utilities'}
               state={selected()}
               sector={sector()}
@@ -316,6 +335,7 @@ export default function App() {
             fallback={
               <DesignDashboard
                 design={design() as DesignId}
+                theme={theme()}
                 dataset={dataset()}
                 loading={dataset.loading}
                 error={dataError()}
@@ -349,7 +369,7 @@ export default function App() {
               />
             }
           >
-            <div class="app-shell">
+            <div class={`app-shell theme-${theme()}`} data-theme={theme()}>
               <aside class="sidebar">
                 <a class="brand" href="/" aria-label="Electricity Map home">
                   <span class="brand-mark">
@@ -578,6 +598,7 @@ export default function App() {
                             states={stateData()}
                             selected={selected()}
                             relief={relief()}
+                            color={observatoryColor}
                             onSelect={chooseState}
                             onHover={setHovered}
                           />
@@ -586,6 +607,7 @@ export default function App() {
                           <Orbit
                             states={stateData()}
                             selected={selected()}
+                            color={observatoryColor}
                             onSelect={chooseState}
                             onHover={setHovered}
                           />
@@ -596,6 +618,7 @@ export default function App() {
                             national={nationalHistory()}
                             period={period()}
                             name={focused().name}
+                            color={observatoryColor}
                             onPeriod={choosePeriod}
                             onHoverPeriod={setHoveredPeriod}
                           />
@@ -604,7 +627,7 @@ export default function App() {
                           <div class="hover-readout" aria-live="polite">
                             <span
                               style={{
-                                background: priceColor(detail().observation?.price),
+                                background: observatoryColor(detail().observation?.price),
                               }}
                             />
                             {detail().name}
@@ -618,7 +641,7 @@ export default function App() {
                           <div class="hover-readout">
                             <span
                               style={{
-                                background: priceColor(hoverHistory()?.price),
+                                background: observatoryColor(hoverHistory()?.price),
                               }}
                             />
                             {quarter(hoveredPeriod()!)}
@@ -636,7 +659,10 @@ export default function App() {
                       <div class="visualization-footer">
                         <div class="legend">
                           <div class="legend-label">PRICE / ¢ PER kWh</div>
-                          <div class="legend-gradient" />
+                          <div
+                            class="legend-gradient"
+                            style={{ background: themeGradient(theme()) }}
+                          />
                           <div class="legend-ticks">
                             <span>≤5</span>
                             <span>20</span>
@@ -665,7 +691,7 @@ export default function App() {
                         <span
                           class="state-monogram"
                           style={{
-                            color: priceColor(detail().observation?.price),
+                            color: observatoryColor(detail().observation?.price),
                           }}
                         >
                           {detail().id}
@@ -754,7 +780,7 @@ export default function App() {
                                 <span
                                   style={{
                                     width: `${Math.min(100, (state.observation!.price! / 50) * 100)}%`,
-                                    background: priceColor(state.observation?.price),
+                                    background: observatoryColor(state.observation?.price),
                                   }}
                                 />
                               </span>
@@ -872,7 +898,7 @@ export default function App() {
               </main>
 
               <dialog
-                class="methods-dialog"
+                class={`methods-dialog theme-${theme()}`}
                 ref={methods}
                 aria-labelledby="methods-title"
                 onClick={(event) => {

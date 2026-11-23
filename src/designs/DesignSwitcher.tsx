@@ -1,11 +1,13 @@
 import { createEffect, For, onMount, onCleanup } from 'solid-js';
-import { ChevronLeft, ChevronRight, Grid2X2, X, Zap, ArrowUpRight } from 'lucide-solid';
-import { DESIGNS, type DashboardId } from './catalog';
+import { ChevronLeft, ChevronRight, Grid2X2, Palette, X, Zap, ArrowUpRight } from 'lucide-solid';
+import { DESIGNS, THEMES, themeById, type DashboardId, type ThemeId } from './catalog';
 import IconSettings from '../IconSettings';
 
 export default function DesignSwitcher(props: {
   selected: DashboardId;
   onChange: (id: DashboardId) => void;
+  theme: ThemeId;
+  onTheme: (id: ThemeId) => void;
   mode: 'overview' | 'changes' | 'utilities';
   onMode: (mode: 'overview' | 'changes' | 'utilities') => void;
 }) {
@@ -23,12 +25,14 @@ export default function DesignSwitcher(props: {
   });
   const options = ['original', ...DESIGNS.map((design) => design.id)] as DashboardId[];
   const selectedDesign = () => DESIGNS.find((design) => design.id === props.selected);
+  const selectedTheme = () => themeById(props.theme);
   const step = (direction: number) =>
     props.onChange(
       options[(options.indexOf(props.selected) + direction + options.length) % options.length],
     );
   createEffect(() => {
     document.documentElement.dataset.dashboard = props.selected;
+    document.documentElement.dataset.theme = props.theme;
   });
   const choose = (id: DashboardId) => {
     props.onChange(id);
@@ -70,6 +74,34 @@ export default function DesignSwitcher(props: {
           <button aria-label="Next dashboard design" onClick={() => step(1)}>
             <ChevronRight size={16} />
           </button>
+        </div>
+        <div class="theme-current">
+          <Palette size={13} aria-hidden="true" />
+          <span
+            class="theme-swatch"
+            aria-hidden="true"
+            style={{
+              background: selectedTheme().palette[0],
+              'box-shadow': `inset 0 0 0 2px ${selectedTheme().palette[2]}`,
+            }}
+          />
+          <label class="sr-only" for="app-theme">
+            Theme
+          </label>
+          <select
+            id="app-theme"
+            aria-label="Theme"
+            value={props.theme}
+            onChange={(event) => props.onTheme(event.currentTarget.value as ThemeId)}
+          >
+            <For each={THEMES}>
+              {(theme) => (
+                <option value={theme.id}>
+                  {theme.id === 'original' ? theme.name : `${theme.number} — ${theme.name}`}
+                </option>
+              )}
+            </For>
+          </select>
         </div>
         <nav class="data-workspace-nav" aria-label="Data workspace">
           <button aria-pressed={props.mode === 'overview'} onClick={() => props.onMode('overview')}>

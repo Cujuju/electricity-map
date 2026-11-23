@@ -1,14 +1,14 @@
 import { createMemo, createSignal, onCleanup, onMount, Show } from 'solid-js';
 import { Copy, Menu, Minus, Square, X } from 'lucide-solid';
-import { DESIGNS, type DashboardId } from '../designs/catalog';
+import { themeById, type ThemeId } from '../designs/catalog';
 import { appIconURL } from '../app-icon';
 
 // Adapted from Spillway's Solid title bar; native macOS traffic lights stay native.
-export default function TitleBar(props: { design: DashboardId }) {
+export default function TitleBar(props: { theme: ThemeId }) {
   const desktop = window.electricityDesktop;
   if (!desktop) return null;
   const [maximized, setMaximized] = createSignal(false);
-  const palette = createMemo(() => DESIGNS.find((design) => design.id === props.design)?.palette);
+  const palette = createMemo(() => themeById(props.theme).palette);
   onMount(() => {
     document.documentElement.dataset.desktop = desktop.platform;
     let received = false;

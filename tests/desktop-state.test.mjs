@@ -36,8 +36,8 @@ test('app icon defaults to purple and persists only supported colors', () => {
 
 test('desktop links accept only the app scheme and recognized dashboard parameters', () => {
   assert.equal(
-    searchFromDeepLink('electricity-map://open?state=CA&lab=changes'),
-    '?state=CA&lab=changes',
+    searchFromDeepLink('electricity-map://open?state=CA&lab=changes&theme=arcade'),
+    '?state=CA&lab=changes&theme=arcade',
   );
   for (const value of [
     'javascript:alert(1)',

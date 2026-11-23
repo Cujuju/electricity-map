@@ -23,8 +23,7 @@ import {
 } from 'lucide-solid';
 import { STATES, SECTORS } from '../data';
 import type { Sector } from '../types';
-import type { DashboardId } from '../designs/catalog';
-import { DESIGNS } from '../designs/catalog';
+import type { ThemeId } from '../designs/catalog';
 import type { MonthlyDataset, UtilityDataset, AnalysisMode, Metric } from './types';
 import {
   METRICS,
@@ -71,7 +70,7 @@ async function snapshot<T>(url: string): Promise<T> {
   return data;
 }
 export default function AnalysisStudio(props: {
-  design: DashboardId;
+  theme: ThemeId;
   mode: AnalysisMode;
   state: string;
   sector: Sector;
@@ -294,8 +293,9 @@ export default function AnalysisStudio(props: {
   }
   return (
     <div
-      class={`design-dashboard skin-${props.design} analysis-studio`}
+      class={`design-dashboard theme-${props.theme} analysis-studio`}
       data-testid="analysis-studio"
+      data-theme={props.theme}
     >
       <main class="analysis-main">
         <header class="analysis-masthead">
@@ -636,7 +636,7 @@ export default function AnalysisStudio(props: {
                 rows={history()}
                 national={usHistory()}
                 state={props.state}
-                design={props.design}
+                theme={props.theme}
                 from={{
                   start: periodStart(from()),
                   end: baseline(),

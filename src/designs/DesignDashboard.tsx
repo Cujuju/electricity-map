@@ -18,11 +18,12 @@ import {
 } from 'lucide-solid';
 import type { Dataset, Observation, Sector, StateDatum } from '../types';
 import { price, quarter, sales, signed, percentage, SECTORS, SOURCE_URL, STATES } from '../data';
-import { DESIGNS, interpolateColor, type DesignId } from './catalog';
+import { DESIGNS, interpolateColor, themeGradient, type DesignId, type ThemeId } from './catalog';
 import DesignCharts from './DesignCharts';
 
 export interface DashboardProps {
   design: DesignId;
+  theme: ThemeId;
   dataset?: Dataset;
   error: string | null;
   loading: boolean;
@@ -65,7 +66,7 @@ export default function DesignDashboard(props: DashboardProps) {
       props.dataset?.rows.filter((row) => row.sector === props.sector && row.state !== 'US') ?? [],
   );
   const periodIndex = () => Math.max(0, props.periods.indexOf(props.period));
-  const color = (value: number | null | undefined) => interpolateColor(value, design(), ceiling());
+  const color = (value: number | null | undefined) => interpolateColor(value, props.theme, ceiling());
   const gap = () => percentage(selected().observation?.price, props.national?.price);
   const rank = () => ranked().findIndex((state) => state.id === props.selected) + 1;
   const comparison = () =>
@@ -75,9 +76,10 @@ export default function DesignDashboard(props: DashboardProps) {
   const sectorName = () => SECTORS.find((sector) => sector.id === props.sector)?.name;
   return (
     <div
-      class={`design-dashboard skin-${props.design}`}
+      class={`design-dashboard design-${props.design} theme-${props.theme}`}
       data-testid="experimental-dashboard"
       data-design={props.design}
+      data-theme={props.theme}
     >
       <main class="experiment-main">
         <header class="experiment-masthead">
@@ -267,6 +269,7 @@ export default function DesignDashboard(props: DashboardProps) {
               </header>
               <DesignCharts
                 design={design()}
+                theme={props.theme}
                 states={props.states}
                 selected={props.selected}
                 period={props.period}
@@ -283,7 +286,7 @@ export default function DesignDashboard(props: DashboardProps) {
                   <span>PRICE / ¢ PER kWh</span>
                   <div
                     style={{
-                      background: `linear-gradient(90deg,${design().palette[3]},${design().palette[4]})`,
+                      background: themeGradient(props.theme),
                     }}
                   />
                   <p>

@@ -40,12 +40,12 @@ export default function Sparkline(props: {
     >
       <defs>
         <linearGradient id="spark-fill" x1="0" x2="0" y1="0" y2="1">
-          <stop stop-color="#d4fa66" stop-opacity=".13" />
-          <stop offset="1" stop-color="#d4fa66" stop-opacity="0" />
+          <stop stop-color="var(--accent)" stop-opacity=".18" />
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
         </linearGradient>
       </defs>
       <path d={`${line()} L242,78 L4,78Z`} fill="url(#spark-fill)" />
-      <path d={line()} fill="none" stroke="#c8e889" stroke-width="1.6" />
+      <path d={line()} fill="none" stroke="var(--accent)" stroke-width="1.6" />
       <For each={points()}>
         {(point) => (
           <g>
@@ -61,8 +61,8 @@ export default function Sparkline(props: {
               cx={point.x}
               cy={point.y ?? 78}
               r={props.period === point.period ? 4 : 0}
-              fill="#d4fa66"
-              stroke="#142019"
+              fill="var(--accent)"
+              stroke="var(--paper)"
               stroke-width="2"
             />
           </g>
