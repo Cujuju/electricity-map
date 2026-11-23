@@ -42,7 +42,7 @@ export const DESIGNS = [
     chartTitle: 'An expensive kind of skyline',
     chartSubtitle: 'A fictional city built from real state prices.',
     encoding:
-      'Tower height = price. Towers are alphabetical, not geographic buildings. Select a tower to inspect its state.',
+      'Tower height = price. Towers are ranked tallest in back to shortest in front, not geographic buildings. Select a tower to inspect its state.',
     palette: ['#120b2e', '#f1dcff', '#faff00', '#7049bd', '#ff4ec2'],
     chart: 'city',
   },
