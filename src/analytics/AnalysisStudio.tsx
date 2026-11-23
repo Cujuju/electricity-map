@@ -299,14 +299,59 @@ export default function AnalysisStudio(props: {
     >
       <main class="analysis-main">
         <header class="analysis-masthead">
-          <a href="/" class="analysis-brand">
-            <Activity size={22} /> ELECTRICITY / INTELLIGENCE
-          </a>
-          <span>{props.mode === 'utilities' ? 'THE LOCAL LENS' : 'THE CHANGE LAB'}</span>
-          <button class="lab-action" onClick={share}>
-            {copied() ? <Check size={14} /> : <Link size={14} />}{' '}
-            {copied() ? 'Copied' : 'Share analysis'}
-          </button>
+          <div class="analysis-masthead-left">
+            <div class="analysis-eyebrow">
+              <a href="/" class="analysis-brand">
+                <Activity size={16} /> ELECTRICITY / INTELLIGENCE
+              </a>
+              <span class="masthead-sep" aria-hidden="true">/</span>
+              <span>{props.mode === 'utilities' ? 'THE LOCAL LENS' : 'THE CHANGE LAB'}</span>
+              <span class="masthead-sep" aria-hidden="true">·</span>
+              <span>
+                {props.mode === 'utilities'
+                  ? 'UTILITY DATA / GEOGRAPHY WITH CONTEXT'
+                  : 'PRICE MOVEMENT / TIME / CONSEQUENCES'}
+              </span>
+            </div>
+            <div class="analysis-title-row">
+              <h1>
+                {props.mode === 'utilities' ? (
+                  <>
+                    Every place <em>has a provider.</em>
+                  </>
+                ) : (
+                  <>
+                    Where did <em>the current shift?</em>
+                  </>
+                )}
+              </h1>
+              <p class="analysis-subtitle">
+                {props.mode === 'utilities'
+                  ? 'Find utility-wide prices and reported county coverage.'
+                  : 'Follow prices across the country, find turning points, and value the change.'}
+              </p>
+            </div>
+          </div>
+          <div class="analysis-masthead-right">
+            <Show when={data()}>
+              <div class="analysis-stat-pill" aria-hidden="true">
+                <Telescope size={15} />
+                <strong>
+                  {(props.mode === 'utilities'
+                    ? utilities()?.records.length
+                    : data()!.rows.length
+                  )?.toLocaleString() ?? '…'}
+                </strong>
+                <small>
+                  {props.mode === 'utilities' ? 'ANNUAL UTILITY RECORDS' : 'MONTHLY OBSERVATIONS'}
+                </small>
+              </div>
+            </Show>
+            <button class="lab-action" onClick={share}>
+              {copied() ? <Check size={14} /> : <Link size={14} />}{' '}
+              {copied() ? 'Copied' : 'Share analysis'}
+            </button>
+          </div>
         </header>
         <Show
           when={data()}
@@ -323,44 +368,6 @@ export default function AnalysisStudio(props: {
             </section>
           }
         >
-          <section class="analysis-hero">
-            <div>
-              <span class="lab-kicker">
-                {props.mode === 'utilities'
-                  ? 'UTILITY DATA / GEOGRAPHY WITH CONTEXT'
-                  : 'PRICE MOVEMENT / TIME / CONSEQUENCES'}
-              </span>
-              <h1>
-                {props.mode === 'utilities' ? (
-                  <>
-                    Every place <em>has a provider.</em>
-                  </>
-                ) : (
-                  <>
-                    Where did <em>the current shift?</em>
-                  </>
-                )}
-              </h1>
-              <p>
-                {props.mode === 'utilities'
-                  ? 'Find utility-wide prices and reported county coverage. Explore the provider behind the place.'
-                  : 'Follow prices across the country, find the turning points, and put a dollar value on the change.'}
-              </p>
-            </div>
-            <div class="analysis-orbit" aria-hidden="true">
-              <div />
-              <Telescope size={55} />
-              <span>
-                {(props.mode === 'utilities'
-                  ? utilities()?.records.length
-                  : data()!.rows.length
-                )?.toLocaleString() ?? '…'}
-                <small>
-                  {props.mode === 'utilities' ? 'ANNUAL UTILITY RECORDS' : 'MONTHLY OBSERVATIONS'}
-                </small>
-              </span>
-            </div>
-          </section>
           <section class="lab-controls">
             <label>
               SECTOR

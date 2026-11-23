@@ -20,7 +20,7 @@ test('lab headlines stay on one line on desktop in every design', async ({ page 
   for (const lab of ['changes', 'utilities']) {
     for (const design of ['original', ...DESIGNS.map((item) => item.id)]) {
       await page.goto(`/?lab=${lab}&design=${design}`);
-      const headline = page.locator('.analysis-hero h1');
+      const headline = page.locator('.analysis-masthead h1');
       await headline.waitFor();
       await page.evaluate(() => document.fonts.ready);
       // Mixed font sizes give each run its own top, so test that every run shares the first run's line.

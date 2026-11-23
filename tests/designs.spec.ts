@@ -54,7 +54,7 @@ for (const design of DESIGNS) {
     }
     await page.evaluate(() => document.fonts.ready);
     if ((page.viewportSize()?.width ?? 1440) > 700) {
-      const headlineLines = await page.locator('.experiment-hero h1').evaluate((node) => {
+      const headlineLines = await page.locator('.experiment-masthead h1').evaluate((node) => {
         const range = document.createRange();
         range.selectNodeContents(node);
         return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;

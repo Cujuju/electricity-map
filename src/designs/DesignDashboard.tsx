@@ -83,21 +83,65 @@ export default function DesignDashboard(props: DashboardProps) {
     >
       <main class="experiment-main">
         <header class="experiment-masthead">
-          <a href="/" class="experiment-brand" aria-label="Electricity Map home">
-            <span class="experiment-brand-icon">
-              <Zap size={20} />
-            </span>
-            {design().brand}
-          </a>
-          <span class="experiment-edition">ELECTRICITY MAP / DESIGN {design().number}</span>
-          <div class="experiment-masthead-actions">
-            <button aria-label="Share this dashboard" onClick={props.onShare}>
-              {props.copied ? <Check size={15} /> : <Link size={15} />}
-              <span>{props.copied ? 'COPIED' : 'SHARE'}</span>
-            </button>
-            <a href={SOURCE_URL} target="_blank" rel="noreferrer">
-              SOURCE <ArrowUpRight size={15} />
-            </a>
+          <div class="experiment-masthead-left">
+            <div class="experiment-eyebrow">
+              <a href="/" class="experiment-brand" aria-label="Electricity Map home">
+                <span class="experiment-brand-icon">
+                  <Zap size={14} />
+                </span>
+                {design().brand}
+              </a>
+              <span class="masthead-sep" aria-hidden="true">/</span>
+              <span class="experiment-edition">DESIGN {design().number}</span>
+              <span class="masthead-sep" aria-hidden="true">·</span>
+              <span class="experiment-category">{design().category}</span>
+            </div>
+            <div class="experiment-title-row">
+              <h1>{design().title}</h1>
+              <p class="experiment-subtitle">{design().intro}</p>
+            </div>
+          </div>
+          <div class="experiment-masthead-right">
+            <div class="experiment-stat-pill" aria-hidden="true">
+              <Show
+                when={props.design === 'analog'}
+                fallback={
+                  <Show
+                    when={props.design === 'tidal'}
+                    fallback={
+                      <Show
+                        when={props.design === 'candy'}
+                        fallback={<strong>{design().number}</strong>}
+                      >
+                        <Sparkles size={15} />
+                      </Show>
+                    }
+                  >
+                    <Waves size={15} />
+                  </Show>
+                }
+              >
+                <Radio size={15} />
+              </Show>
+              <small>
+                {props.design === 'press'
+                  ? 'THE QUARTERLY EDITION'
+                  : props.design === 'arcade'
+                    ? 'LEVEL 051 / ENERGY'
+                    : props.design === 'solar'
+                      ? 'GROWN IN THE UNITED STATES'
+                      : '50 STATES + DC'}
+              </small>
+            </div>
+            <div class="experiment-masthead-actions">
+              <button aria-label="Share this dashboard" onClick={props.onShare}>
+                {props.copied ? <Check size={15} /> : <Link size={15} />}
+                <span>{props.copied ? 'COPIED' : 'SHARE'}</span>
+              </button>
+              <a href={SOURCE_URL} target="_blank" rel="noreferrer">
+                SOURCE <ArrowUpRight size={15} />
+              </a>
+            </div>
           </div>
         </header>
         <Show when={props.copyError}>
@@ -120,48 +164,6 @@ export default function DesignDashboard(props: DashboardProps) {
             </section>
           }
         >
-          <section class="experiment-hero">
-            <div class="experiment-hero-copy">
-              <div class="experiment-kicker">
-                <span />
-                {design().category}
-              </div>
-              <h1>{design().title}</h1>
-              <p>{design().intro}</p>
-            </div>
-            <div class="experiment-hero-emblem" aria-hidden="true">
-              <Show
-                when={props.design === 'analog'}
-                fallback={
-                  <Show
-                    when={props.design === 'tidal'}
-                    fallback={
-                      <Show
-                        when={props.design === 'candy'}
-                        fallback={<span>{design().number}</span>}
-                      >
-                        <Sparkles size={90} />
-                      </Show>
-                    }
-                  >
-                    <Waves size={100} />
-                  </Show>
-                }
-              >
-                <Radio size={100} />
-              </Show>
-              <small>
-                {props.design === 'press'
-                  ? 'THE QUARTERLY EDITION'
-                  : props.design === 'arcade'
-                    ? 'LEVEL 051 / ENERGY'
-                    : props.design === 'solar'
-                      ? 'GROWN IN THE UNITED STATES'
-                      : '50 STATES + DC'}
-              </small>
-            </div>
-          </section>
-
           <div class="experiment-toolbar">
             <div class="experiment-filter">
               <label for={`sector-${props.design}`}>SECTOR</label>

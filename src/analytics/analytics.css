@@ -54,29 +54,95 @@ html[data-dashboard='original'] .sidebar {
   margin: auto;
 }
 .analysis-masthead {
-  height: 78px;
+  min-height: 76px;
+  padding: 14px 0;
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 24px;
   border-bottom: 1px solid var(--lab-line);
 }
-.analysis-brand {
+.analysis-masthead-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.analysis-eyebrow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  font: 9px var(--mono);
+  letter-spacing: 1.4px;
+  color: var(--lab-muted);
+}
+.masthead-sep {
+  opacity: 0.45;
+}
+.analysis-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font:
-    500 12px 'Space Grotesk',
+    600 10.5px 'Space Grotesk',
     sans-serif;
-  letter-spacing: 1px;
+  letter-spacing: 0.9px;
+  color: var(--lab-ink);
 }
 .analysis-brand svg {
   color: var(--lab-accent);
 }
-.analysis-masthead > span {
-  font: 9px var(--mono);
-  letter-spacing: 1.5px;
+.analysis-title-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+.analysis-title-row h1 {
+  font: 500 round(nearest, calc(24px * var(--hero-title-scale, 1)), 1px) / 1.1 var(--heading);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+.analysis-title-row h1 em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  color: var(--lab-em-color, var(--lab-accent));
+  font-size: round(nearest, 1.14em, 1px);
+}
+.analysis-subtitle {
+  font-size: 11.5px;
+  line-height: 1.4;
   color: var(--lab-muted);
+  margin: 0;
+}
+.analysis-masthead-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
   margin-left: auto;
+}
+.analysis-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--lab-line);
+  background: var(--lab-surface);
+  border-radius: 999px;
+  color: var(--lab-accent);
+}
+.analysis-stat-pill strong {
+  font: 600 13px var(--mono);
+  letter-spacing: -0.4px;
+  color: var(--lab-ink);
+}
+.analysis-stat-pill small {
+  font: 500 8.5px var(--mono);
+  letter-spacing: 1px;
+  color: var(--lab-muted);
 }
 .lab-action {
   display: flex;
@@ -92,72 +158,6 @@ html[data-dashboard='original'] .sidebar {
 }
 .lab-action:hover {
   background: color-mix(in srgb, var(--lab-ink) 8%, transparent);
-}
-.analysis-hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-  padding: 37px 0 30px;
-}
-.lab-kicker {
-  font: 9px var(--mono);
-  letter-spacing: 1.5px;
-  color: var(--lab-muted);
-}
-/* Size comes from the shared dashboard headline token in designs.css. */
-.analysis-hero h1 {
-  font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1
-    var(--heading);
-  white-space: nowrap;
-  letter-spacing: -0.035em;
-  margin: 17px 0 20px;
-}
-.analysis-hero h1 em {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-weight: 400;
-  color: var(--lab-em-color, var(--lab-accent));
-  font-size: round(nearest, 1.14em, 1px);
-}
-.analysis-hero p {
-  font-size: 12px;
-  line-height: 1.8;
-  color: var(--lab-muted);
-  max-width: 470px;
-  margin: 0;
-}
-.analysis-orbit {
-  width: 215px;
-  height: 215px;
-  position: relative;
-  border: 1px solid var(--lab-line);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-  justify-content: center;
-  align-items: center;
-  margin: 0 20px;
-  color: var(--lab-accent);
-}
-.analysis-orbit > div {
-  position: absolute;
-  inset: -17px;
-  border: 1px dashed var(--lab-line);
-  border-radius: 50%;
-  transform: scaleY(0.6) rotate(-26deg);
-}
-.analysis-orbit > span {
-  font: 500 23px var(--mono);
-  letter-spacing: -1px;
-  color: var(--lab-ink);
-}
-.analysis-orbit small {
-  display: block;
-  font: 9px var(--mono);
-  letter-spacing: 1.2px;
-  color: var(--lab-muted);
-  margin-top: 7px;
 }
 .lab-controls,
 .lab-utility-controls {
