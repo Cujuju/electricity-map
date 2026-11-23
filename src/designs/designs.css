@@ -26,6 +26,17 @@
   z-index: 50;
   color-scheme: light;
 }
+.dashboard-inline-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 8px 0 6px;
+  padding: 0 12px 0 10px;
+  border-left: 1px solid #ccd2c7;
+  border-right: 1px solid #ccd2c7;
+  min-width: 0;
+  max-width: 100%;
+}
 .design-lab-button {
   display: flex;
   align-items: center;
@@ -33,7 +44,7 @@
   font: 10px var(--mono);
   letter-spacing: 1px;
   color: #333b32;
-  padding: 8px 0;
+  padding: 6px 0;
 }
 .design-lab-button b {
   font-size: 9px;
@@ -47,7 +58,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-left: 20px;
+  padding-left: 16px;
   border-left: 1px solid #ccd2c7;
 }
 .design-current > span {
@@ -60,7 +71,7 @@
   font-size: 12px;
   font-weight: 600;
   color: #273c30;
-  width: 202px;
+  width: clamp(130px, 18vw, 202px);
   cursor: pointer;
 }
 .design-step {
@@ -79,29 +90,114 @@
 .design-step button:hover {
   background: #dce5d0;
 }
-.theme-current {
+.theme-picker {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-left: 16px;
-  border-left: 1px solid #ccd2c7;
-  color: #5b6855;
-}
-.theme-swatch {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
   flex: none;
-  border: 1px solid #8a9483;
 }
-.theme-current select {
-  border: 0;
-  background: none;
+.theme-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 5px;
+  border: 1px solid #c8cec2;
+  background: #f8f7f2;
+  color: #273c30;
   font-size: 12px;
   font-weight: 600;
-  color: #273c30;
-  width: 184px;
   cursor: pointer;
+  white-space: nowrap;
+}
+.theme-trigger:hover {
+  background: #eef0e7;
+  border-color: #b4bdb0;
+}
+.theme-trigger[aria-expanded='true'] {
+  background: #e7ecdd;
+  border-color: #9bb18a;
+}
+.theme-tri-chip {
+  display: inline-flex;
+  width: 24px;
+  height: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(25, 35, 28, 0.22);
+  flex: none;
+}
+.theme-tri-chip i {
+  flex: 1;
+  display: block;
+}
+.theme-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 380px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 72px);
+  overflow-y: auto;
+  background: #f7f6f0;
+  border: 1px solid #c3c8bc;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 12px 32px rgba(24, 34, 26, 0.16);
+  z-index: 80;
+}
+.theme-popover-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+.theme-popover-head span {
+  font: 10px var(--mono);
+  letter-spacing: 0.08em;
+  color: #626d5f;
+  text-transform: uppercase;
+}
+.theme-popover-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #243026;
+  text-align: left;
+  cursor: pointer;
+}
+.theme-option:hover {
+  background: #eceee4;
+}
+.theme-option[aria-selected='true'] {
+  background: #e6ebd9;
+  border-color: #9cb287;
+  font-weight: 600;
+}
+.theme-option small {
+  margin-left: auto;
+  font: 9px var(--mono);
+  color: #778274;
+  text-transform: uppercase;
+}
+.design-switcher-end {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .design-lab-note {
   font: 9px var(--mono);
@@ -118,6 +214,9 @@
   font-weight: 500;
   color: #2e442c;
   white-space: nowrap;
+}
+.design-browse + .design-switcher-end {
+  margin-left: 0;
 }
 .design-gallery {
   background: #f1f0e8;
@@ -2630,6 +2729,8 @@ html[data-dashboard='original'] .app-shell {
   .design-lab-button {
     gap: 6px;
     letter-spacing: 0.5px;
+    padding-left: 0;
+    border-left: 0;
   }
   .design-lab-button > svg {
     width: 13px;
@@ -2638,20 +2739,26 @@ html[data-dashboard='original'] .app-shell {
     font-size: 9px;
     padding: 2px 3px;
   }
-  .design-current,
-  .theme-current {
+  .design-current {
     padding-left: 10px;
     gap: 5px;
     min-width: 0;
     flex: 1;
   }
-  .design-current > span,
-  .theme-current > svg {
+  .design-current > span {
     display: none;
   }
+  .theme-trigger {
+    height: 27px;
+    padding: 0 7px;
+    font-size: 11px;
+    gap: 6px;
+  }
+  .theme-popover {
+    width: min(360px, calc(100vw - 24px));
+  }
   /* Layout exception: the phone design bar has no spare width, so the picker steps down to fit the name. */
-  .design-current select,
-  .theme-current select {
+  .design-current select {
     font-size: 10px;
     width: 100%;
     max-width: 220px;
@@ -3537,8 +3644,7 @@ html[data-dashboard='original'] .app-shell {
   .design-dashboard {
     --hero-title-size: 30px;
   }
-  .design-current select,
-  .theme-current select {
+  .design-current select {
     font-size: 9px;
   }
   .design-switcher {
@@ -3551,9 +3657,11 @@ html[data-dashboard='original'] .app-shell {
   .design-lab-button > b {
     display: none;
   }
-  .design-current,
-  .theme-current {
+  .design-current {
     padding-left: 8px;
+  }
+  .theme-trigger-name {
+    display: none;
   }
   .experiment-main,
   .design-brutalist .experiment-main,

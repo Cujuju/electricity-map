@@ -179,14 +179,20 @@ test('missing EIA observations remain unavailable in history, scatter and state 
 test('theme selection is independent from dashboard design and carries across workspaces', async ({
   page,
 }) => {
+  const themeButton = () => page.getByRole('button', { name: /^Theme:/ });
+  const selectTheme = async (themeId: string) => {
+    await themeButton().click();
+    await page.locator(`[data-theme-id="${themeId}"]`).click();
+  };
+
   // Legacy URL with ?design= and no ?theme= initializes theme to match design.
   await page.goto('/?design=arcade&state=CA');
   await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-design', 'arcade');
   await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'arcade');
-  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('arcade');
+  await expect(themeButton()).toHaveAccessibleName('Theme: Ultraviolet');
 
   // Changing theme keeps the current dashboard design and updates URL.
-  await page.getByLabel('Theme', { exact: true }).selectOption('solar');
+  await selectTheme('solar');
   await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-design', 'arcade');
   await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'solar');
   await expect(page).toHaveURL(/design=arcade/);
@@ -199,7 +205,7 @@ test('theme selection is independent from dashboard design and carries across wo
     'brutalist',
   );
   await expect(page.getByTestId('experimental-dashboard')).toHaveAttribute('data-theme', 'solar');
-  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('solar');
+  await expect(themeButton()).toHaveAccessibleName('Theme: Meadow Linen');
 
   // Switching to Original Observatory keeps the theme and applies its price ramp.
   await page.getByLabel('Dashboard design', { exact: true }).selectOption('original');
@@ -214,12 +220,13 @@ test('theme selection is independent from dashboard design and carries across wo
   // Reload preserves independent design + theme.
   await page.reload();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'solar');
-  await expect(page.getByLabel('Theme', { exact: true })).toHaveValue('solar');
+  await expect(themeButton()).toHaveAccessibleName('Theme: Meadow Linen');
 
   // Theme carries over to Change Lab and Local Utilities, and changing theme there updates them.
   await page.getByRole('button', { name: 'Change Lab', exact: true }).click();
+  await expect(page.getByLabel('Dashboard design', { exact: true })).toHaveCount(0);
   await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'solar');
-  await page.getByLabel('Theme', { exact: true }).selectOption('cosmic');
+  await selectTheme('cosmic');
   await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'cosmic');
   await page.getByRole('button', { name: 'Local Utilities', exact: true }).click();
   await expect(page.getByTestId('analysis-studio')).toHaveAttribute('data-theme', 'cosmic');
