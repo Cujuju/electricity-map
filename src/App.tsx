@@ -446,10 +446,48 @@ export default function App() {
 
               <main class="workspace">
                 <header class="topbar">
-                  <div class="breadcrumb">
-                    THE ENERGY OBSERVATORY <span>/</span> <strong>UNITED STATES</strong>
+                  <div class="topbar-left">
+                    <div class="breadcrumb">
+                      THE ENERGY OBSERVATORY <span>/</span> <strong>UNITED STATES</strong>{' '}
+                      <span>·</span> FIELD NOTES / {lens().number}
+                    </div>
+                    <div class="topbar-title-row">
+                      <h1>
+                        {lens().name}
+                        <span class="heading-period">.</span>
+                      </h1>
+                      <p class="topbar-subtitle">{lens().subtitle}</p>
+                    </div>
                   </div>
                   <div class="topbar-actions">
+                    <Show when={!dataset.loading && dataset()}>
+                      <div class="data-controls">
+                        <label>
+                          END-USE SECTOR
+                          <select
+                            aria-label="End-use sector"
+                            value={sector()}
+                            onChange={(event) => setSector(event.currentTarget.value as Sector)}
+                          >
+                            <For each={SECTORS}>
+                              {(item) => <option value={item.id}>{item.name}</option>}
+                            </For>
+                          </select>
+                        </label>
+                        <label>
+                          GEOGRAPHY
+                          <select
+                            aria-label="Selected state"
+                            value={selected()}
+                            onChange={(event) => chooseState(event.currentTarget.value)}
+                          >
+                            <For each={STATES}>
+                              {(state) => <option value={state.id}>{state.name}</option>}
+                            </For>
+                          </select>
+                        </label>
+                      </div>
+                    </Show>
                     <span class="snapshot-label">
                       <span class="status-dot" /> EIA DATA SNAPSHOT
                     </span>
@@ -486,44 +524,6 @@ export default function App() {
                     </Show>
                   }
                 >
-                  <section class="page-heading">
-                    <div>
-                      <div class="eyebrow">
-                        <span class="tiny-line" /> FIELD NOTES / {lens().number}
-                      </div>
-                      <h1>
-                        {lens().name}
-                        <span class="heading-period">.</span>
-                      </h1>
-                      <p>{lens().subtitle}</p>
-                    </div>
-                    <div class="data-controls">
-                      <label>
-                        END-USE SECTOR
-                        <select
-                          aria-label="End-use sector"
-                          value={sector()}
-                          onChange={(event) => setSector(event.currentTarget.value as Sector)}
-                        >
-                          <For each={SECTORS}>
-                            {(item) => <option value={item.id}>{item.name}</option>}
-                          </For>
-                        </select>
-                      </label>
-                      <label>
-                        GEOGRAPHY
-                        <select
-                          aria-label="Selected state"
-                          value={selected()}
-                          onChange={(event) => chooseState(event.currentTarget.value)}
-                        >
-                          <For each={STATES}>
-                            {(state) => <option value={state.id}>{state.name}</option>}
-                          </For>
-                        </select>
-                      </label>
-                    </div>
-                  </section>
 
                   <section class="metrics" aria-label="National electricity statistics">
                     <div class="metric">

@@ -307,34 +307,94 @@ html[data-dashboard='original'] .app-shell {
   padding: 0 52px;
 }
 .experiment-masthead {
-  height: 88px;
+  min-height: 76px;
+  padding: 14px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 14px 24px;
   border-bottom: 1px solid var(--line-color);
 }
-.experiment-brand {
-  font: 600 22px/1 var(--heading);
-  letter-spacing: -0.8px;
+.experiment-masthead-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.experiment-eyebrow {
   display: flex;
   align-items: center;
-  gap: 9px;
+  flex-wrap: wrap;
+  gap: 8px;
+  font: 9px var(--mono);
+  letter-spacing: 1.4px;
+  color: var(--muted-ink);
+}
+.experiment-brand {
+  font: 600 12px/1 var(--heading);
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .experiment-brand-icon {
   display: none;
 }
-.experiment-edition {
+.experiment-edition,
+.experiment-category {
   font: 9px var(--mono);
-  letter-spacing: 1.6px;
+  letter-spacing: 1.4px;
   color: var(--muted-ink);
+}
+.experiment-title-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+.experiment-title-row h1 {
+  font: 500 round(nearest, calc(24px * var(--hero-title-scale, 1)), 1px) / 1.1 var(--heading);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+.experiment-subtitle {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted-ink);
+  margin: 0;
+}
+.experiment-masthead-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
   margin-left: auto;
+}
+.experiment-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--line-color);
+  background: var(--surface);
+  border-radius: 999px;
+}
+.experiment-stat-pill strong {
+  font: 600 13px var(--mono);
+  letter-spacing: -0.4px;
+  color: var(--ink);
+}
+.experiment-stat-pill small {
+  font: 500 8.5px var(--mono);
+  letter-spacing: 1px;
+  color: var(--muted-ink);
 }
 .experiment-masthead-actions {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-left: 25px;
+  gap: 18px;
 }
 .experiment-masthead-actions button,
 .experiment-masthead-actions a {
@@ -344,74 +404,9 @@ html[data-dashboard='original'] .app-shell {
   font: 9px var(--mono);
   letter-spacing: 1px;
 }
-.experiment-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 50px;
-  padding: 37px 0 30px;
-}
-.experiment-kicker {
-  font: 9px var(--mono);
-  letter-spacing: 1.8px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--muted-ink);
-}
-.experiment-kicker > span {
-  width: 5px;
-  height: 5px;
-  display: block;
-  background: var(--ink);
-  border-radius: 50%;
-}
-/* One headline size for every dashboard and lab; condensed theme faces raise --hero-title-scale for equal optical width. */
+/* Shared dashboard headline token retained for theme scaling. */
 .design-dashboard {
   --hero-title-size: clamp(36px, 3.5vw, 56px);
-}
-.experiment-hero h1 {
-  font: 500 round(nearest, calc(var(--hero-title-size) * var(--hero-title-scale, 1)), 1px) / 1 var(--heading);
-  white-space: nowrap;
-  letter-spacing: -0.035em;
-  margin: 21px 0 20px;
-}
-.experiment-hero-copy > p {
-  font-size: 12px;
-  max-width: 410px;
-  line-height: 1.8;
-  margin: 0;
-  color: var(--muted-ink);
-}
-.experiment-hero-emblem {
-  width: 190px;
-  height: 190px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border: 1px solid var(--line-color);
-  border-radius: 50%;
-  position: relative;
-}
-.experiment-hero-emblem::before {
-  content: '';
-  position: absolute;
-  inset: 9px;
-  border: 1px dashed var(--line-color);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.experiment-hero-emblem > span {
-  font: italic 95px/1 var(--heading);
-  letter-spacing: -9px;
-  margin-left: -9px;
-}
-.experiment-hero-emblem > small {
-  font: 9px var(--mono);
-  letter-spacing: 1px;
 }
 .experiment-toolbar {
   display: flex;
@@ -3694,6 +3689,10 @@ html[data-dashboard='original'] .app-shell {
 }
 .design-dashboard .experiment-kicker,
 .design-dashboard .experiment-edition,
+.design-dashboard .experiment-masthead {
+  height: auto;
+  min-height: 76px;
+}
 .design-dashboard .experiment-masthead-actions button,
 .design-dashboard .experiment-masthead-actions a,
 .design-dashboard .experiment-filter > label,
