@@ -3795,12 +3795,31 @@ html[data-dashboard='original'] .app-shell {
   /* Optical inset so rotated emblems stay inside the content edge. */
   --emblem-bleed: 0px;
 }
-.design-dashboard .experiment-kicker,
-.design-dashboard .experiment-edition,
 .design-dashboard .experiment-masthead {
   height: auto;
   min-height: 76px;
+  justify-content: space-between;
+  padding: 14px 0;
 }
+.design-dashboard .experiment-brand {
+  position: static;
+  left: auto;
+  transform: none;
+  font: 600 10.5px/1 'Space Grotesk', sans-serif;
+  letter-spacing: 0.9px;
+  color: var(--ink);
+  text-shadow: none;
+}
+.design-dashboard .experiment-brand-icon {
+  display: none;
+}
+.design-dashboard .experiment-edition {
+  margin: 0;
+  max-width: none;
+  line-height: 1;
+}
+.design-dashboard .experiment-kicker,
+.design-dashboard .experiment-edition,
 .design-dashboard .experiment-masthead-actions button,
 .design-dashboard .experiment-masthead-actions a,
 .design-dashboard .experiment-filter > label,
