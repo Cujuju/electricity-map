@@ -513,8 +513,8 @@ html[data-dashboard='original'] .app-shell {
   gap: 26px;
   border-top: 1px solid var(--line-color);
   border-bottom: 1px solid var(--line-color);
-  padding: 15px 0;
-  margin-bottom: 24px;
+  padding: 10px 0;
+  margin-bottom: 14px;
 }
 .experiment-filter {
   display: flex;
@@ -2288,7 +2288,7 @@ html[data-dashboard='original'] .app-shell {
 .design-press .experiment-specimen {
   border: 0;
   border-top: 3px double var(--ink);
-  padding: 20px 0 0;
+  padding: 18px 20px;
 }
 .design-press .experiment-state-name > span {
   border: 0;
@@ -2310,7 +2310,7 @@ html[data-dashboard='original'] .app-shell {
 .design-press .experiment-rankings {
   border: 0;
   border-top: 1px solid var(--ink);
-  padding: 20px 0 0;
+  padding: 18px 20px;
 }
 .design-press .experiment-rankings h2 {
   font-size: 27px;
@@ -3797,9 +3797,28 @@ html[data-dashboard='original'] .app-shell {
 }
 .design-dashboard .experiment-masthead {
   height: auto;
-  min-height: 76px;
+  min-height: 64px;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 10px 0;
+}
+@media (min-width: 1100px) {
+  .design-dashboard .experiment-metrics {
+    margin-bottom: 14px;
+  }
+  .design-dashboard .experiment-metric {
+    padding: 14px 18px;
+  }
+  .design-dashboard .design-chart {
+    max-height: 450px;
+  }
+  .design-dashboard .experiment-timeline {
+    margin-top: 14px;
+    padding: 12px 18px;
+  }
+  .design-dashboard .experiment-footer {
+    margin-top: 14px;
+    padding: 12px 0 16px;
+  }
 }
 .design-dashboard .experiment-brand {
   position: static;
