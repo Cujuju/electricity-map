@@ -159,23 +159,50 @@ export type DesignId = Design['id'];
 export type DashboardId = 'original' | DesignId;
 export type ThemeId = DashboardId;
 
+export type ThemeTone = 'Light' | 'Dark' | 'Warm';
+
 export interface ThemeMeta {
   id: ThemeId;
   number: string;
   name: string;
+  tone: ThemeTone;
   category: string;
   palette: readonly [string, string, string, string, string];
 }
 
+const THEME_LABELS: Record<DesignId, { name: string; tone: ThemeTone }> = {
+  solar: { name: 'Meadow Linen', tone: 'Light' },
+  brutalist: { name: 'Acid Concrete', tone: 'Light' },
+  arcade: { name: 'Ultraviolet', tone: 'Dark' },
+  blueprint: { name: 'Cyanotype', tone: 'Dark' },
+  thermal: { name: 'Infrared', tone: 'Warm' },
+  cosmic: { name: 'Midnight Iris', tone: 'Dark' },
+  analog: { name: 'Walnut & Rust', tone: 'Light' },
+  candy: { name: 'Lilac Fizz', tone: 'Light' },
+  tidal: { name: 'Abyssal Teal', tone: 'Dark' },
+  press: { name: 'Newsprint', tone: 'Light' },
+};
+
 export const ORIGINAL_THEME: ThemeMeta = {
   id: 'original',
   number: '00',
-  name: 'Original Observatory',
+  name: 'Night Moss',
+  tone: 'Dark',
   category: 'DARK BOTANICAL / OBSERVATORY',
   palette: ['#111916', '#e8eddf', '#d4fa66', '#79ccb6', '#ec665d'],
 };
 
-export const THEMES: readonly ThemeMeta[] = [ORIGINAL_THEME, ...DESIGNS];
+export const THEMES: readonly ThemeMeta[] = [
+  ORIGINAL_THEME,
+  ...DESIGNS.map((design) => ({
+    id: design.id,
+    number: design.number,
+    name: THEME_LABELS[design.id].name,
+    tone: THEME_LABELS[design.id].tone,
+    category: design.category,
+    palette: design.palette,
+  })),
+];
 
 export function isDesign(value: string | null): value is DesignId {
   return DESIGNS.some((design) => design.id === value);

@@ -160,7 +160,8 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
     '"Price change (%)"',
     '"%"',
   ]);
-  await page.getByLabel('Theme', { exact: true }).selectOption('cosmic');
+  await page.getByRole('button', { name: /^Theme:/ }).click();
+  await page.locator('[data-theme-id="cosmic"]').click();
   await expect(page.getByTestId('analysis-studio')).toHaveClass(/theme-cosmic/);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -186,7 +187,8 @@ test('change lab computes real monthly changes, customer metrics, scenarios and 
   await page.getByLabel('Analysis sector', { exact: true }).selectOption('IND');
   await page.getByLabel('Map metric', { exact: true }).selectOption('usage');
   for (const theme of ['original', ...DESIGNS.map((item) => item.id)]) {
-    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    await page.getByRole('button', { name: /^Theme:/ }).click();
+    await page.locator(`[data-theme-id="${theme}"]`).click();
     await expect(page.getByTestId('analysis-studio')).toHaveClass(new RegExp(`theme-${theme}`));
     await page.evaluate(() => document.fonts.ready);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
