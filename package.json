@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "node scripts/desktop.mjs --dev",
+    "dev:shortcut": "node scripts/dev-shortcut.mjs",
     "build": "vite build",
     "build:pages": "vite build && node scripts/build-pages.mjs",
     "start": "node scripts/desktop.mjs",
